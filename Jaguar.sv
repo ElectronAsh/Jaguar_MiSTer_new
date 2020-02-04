@@ -177,7 +177,7 @@ localparam CONF_STR = {
 	"F,JAG,J64,ROM,BIN;",
 	"-;",
 	"O4,Region Setting,PAL,NTSC;",
-	"-;",
+	"O2,Cart Checksum Patch,Off,On;",
 	"O1,Aspect ratio,4:3,16:9;",
 	"-;",
 	"O3,CPU Speed,Normal,Turbo;",
