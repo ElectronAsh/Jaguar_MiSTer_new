@@ -169,16 +169,14 @@ assign VIDEO_ARY = status[1] ? 8'd9  : 8'd3;
 
 
 // 	"O24,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
-//
-//		"O2,BIOS Checksum Patch,Off,On;",
 
 `include "build_id.v"
 localparam CONF_STR = {
 	"Jaguar;;",
 	"-;",
 	"F,JAG;",
-	"-;",
-	"-;",
+	"O4,Region Setting,PAL,NTSC;",
+	"O2,BIOS Checksum Patch,Off,On;",
 	"-;",
 	"O1,Aspect ratio,4:3,16:9;",
 	"-;",
@@ -207,7 +205,7 @@ wire        forced_scandoubler;
 wire [10:0] ps2_key;
 wire [21:0] gamma_bus;
 
-hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(1)) hps_io
+hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(0)) hps_io
 (
 	.clk_sys(clk_sys),
 	.HPS_BUS(HPS_BUS),
@@ -280,7 +278,6 @@ else begin
 	if (~old_download && ioctl_download && ioctl_index) begin
 		//loader_addr <= 32'h0080_0000;								// Force the cart ROM to load at 0x00800000 in DDR for Jag core. (byte address!)
 																				// (The ROM actually gets written at 0x30800000 in DDR, which is done when load_addr gets assigned to DDRAM_ADDR below).
-																				
 		loader_addr <= 32'h0000_0000;
 		
 		loader_en <= 1;
@@ -378,7 +375,9 @@ always @(posedge clk_sys) begin
 end
 */
 
-wire xresetl = !(reset | loader_reset | loader_en);
+//wire xresetl = !(reset | loader_reset | loader_en);
+wire xresetl = !(reset | ioctl_download);
+
 
 /* verilator lint_off PINMISSING */
 jaguar jaguar_inst
@@ -456,7 +455,9 @@ jaguar jaguar_inst
 	
 	.startcas( startcas ) ,
 	
-	.turbo( status[3] )
+	.turbo( status[3] ) ,
+	
+	.ntsc( status[4] )
 );
 
 //wire [1:0] romwidth = status[5:4];
@@ -492,34 +493,30 @@ wire startcas;
 wire fdram;
 
 `ifndef VERILATOR
-wire [16:0] os_rom_a;
 wire os_rom_ce_n;
 wire os_rom_oe_n;
-wire [7:0] os_rom_q;
-wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);
+wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe has to feed back TO the core, to enable the internal drivers.
 
-os_rom	os_rom_inst (
-	.address ( os_rom_a ),
+wire [16:0] os_rom_a;	// Address from the core.
+
+wire [16:0] os_rom_addr = (ioctl_download && ioctl_index==0) ? ioctl_addr[16:0] : os_rom_a;
+wire os_rom_wren = ioctl_download && ioctl_index==0 && ioctl_wr;
+
+os_rom_bram	os_rom_bram_inst (
 	.clock ( clk_sys ),
+
+	.address ( os_rom_addr ),
+	.data ( ioctl_data[7:0] ),
+	.wren ( os_rom_wren ),
+
 	.q ( os_rom_dout )
 );
 wire [7:0] os_rom_dout;
 
-assign os_rom_q = (os_rom_a==17'h0136E) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
-												 os_rom_dout;
+wire [7:0] os_rom_q = (os_rom_a==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
+													os_rom_dout;
 
 `endif
-
-/*
-cart_rom	cart_rom_inst (
-	.address ( cart_a[13:0] ),
-	.clock ( clk_sys ),
-	.q ( CART_ROM_DO )
-);
-wire [31:0] CART_ROM_DO;
-assign cart_q = CART_ROM_DO;
-*/
-
 
 
 wire vga_bl;
@@ -746,7 +743,7 @@ sdram sdram
 	.ch1_dout(  ),										// output [63:0]
 	.ch1_rnw( 1'b0 ),									// Write-only for cart loading.
 	.ch1_din( {ioctl_data[7:0], ioctl_data[15:8]} ),		// input [15:0]	- Data from HPS is BYTE swapped!
-	.ch1_req( ioctl_download & ioctl_wr & ioctl_index ),	
+	.ch1_req( ioctl_download & ioctl_wr & ioctl_index>0 ),	
 	.ch1_ready( rom_wrack ),
 	
 	// Port 2.

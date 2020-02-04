@@ -9,6 +9,29 @@ It's using the later framework now, from a recent release of the GBA core.
 Both analog video and HDMI are working, but the sync timings still need a few tweaks, so the image may be shifted slightly.
 
 
+The proper Jag BIOS is now being used, but it's still failing the checksum atm, so I've added a patch for that to the menu.
+
+The patch allows more games to be tested with the BIOS, and shows the spinning cube logo now.
+
+But the checksum failure is likely stopping other games from working atm.
+
+The BIOS should be copied into the Jaguar folder on the SD card, and named boot.rom.
+
+
+I've added a region switch to the OSD menu, which is normally a pin on the motherboard that gets tied high or low.
+(for NTSC or PAL, respectively.)
+
+AFAIK, that signal gets read by the software (instead of affecting the hardware directly), but it may allow more games to run.
+
+It might also change the video sync timings between NTSC and PAL if the BIOS reads the flag.
+But, the master clock frequency is fixed at 26.59 MHz atm, so the sync timings won't be exactly right for both region modes.
+
+
+The controls for player 1 are now hooked up to MiSTer.
+
+I tried hooking up player 2 before as well, but for some reason it stopped the core booting?
+
+
 Audio doesn't work on many games yet. And when it does, it sounds pretty terrible. lol
 
 This is due to the way the Jag outputs audio using 2-bit (yes, 2-bit) PWM originally, so some work is needed there on the filtering and FIFO logic.
@@ -25,33 +48,7 @@ Ideally, the main RAM needs to be moved into SDRAM, where the latency is lower.
 Cart ROMs could either kept in SDRAM or moved into DDR, since carts have slower access times anyway.
 
 In hindsight, it should have been that way around from the start, but the Jag does 64-bit accesses to RAM,
- and handling burst writes on SDRAM (with byte masking) will take a while to implement.
-
-
-The proper Jag BIOS is now being used, but it's still failing the checksum atm, so I've added a patch for that.
-
-The patch allows more games to be tested,with the BIOS, and shows the spinning cube logo now.
-
-But the checksum failure is likely stopping more games from working atm.
-
-
-The BIOS currently gets loaded into BRAM, so becomes part of the RBF
-
-Please do *NOT* distribute any RBFs which have the BIOS embedded!
-
-
-To add the BIOS to the project before compilation, you have to copy jagboot.rom into the project folder, open a Command Prompt window, 
-then run...
-
-bin2mif jagboot.rom jagboot.mif 8
-
-
-(the 8 at the end tells bin2mif to generate an 8-bit wide MIF file for Quartus to use.)
-
-
-The controls for player 1 are now hooked up to MiSTer, but none of the number buttons are mapped yet.
-
-I tried hooking up player 2 as well, but for some reason it stopped the core booting.
+and handling burst writes on SDRAM (with byte masking) will take a while to implement.
 
 
 A handful of games now boot, but there will be some which don't boot at all, others that crash to a black screen (but often the game keeps running).
@@ -67,7 +64,6 @@ The older j68 CPU core has been replaced with FX68K, which is claimed to be cycl
 I added a Turbo option for the 68000 to the MiSTer OSD, which does help speed up some things, like the intro to Flashback.
 
 It does not speed up the main "Tom and Jerry" custom chips, though.
-
 
 
 Some games seem to boot only after loading the ROM twice from the menu. I'm not sure what's causing that yet?

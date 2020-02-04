@@ -81,7 +81,9 @@ module jaguar
 	
 	output startcas,
 	
-	input turbo
+	input turbo,
+	
+	input ntsc
 );
 
 assign dtack_n_out = fx68k_dtack_n;
@@ -91,11 +93,8 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_acc_l[22:7];
 //assign aud_16_r = r_acc_r[22:7];
 
-//assign aud_16_l = r_aud_l;
-//assign aud_16_r = r_aud_r;
-
-assign aud_16_l = dac_l;
-assign aud_16_r = dac_r;
+assign aud_16_l = r_aud_l;
+assign aud_16_r = r_aud_r;
 
 
 // TESTING !! ElectronAsh...
@@ -1059,13 +1058,12 @@ assign b[0]    = joy1_row_n[1];	// Port 1, pin 6.  BO/LPO. Mouse Right Button.
 assign joy[12:15] = 4'b1111;
 assign b[2:3] = 2'b11;
 
-assign b[4] = 1'b1;	// 0=PAL, 1=NTSC
+assign b[4] = ntsc;	// 0=PAL, 1=NTSC
 assign b[5] = 1'b1;	// 256 (number of columns of the DRAM)
 assign b[6] = 1'b1;	// Unused open
 assign b[7] = 1'b0;	// Unused short
 
-always @(posedge sys_clk)
-begin
+always @(posedge sys_clk) begin
 	u374_clk_prev <= j_xjoy_in[2];
 	if (~u374_clk_prev & j_xjoy_in[2]) begin
 		// $display("JOY LATCH %x", dbus[0:7]);
@@ -1877,15 +1875,8 @@ j_jerry jerry_inst
 	.snd_r(snd_r),
 	.snd_l_en(snd_l_en),
 	.snd_r_en(snd_r_en),
-	
-	.dac_l( dac_l ),
-	.dac_r( dac_r ),
-	
 	.sys_clk(sys_clk)
 );
-
-  wire [15:0] dac_l;
-  wire [15:0] dac_r;
 
   wire [3:0]  w_dbg_reg_addr;
   wire [3:0]  w_dbg_reg_wren;
