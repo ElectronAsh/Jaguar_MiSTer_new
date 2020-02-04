@@ -174,9 +174,9 @@ assign VIDEO_ARY = status[1] ? 8'd9  : 8'd3;
 localparam CONF_STR = {
 	"Jaguar;;",
 	"-;",
-	"F,JAG;",
+	"F,JAG,J64,ROM,BIN;",
+	"-;",
 	"O4,Region Setting,PAL,NTSC;",
-	"O2,BIOS Checksum Patch,Off,On;",
 	"-;",
 	"O1,Aspect ratio,4:3,16:9;",
 	"-;",
@@ -205,7 +205,7 @@ wire        forced_scandoubler;
 wire [10:0] ps2_key;
 wire [21:0] gamma_bus;
 
-hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(0)) hps_io
+hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(1)) hps_io
 (
 	.clk_sys(clk_sys),
 	.HPS_BUS(HPS_BUS),
@@ -495,28 +495,47 @@ wire fdram;
 `ifndef VERILATOR
 wire os_rom_ce_n;
 wire os_rom_oe_n;
-wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe has to feed back TO the core, to enable the internal drivers.
+wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe feeds back TO the core, to enable the internal drivers.
 
 wire [16:0] os_rom_a;	// Address from the core.
 
-wire [16:0] os_rom_addr = (ioctl_download && ioctl_index==0) ? ioctl_addr[16:0] : os_rom_a;
-wire os_rom_wren = ioctl_download && ioctl_index==0 && ioctl_wr;
+
+wire os_download = ioctl_download && ioctl_index==0;
+
+wire [16:0] os_rom_address = (os_download) ? {ioctl_addr[16:1],os_lsb} : os_rom_a;
+
+wire [7:0] os_rom_din = (!os_lsb) ? ioctl_data[7:0] : ioctl_data[15:8];
 
 os_rom_bram	os_rom_bram_inst (
 	.clock ( clk_sys ),
-
-	.address ( os_rom_addr ),
-	.data ( ioctl_data[7:0] ),
-	.wren ( os_rom_wren ),
+	
+	.address ( os_rom_address ),
+	.data ( os_rom_din ),
+	.wren ( os_wren ),
 
 	.q ( os_rom_dout )
 );
+
 wire [7:0] os_rom_dout;
 
 wire [7:0] os_rom_q = (os_rom_a==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
-													os_rom_dout;
-
+																		os_rom_dout;
 `endif
+
+
+reg os_lsb = 1;
+always @(posedge clk_sys) begin
+	os_wren <= 1'b0;
+
+	if (os_download && ioctl_wr) begin
+		os_wren <= 1'b1;
+		os_lsb <= 1'b0;
+	end
+	else if (!os_lsb) begin
+		os_wren <= 1'b1;
+		os_lsb <= 1'b1;
+	end
+end
 
 
 wire vga_bl;

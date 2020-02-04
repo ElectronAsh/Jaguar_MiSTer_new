@@ -97,82 +97,6 @@ assign aud_16_l = r_aud_l;
 assign aud_16_r = r_aud_r;
 
 
-// TESTING !! ElectronAsh...
-//wire xpclk = !clkdiv[0];
-//wire xvclk = !clkdiv[0];
-
-//wire tlw = clkdiv[0];
-
-/*
-reg fx68k_enPhi1;
-reg fx68k_enPhi2;
-
-reg [1:0] clkdiv;
-always @(posedge sys_clk) begin
-	clkdiv <= clkdiv + 1;
-	
-	fx68k_enPhi1 <= 1'b0;
-	fx68k_enPhi2 <= 1'b0;
-	
-	if (clkdiv==0) begin
-		//fx68k_enPhi1 <= 1'b1;
-	end
-
-	if (clkdiv==1) begin
-		fx68k_enPhi1 <= 1'b1;
-	end
-	
-	if (clkdiv==2) begin
-		//fx68k_enPhi2 <= 1'b1;
-	end
-	
-	if (clkdiv==3) begin
-		fx68k_enPhi2 <= 1'b1;
-	end
-end
-*/
-
-
-// clkdiv MUST have the same pattern of xvclk vs tlw, with the gap of one clock cycle in between.
-//
-// The core expects xvclk (and tlw) to be 26.09 MHz, so sys_clk should run at 78.27 MHz. 
-//
-// ElectronAsh.
-/*
-reg fx68k_enPhi1;
-reg fx68k_enPhi2;
-
-reg [1:0] clkdiv = 2'b00;
-reg xpclk = 1'b0;
-reg xvclk = 1'b0;
-reg tlw = 1'b1;
-
-always @(posedge sys_clk)
-begin
-	clkdiv <= clkdiv + 1'd1;
-	
-	xpclk <= 1'b0;
-	xvclk <= 1'b0;
-	tlw <= 1'b0;
-
-	fx68k_enPhi1 <= 1'b0;
-	fx68k_enPhi2 <= 1'b0;
-	
-	if (clkdiv == 2'b10) clkdiv <= 2'b00;
-	
-	if ((clkdiv == 2'd0)) begin
-		xpclk <= 1'b1;
-		xvclk <= 1'b1;
-		fx68k_enPhi1 <= 1'b1;
-	end
-
-	if ((clkdiv == 2'd2)) begin
-		tlw <= 1'b1;
-		fx68k_enPhi2 <= 1'b1;
-	end
-end
-*/
-
 reg [2:0] clkdiv;
 reg xpclk;
 reg xvclk;
@@ -181,31 +105,26 @@ reg tlw;
 reg fx68k_enPhi1;
 reg fx68k_enPhi2;
 
-always @(posedge sys_clk or negedge xresetl)
-if (!xresetl) begin
-	xpclk <= 1'b0;
-	xvclk <= 1'b0;
-	tlw <= 1'b1;
-	
-	fx68k_enPhi1 <= 1'b0;
-	fx68k_enPhi2 <= 1'b0;
-	
-	clkdiv <= 3'd0;
-end
-else begin
+reg pix_ce;
+
+// Note: Turns out the custom chips use synchronous resets.
+// So these clocks need to be left running during reset, else the core won't start up correctly the next time the HPS resets it. ElectronAsh.
+
+always @(posedge sys_clk) begin
+
 	clkdiv <= clkdiv + 3'b001;
-	if (clkdiv == 3'b101) begin
+	if (clkdiv==3'b101) begin
 		clkdiv <= 3'b000;
 	end
 
-	if ((clkdiv == 3'd0) || (clkdiv == 3'd3)) begin
+	if ((clkdiv==3'd0) || (clkdiv==3'd3)) begin
 		xpclk <= 1'b1;
 		xvclk <= 1'b1;
 	end else begin
 		xpclk <= 1'b0;
 		xvclk <= 1'b0;
 	end
-	if ((clkdiv == 3'd2) || (clkdiv == 3'd5)) begin
+	if ((clkdiv==3'd2) || (clkdiv==3'd5)) begin
 		tlw <= 1'b1;
 	end else begin
 		tlw <= 1'b0;
@@ -214,14 +133,16 @@ else begin
 	fx68k_enPhi1 <= 1'b0;
 	fx68k_enPhi2 <= 1'b0;
 	
-	// FX68K might be running twice as fast as it should be atm. Need to check. ElectronAsh.
-	if ((clkdiv == 3'd0) || (clkdiv == 3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
-	if ((clkdiv == 3'd1) || (clkdiv == 3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
+	if ((clkdiv==3'd0) || (clkdiv==3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
+	if ((clkdiv==3'd1) || (clkdiv==3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
+	
+	//if (clkdiv==3'd0) pix_ce <= 1'b1;
+	//else pix_ce <= 1'b0;
 end
 
 
-
 assign vid_ce = xvclk;
+//assign vid_ce = pix_ce;
 
 
 // `ifndef verilator3
@@ -926,9 +847,9 @@ assign xvs_in = xvs_out;
 assign xma_in[0] = (xma_oe[0]) ? xma_out[0] : 1'b1; // ROMHI
 assign xma_in[1] = (xma_oe[1]) ? xma_out[1] : 1'b0; // ROMWID0
 assign xma_in[2] = (xma_oe[2]) ? xma_out[2] : 1'b0; // ROMWID1
-assign xma_in[3] = (xma_oe[3]) ? xma_out[3] : 1'b0;
+assign xma_in[3] = (xma_oe[3]) ? xma_out[3] : 1'b0; // ?
 assign xma_in[4] = (xma_oe[4]) ? xma_out[4] : 1'b0; // NOCPU (?)
-assign xma_in[5] = (xma_oe[5]) ? xma_out[5] : 1'b0;
+assign xma_in[5] = (xma_oe[5]) ? xma_out[5] : 1'b0; // CPU32
 assign xma_in[6] = (xma_oe[6]) ? xma_out[6] : 1'b1; // BIGEND
 assign xma_in[7] = (xma_oe[7]) ? xma_out[7] : 1'b0; // EXTCLK
 assign xma_in[8] = (xma_oe[8]) ? xma_out[8] : 1'b1; // 68K (?)

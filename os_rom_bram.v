@@ -168,6 +168,6 @@ endmodule
 // Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram.inc FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram.cmp FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram.bsf FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram_inst.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram_inst.v FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL os_rom_bram_bb.v FALSE
 // Retrieval info: LIB_FILE: altera_mf
