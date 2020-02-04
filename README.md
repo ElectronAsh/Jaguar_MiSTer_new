@@ -9,6 +9,11 @@ It's using the later framework now, from a recent release of the GBA core.
 Both analog video and HDMI are working, but the sync timings still need a few tweaks, so the image may be shifted slightly.
 
 
+Audio doesn't work on many games yet. And when it does, it sounds pretty terrible. lol
+
+This is due to the way the Jag outputs audio using 2-bit (yes, 2-bit) PWM originally, so some work is needed there on the filtering and FIFO logic.
+
+
 The core is now using DDR3 for main RAM, and SDRAM for cart loading. So SDRAM is *required*.
 
 The latency of DDR is a bit too high for more games to work correctly.
@@ -49,8 +54,7 @@ The controls for player 1 are now hooked up to MiSTer, but none of the number bu
 I tried hooking up player 2 as well, but for some reason it stopped the core booting.
 
 
-A handful of games now boot, but there will be some which don't boot at all, others that crash to a black screen (but often the game keeps running),
- and audio isn't working in many games.
+A handful of games now boot, but there will be some which don't boot at all, others that crash to a black screen (but often the game keeps running).
  
  
 Cybermorph is one of the few games that generally runs quite well.
