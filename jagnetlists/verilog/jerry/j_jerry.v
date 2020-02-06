@@ -2163,7 +2163,7 @@ assign testen = nottest | eint_0;
 // JERRY.NET (252) - dsp : dsp
 j_dsp dsp_inst
 (
-	.ima_0 /* IN */ (aout_0),
+	.ima_0 /* IN */ (aout_0),		// I/O address.
 	.ima_1 /* IN */ (aout_1),
 	.ima_2 /* IN */ (aout_2),
 	.ima_3 /* IN */ (aout_3),
@@ -2179,7 +2179,7 @@ j_dsp dsp_inst
 	.ima_13 /* IN */ (aout_13),
 	.ima_14 /* IN */ (aout_14),
 	.ima_15 /* IN */ (aout_15),
-	.dout_0 /* IN */ (dout_0),
+	.dout_0 /* IN */ (dout_0),		// slave write / master read data.
 	.dout_1 /* IN */ (dout_1),
 	.dout_2 /* IN */ (dout_2),
 	.dout_3 /* IN */ (dout_3),
@@ -2211,22 +2211,22 @@ j_dsp dsp_inst
 	.dout_29 /* IN */ (dout_29),
 	.dout_30 /* IN */ (dout_30),
 	.dout_31 /* IN */ (dout_31),
-	.ack /* IN */ (ack),
-	.gpu_back /* IN */ (dbgl),
-	.reset_n /* IN */ (resetl_0),
-	.clk /* IN */ (clk),
-	.eint_n_0 /* IN */ (eint_0),
+	.ack /* IN */ (ack),					// co-processor memory acknowledge.
+	.gpu_back /* IN */ (dbgl),			// GPU normal bus acknowledge.
+	.reset_n /* IN */ (resetl_0),		// system reset.
+	.clk /* IN */ (clk),					// system clock.
+	.eint_n_0 /* IN */ (eint_0),		// external interrupts.
 	.eint_n_1 /* IN */ (eint_1),
-	.tint_0 /* IN */ (tint_0),
+	.tint_0 /* IN */ (tint_0),			// timer interrupts.
 	.tint_1 /* IN */ (tint_1),
-	.i2int /* IN */ (i2int),
-	.iord /* IN */ (dspread),
-	.iowr /* IN */ (dspwrite),
-	.tlw /* IN */ (tlw),
-	.gpu_breq /* OUT */ (dbrl_0),
-	.dma_breq /* OUT */ (dbrl_1),
-	.cpu_int /* OUT */ (dint),
-	.wdata_0 /* OUT */ (wd_0),
+	.i2int /* IN */ (i2int),			// I2S interrupt.
+	.iord /* IN */ (dspread),			// Look-ahead I/O read strobe for GPU.
+	.iowr /* IN */ (dspwrite),			// Look-ahead I/O write strobe for GPU.
+	.tlw /* IN */ (tlw),					// Transparent latch write enable timing.
+	.gpu_breq /* OUT */ (dbrl_0),		// GPU normal bus request.
+	.dma_breq /* OUT */ (dbrl_1),		// GPU high-priority bus request.
+	.cpu_int /* OUT */ (dint),			// GPU interrupt to CPU.
+	.wdata_0 /* OUT */ (wd_0),			// master write data bus.
 	.wdata_1 /* OUT */ (wd_1),
 	.wdata_2 /* OUT */ (wd_2),
 	.wdata_3 /* OUT */ (wd_3),
@@ -2258,7 +2258,7 @@ j_dsp dsp_inst
 	.wdata_29 /* OUT */ (wd_29),
 	.wdata_30 /* OUT */ (wd_30),
 	.wdata_31 /* OUT */ (wd_31),
-	.a_0 /* OUT */ (a_0),
+	.a_0 /* OUT */ (a_0),				// master cycle address bus.
 	.a_1 /* OUT */ (a_1),
 	.a_2 /* OUT */ (a_2),
 	.a_3 /* OUT */ (a_3),
@@ -2282,14 +2282,14 @@ j_dsp dsp_inst
 	.a_21 /* OUT */ (a_21),
 	.a_22 /* OUT */ (a_22),
 	.a_23 /* OUT */ (a_23),
-	.width_0 /* OUT */ (w_0),
+	.width_0 /* OUT */ (w_0),			// master cycle cycle width (in bytes).
 	.width_1 /* OUT */ (w_1),
 	.width_2 /* OUT */ (w_2),
-	.read /* OUT */ (rw),
-	.mreq /* OUT */ (mreq),
-	.dacw_0 /* OUT */ (dac1w),
+	.read /* OUT */ (rw),				// master cycle read request.
+	.mreq /* OUT */ (mreq),				// master cycle request.
+	.dacw_0 /* OUT */ (dac1w),			// internal DAC write strobes.
 	.dacw_1 /* OUT */ (dac2w),
-	.gpu_din_0 /* OUT */ (dspwd_0),
+	.gpu_din_0 /* OUT */ (dspwd_0),	// internal I/O write data.
 	.gpu_din_1 /* OUT */ (dspwd_1),
 	.gpu_din_2 /* OUT */ (dspwd_2),
 	.gpu_din_3 /* OUT */ (dspwd_3),
@@ -2305,14 +2305,14 @@ j_dsp dsp_inst
 	.gpu_din_13 /* OUT */ (dspwd_13),
 	.gpu_din_14 /* OUT */ (dspwd_14),
 	.gpu_din_15 /* OUT */ (dspwd_15),
-	.i2sw_0 /* OUT */ (i2s1w),
+	.i2sw_0 /* OUT */ (i2s1w),				// internal I2S write strobes.
 	.i2sw_1 /* OUT */ (i2s2w),
 	.i2sw_2 /* OUT */ (i2s3w),
 	.i2sw_3 /* OUT */ (i2s4w),
-	.i2sr_0 /* OUT */ (i2s1r),
+	.i2sr_0 /* OUT */ (i2s1r),				// internal I2S read strobes.
 	.i2sr_1 /* OUT */ (i2s2r),
 	.i2sr_2 /* OUT */ (i2s3r),
-	.dr_0_out /* BUS */ (ts_local_pe_183_a0_out),
+	.dr_0_out /* BUS */ (ts_local_pe_183_a0_out),	// I/O read data (busses split, and OE added, for Verilog translation).
 	.dr_0_oe /* BUS */ (ts_local_pe_183_a0_oe),
 	.dr_0_in /* BUS */ (ts_local_pe_183_a0_in),
 	.dr_1_out /* BUS */ (ts_local_pe_184_a0_out),
@@ -2360,7 +2360,7 @@ j_dsp dsp_inst
 	.dr_15_out /* BUS */ (ts_local_pe_198_a0_out),
 	.dr_15_oe /* BUS */ (ts_local_pe_198_a0_oe),
 	.dr_15_in /* BUS */ (ts_local_pe_198_a0_in),
-	.gpu_dout_o_0_out /* BUS */ (ts_local_pe_167_a0_out),
+	.gpu_dout_o_0_out /* BUS */ (ts_local_pe_167_a0_out),	// read data from internal peripherals (GE - renamed).
 	.gpu_dout_o_0_oe /* BUS */ (ts_local_pe_167_a0_oe),
 	.gpu_dout_o_0_in /* BUS */ (ts_local_pe_167_a0_in),
 	.gpu_dout_o_1_out /* BUS */ (ts_local_pe_168_a0_out),

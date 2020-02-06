@@ -93,8 +93,11 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_acc_l[22:7];
 //assign aud_16_r = r_acc_r[22:7];
 
-assign aud_16_l = r_aud_l;
-assign aud_16_r = r_aud_r;
+//assign aud_16_l = r_aud_l;
+//assign aud_16_r = r_aud_r;
+
+assign aud_16_l = w_aud_l;
+assign aud_16_r = w_aud_r;
 
 
 reg [2:0] clkdiv;
@@ -141,8 +144,11 @@ always @(posedge sys_clk) begin
 end
 
 
-assign vid_ce = xvclk;
 //assign vid_ce = pix_ce;
+assign vid_ce = xvclk;
+//assign vid_cd = j_xvclkdiv;
+
+
 
 
 // `ifndef verilator3
@@ -1856,6 +1862,10 @@ wire fx68k_berr_n = 1'b1;	// The real Jag has BERR_N on the 68K tied High.
 
 (*keep*) wire [15:0] fx68k_din = j68_rd_data;	// VECTORED Interrupt seems to be working now that fx68k_fc is routed to Tom.
 
+//(*keep*) wire [15:0] fx68k_din = (fx68k_fc==7) ? j68_rd_data :
+//											(j68_address>=24'h050236 && j68_address<=24'h050237) ? 16'h6000 :	// Patch the BEQ instruction to a BRA, for the JagCD 0x12345678 checksum.
+//																												  j68_rd_data;	// VECTORED Interrupt seems to be working now that fx68k_fc is routed to Tom.
+
 (*keep*) wire [15:0] fx68k_dout;
 
 (*keep*) wire [23:1] fx68k_address;
@@ -2514,10 +2524,10 @@ reg					ewen = 1'b0;
 
 reg [2:0]		status = `EE_IDLE;
 
-reg [3:0]		cnt = 4'd0;			// Bit counter
-reg [8:0] 	ir = 9'd0;			// Instruction Register
-reg [15:0]	dr = 16'd0;			// Data Register
-reg 				r_dout = 1'b0;	// Data Out
+reg [3:0]	cnt = 4'd0;		// Bit counter
+reg [8:0] 	ir = 9'd0;		// Instruction Register
+reg [15:0]	dr = 16'd0;		// Data Register
+reg 			r_dout = 1'b0;	// Data Out
 
 assign dout = r_dout;
 

@@ -104,11 +104,11 @@ module emu
 	//High latency DDR3 RAM interface
 	//Use for non-critical time purposes
 	output        DDRAM_CLK,
-	input         DDRAM_BUSY,
+	//input         DDRAM_BUSY,
 	output  [7:0] DDRAM_BURSTCNT,
 	output [28:0] DDRAM_ADDR,
 	input  [63:0] DDRAM_DOUT,
-	input         DDRAM_DOUT_READY,
+	//input         DDRAM_DOUT_READY,
 	output        DDRAM_RD,
 	output [63:0] DDRAM_DIN,
 	output  [7:0] DDRAM_BE,
@@ -130,6 +130,9 @@ module emu
 	input	  [6:0] USER_IN,
 	output  [6:0] USER_OUT
 );
+
+wire DDRAM_BUSY = 1'b0;
+
 
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
@@ -174,7 +177,7 @@ assign VIDEO_ARY = status[1] ? 8'd9  : 8'd3;
 localparam CONF_STR = {
 	"Jaguar;;",
 	"-;",
-	"F,JAG,J64,ROM,BIN;",
+	"F,JAGJ64ROMBIN;",
 	"-;",
 	"O4,Region Setting,PAL,NTSC;",
 	"O2,Cart Checksum Patch,Off,On;",
@@ -624,15 +627,26 @@ wire [0:3] dram_lw_n;
 wire [0:63] dram_d;
 
 //wire [0:63] dram_q = DDRAM_DOUT;
+
+//wire [0:63] dram_q = /*(!cart_ce_n) ? {sdram_dout,sdram_dout,sdram_dout,sdram_dout} :*/
+//							{DDRAM_DOUT[0], DDRAM_DOUT[1], DDRAM_DOUT[2], DDRAM_DOUT[3], DDRAM_DOUT[4], DDRAM_DOUT[5], DDRAM_DOUT[6], DDRAM_DOUT[7],
+//							 DDRAM_DOUT[8], DDRAM_DOUT[9], DDRAM_DOUT[10], DDRAM_DOUT[11], DDRAM_DOUT[12], DDRAM_DOUT[13], DDRAM_DOUT[14], DDRAM_DOUT[15],
+//							 DDRAM_DOUT[16], DDRAM_DOUT[17], DDRAM_DOUT[18], DDRAM_DOUT[19], DDRAM_DOUT[20], DDRAM_DOUT[21], DDRAM_DOUT[22], DDRAM_DOUT[23],
+//							 DDRAM_DOUT[24], DDRAM_DOUT[25], DDRAM_DOUT[26], DDRAM_DOUT[27], DDRAM_DOUT[28], DDRAM_DOUT[29], DDRAM_DOUT[30], DDRAM_DOUT[31],
+//							 DDRAM_DOUT[32], DDRAM_DOUT[33], DDRAM_DOUT[34], DDRAM_DOUT[35], DDRAM_DOUT[36], DDRAM_DOUT[37], DDRAM_DOUT[38], DDRAM_DOUT[39],
+//							 DDRAM_DOUT[40], DDRAM_DOUT[41], DDRAM_DOUT[42], DDRAM_DOUT[43], DDRAM_DOUT[44], DDRAM_DOUT[45], DDRAM_DOUT[46], DDRAM_DOUT[47],
+//							 DDRAM_DOUT[48], DDRAM_DOUT[49], DDRAM_DOUT[50], DDRAM_DOUT[51], DDRAM_DOUT[52], DDRAM_DOUT[53], DDRAM_DOUT[54], DDRAM_DOUT[55],
+//							 DDRAM_DOUT[56], DDRAM_DOUT[57], DDRAM_DOUT[58], DDRAM_DOUT[59], DDRAM_DOUT[60], DDRAM_DOUT[61], DDRAM_DOUT[62], DDRAM_DOUT[63]};
+
 wire [0:63] dram_q = /*(!cart_ce_n) ? {sdram_dout,sdram_dout,sdram_dout,sdram_dout} :*/
-							{DDRAM_DOUT[0], DDRAM_DOUT[1], DDRAM_DOUT[2], DDRAM_DOUT[3], DDRAM_DOUT[4], DDRAM_DOUT[5], DDRAM_DOUT[6], DDRAM_DOUT[7],
-							 DDRAM_DOUT[8], DDRAM_DOUT[9], DDRAM_DOUT[10], DDRAM_DOUT[11], DDRAM_DOUT[12], DDRAM_DOUT[13], DDRAM_DOUT[14], DDRAM_DOUT[15],
-							 DDRAM_DOUT[16], DDRAM_DOUT[17], DDRAM_DOUT[18], DDRAM_DOUT[19], DDRAM_DOUT[20], DDRAM_DOUT[21], DDRAM_DOUT[22], DDRAM_DOUT[23],
-							 DDRAM_DOUT[24], DDRAM_DOUT[25], DDRAM_DOUT[26], DDRAM_DOUT[27], DDRAM_DOUT[28], DDRAM_DOUT[29], DDRAM_DOUT[30], DDRAM_DOUT[31],
-							 DDRAM_DOUT[32], DDRAM_DOUT[33], DDRAM_DOUT[34], DDRAM_DOUT[35], DDRAM_DOUT[36], DDRAM_DOUT[37], DDRAM_DOUT[38], DDRAM_DOUT[39],
-							 DDRAM_DOUT[40], DDRAM_DOUT[41], DDRAM_DOUT[42], DDRAM_DOUT[43], DDRAM_DOUT[44], DDRAM_DOUT[45], DDRAM_DOUT[46], DDRAM_DOUT[47],
-							 DDRAM_DOUT[48], DDRAM_DOUT[49], DDRAM_DOUT[50], DDRAM_DOUT[51], DDRAM_DOUT[52], DDRAM_DOUT[53], DDRAM_DOUT[54], DDRAM_DOUT[55],
-							 DDRAM_DOUT[56], DDRAM_DOUT[57], DDRAM_DOUT[58], DDRAM_DOUT[59], DDRAM_DOUT[60], DDRAM_DOUT[61], DDRAM_DOUT[62], DDRAM_DOUT[63]};
+							{ch1_dout[0], ch1_dout[1], ch1_dout[2], ch1_dout[3], ch1_dout[4], ch1_dout[5], ch1_dout[6], ch1_dout[7],
+							 ch1_dout[8], ch1_dout[9], ch1_dout[10], ch1_dout[11], ch1_dout[12], ch1_dout[13], ch1_dout[14], ch1_dout[15],
+							 ch1_dout[16], ch1_dout[17], ch1_dout[18], ch1_dout[19], ch1_dout[20], ch1_dout[21], ch1_dout[22], ch1_dout[23],
+							 ch1_dout[24], ch1_dout[25], ch1_dout[26], ch1_dout[27], ch1_dout[28], ch1_dout[29], ch1_dout[30], ch1_dout[31],
+							 ch1_dout[32], ch1_dout[33], ch1_dout[34], ch1_dout[35], ch1_dout[36], ch1_dout[37], ch1_dout[38], ch1_dout[39],
+							 ch1_dout[40], ch1_dout[41], ch1_dout[42], ch1_dout[43], ch1_dout[44], ch1_dout[45], ch1_dout[46], ch1_dout[47],
+							 ch1_dout[48], ch1_dout[49], ch1_dout[50], ch1_dout[51], ch1_dout[52], ch1_dout[53], ch1_dout[54], ch1_dout[55],
+							 ch1_dout[56], ch1_dout[57], ch1_dout[58], ch1_dout[59], ch1_dout[60], ch1_dout[61], ch1_dout[62], ch1_dout[63]};
 
 wire [0:3] dram_oe = (~dram_cas_n) ? ~dram_oe_n : 4'b0000;
 
@@ -659,11 +673,11 @@ assign DDRAM_ADDR = /*(loader_en)  ? {8'b0110000, loader_addr[23:3]} :	// */
 						                 {8'b0110000, cart_a[23:3]};		// DRAM address is using "cart_a" here (byte address, so three LSB bits are ignored!)
 																						// so the MSB bit will be set by the Jag core when reading that.
 
-assign DDRAM_RD = /*(loader_en) ? 1'b0 :*/
-										  DDR_RD_REQ;
+//assign DDRAM_RD = /*(loader_en) ? 1'b0 :*/
+//										  DDR_RD_REQ;
 
-assign DDRAM_WE = /*(loader_en) ? loader_wr :*/
-										  DDR_WR_REQ;
+//assign DDRAM_WE = /*(loader_en) ? loader_wr :*/
+//										  DDR_WR_REQ;
 
 // Byteswap...
 //
@@ -758,20 +772,30 @@ sdram sdram
 	.SDRAM_CLK( SDRAM_CLK ),	// clock for chip
 	
 	// Port 1.
-	.ch1_addr( {2'b00, ioctl_addr[24:1]} ),	// 16-bit WORD address!! [26:1]
-	.ch1_dout(  ),										// output [63:0]
-	.ch1_rnw( 1'b0 ),									// Write-only for cart loading.
-	.ch1_din( {ioctl_data[7:0], ioctl_data[15:8]} ),		// input [15:0]	- Data from HPS is BYTE swapped!
-	.ch1_req( ioctl_download & ioctl_wr & ioctl_index>0 ),	
-	.ch1_ready( rom_wrack ),
+//	.ch1_addr( {2'b00, ioctl_addr[24:1]} ),	// 16-bit WORD address!! [26:1]
+//	.ch1_dout(  ),										// output [63:0]
+//	.ch1_rnw( 1'b0 ),									// Write-only for cart loading.
+//	.ch1_be( 8'b11111111 ),							// Byte enable (bits [7:0]) for 64-bit burst writes. TODO
+//	.ch1_din( {ioctl_data[7:0], ioctl_data[15:8]} ),		// input [15:0]	- Data from HPS is BYTE swapped!
+//	.ch1_req( ioctl_download & ioctl_wr & ioctl_index>0 ),	
+//	.ch1_ready( rom_wrack ),
 	
 	// Port 2.
-	.ch2_addr( sdram_word_addr ),					// 16-bit WORD address!! [26:1]
-	.ch2_dout( sdram_dout ),						// output [31:0]
-	.ch2_rnw( 1'b1 ),									// Read-only for cart ROM reading!
-	.ch2_din( 16'h0000 ),							// input [15:0]
-	.ch2_req( !ioctl_download & sdram_rd_trig ),
-	.ch2_ready( sdram_ready ),
+//	.ch2_addr( sdram_word_addr ),					// 16-bit WORD address!! [26:1]
+//	.ch2_dout( sdram_dout ),						// output [31:0]
+//	.ch2_rnw( 1'b1 ),									// Read-only for cart ROM reading!
+//	.ch2_din( 16'h0000 ),							// input [15:0]
+//	.ch2_req( !ioctl_download & sdram_rd_trig ),
+//	.ch2_ready( sdram_ready ),
+	
+	// Port 1.
+	.ch1_addr( {4'b0000, cart_a[22:3], 2'b00} ),	// 64-bit WORD address. Burst Length=4. On 64-bit boundaries when the lower two bits are b00!!
+	.ch1_dout( ch1_dout ),								// output [63:0]
+	.ch1_rnw( ch1_rnw ),
+	.ch1_be( DDRAM_BE ),									// Byte enable (bits [7:0]) for 64-bit burst writes. TODO!
+	.ch1_din( DDRAM_DIN ),								// input [63:0]
+	.ch1_req( DDR_RD_REQ | DDR_WR_REQ ),	
+	.ch1_ready( DDRAM_DOUT_READY ),
 	
 	// Port 3.
 	//.ch3_addr( {4'b0000, cart_a[22:1]} ),	// 16-bit WORD address!! [26:1]
@@ -784,11 +808,16 @@ sdram sdram
 	//.ch3_ready( sdram_ready )
 );
 
-(*keep*) wire rom_wrack;
+(*keep*) wire ch1_rnw = ! ({dram_uw_n, dram_lw_n} != 8'b11111111);
+
+(*keep*) wire [63:0] ch1_dout;
+
+(*keep*) wire rom_wrack = 1'b1;
 
 
 // Cart ROM reading...
-(*keep*) wire sdram_ready;
+(*keep*) wire sdram_ready = 1'b1;	// TESTING !!
+
 (*keep*) wire [31:0] sdram_dout;
 
 wire [31:0] cart_q_8bit = (!cart_a[0]) ? {sdram_dout[15:8], sdram_dout[15:8]} :
@@ -811,7 +840,8 @@ wire [31:0] cart_q_32bit = {sdram_dout[15:0], sdram_dout[31:16]};
 wire [26:1] sdram_word_addr = {4'b0000, cart_a[22:1]};
 
 //assign cart_q = cart_q_16bit;
-assign cart_q = (cart_a>=24'h800400 && cart_a<=24'h800403) ? 16'h0202 : SDRAM_DQ;
+assign cart_q = (cart_a>=24'h800400 && cart_a<=24'h800403) ? 16'h0202 :	// Patch the cart header to force 16-bit ROMWIDTH.
+																				 SDRAM_DQ;
 
 
 reg cart_ce_n_1 = 1;
@@ -854,7 +884,9 @@ end
 `define SS_WR_5	4'b1101
 
 
-wire ram_rdy = DDRAM_DOUT_READY || (mem_cyc == `SS_END);
+//wire ram_rdy = DDRAM_DOUT_READY || (mem_cyc == `SS_END);
+//wire ram_rdy = DDRAM_DOUT_READY;
+wire ram_rdy = (mem_cyc == `SS_END);
 
 reg	[0:63]	r_dram_d;
 
@@ -877,38 +909,36 @@ else begin
 		case (mem_cyc)
 			`SS_IDLE: begin
 				//if (fdram && (dram_oe_n != 4'b1111)) begin
-				if (startcas && (dram_oe_n != 4'b1111)) begin
-					//mem_cyc <= `SS_RD_1;
+				//if (startcas && (dram_oe_n != 4'b1111)) begin
+				if (!dram_cas_n && (dram_oe_n != 4'b1111)) begin
 					DDR_RD_REQ <= 1'b1;
-					if (!DDRAM_BUSY) mem_cyc <= `SS_RD_2;
+					mem_cyc <= `SS_RD_2;
 				end
 				//else if (fdram && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
-				else if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
+				//else if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
+				else if (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
 					DDRAM_BE_REG <= ~{ dram_uw_n[3], dram_lw_n[3], 
 											 dram_uw_n[2], dram_lw_n[2], 
 											 dram_uw_n[1], dram_lw_n[1], 
 											 dram_uw_n[0], dram_lw_n[0] };
 					r_dram_d <= dram_d;	
-					//mem_cyc <= `SS_WR_2;
+					mem_cyc <= `SS_WR_2;
 					DDR_WR_REQ <= 1'b1;
-					if (!DDRAM_BUSY) mem_cyc <= `SS_END;
+					mem_cyc <= `SS_WR_2;
 				end
 			end
-			//`SS_RD_1: begin
-				//DDR_RD_REQ <= 1'b1;
-				//if (!DDRAM_BUSY) mem_cyc <= `SS_RD_2;
-			//end
-			`SS_RD_2: if (DDRAM_DOUT_READY) begin
-				mem_cyc <= `SS_END;
+
+			`SS_RD_2: begin
+				if (DDRAM_DOUT_READY) mem_cyc <= `SS_END;
 			end
-			//`SS_WR_2: begin
-				//DDR_WR_REQ <= 1'b1;
-				//if (!DDRAM_BUSY) mem_cyc <= `SS_END;
-			//end
+			
+			`SS_WR_2: begin
+				if (DDRAM_DOUT_READY) mem_cyc <= `SS_END;
+			end
 			
 			default:		// This is essentially the `SS_END mem_cyc state. (ElectronAsh).
-				//if (dram_cas_n) begin
-				if (!startcas) begin
+				if (dram_cas_n) begin
+				//if (!startcas) begin
 					mem_cyc <= `SS_IDLE;
 				end else begin
 					mem_cyc <= `SS_END;

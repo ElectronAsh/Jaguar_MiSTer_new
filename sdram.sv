@@ -37,9 +37,10 @@ module sdram
 
 	input      [26:1] ch1_addr,    // 25 bit address for 8bit mode. addr[0] = 0 for 16bit mode for correct operations.
 	output reg [63:0] ch1_dout,    // data output to cpu
-	input      [15:0] ch1_din,     // data input from cpu
+	input      [63:0] ch1_din,     // data input from cpu
 	input             ch1_req,     // request
 	input             ch1_rnw,     // 1 - read, 0 - write
+	input 	  [7:0]  ch1_be,		 // Byte enable (bits) for burst writes. TODO
 	output reg        ch1_ready,
 	
 	input      [26:1] ch2_addr,    // 25 bit address for 8bit mode. addr[0] = 0 for 16bit mode for correct operations.
@@ -54,8 +55,6 @@ module sdram
 	input      [15:0] ch3_din,
 	input             ch3_req,
 	input             ch3_rnw,
-	input					ch3_udqm_n,
-	input					ch3_ldqm_n,
 	output reg        ch3_ready
 );
 
@@ -68,16 +67,17 @@ assign {SDRAM_DQMH,SDRAM_DQML} = SDRAM_A[12:11];
 
 
 // Burst length = 4
-localparam BURST_LENGTH        = 1;
+localparam BURST_LENGTH        = 4;
 localparam BURST_CODE          = (BURST_LENGTH == 8) ? 3'b011 : (BURST_LENGTH == 4) ? 3'b010 : (BURST_LENGTH == 2) ? 3'b001 : 3'b000;  // 000=1, 001=2, 010=4, 011=8
 localparam ACCESS_TYPE         = 1'b0;     // 0=sequential, 1=interleaved
 localparam CAS_LATENCY         = 3'd2;     // 2 for < 100MHz, 3 for >100MHz
 localparam OP_MODE             = 2'b00;    // only 00 (standard operation) allowed
-localparam NO_WRITE_BURST      = 1'b1;     // 0=write burst enabled, 1=only single access write
+localparam NO_WRITE_BURST      = 1'b0;     // 0=write burst enabled, 1=only single access write
 localparam MODE                = {3'b000, NO_WRITE_BURST, OP_MODE, CAS_LATENCY, ACCESS_TYPE, BURST_CODE};
 
 localparam sdram_startup_cycles= 14'd12100;// 100us, plus a little more, @ 100MHz
 localparam cycles_per_refresh  = 14'd780;  // (64000*100)/8192-1 Calc'd as (64ms @ 100MHz)/8192 rose
+//localparam cycles_per_refresh  = 14'd608;  // (64000*78)/8192-1 Calc'd as (64ms @ 78MHz)/8192 rose
 localparam startup_refresh_max = 14'b11111111111111;
 
 // SDRAM commands
@@ -104,14 +104,15 @@ localparam STATE_IDLE_3  = 7;
 localparam STATE_IDLE_4  = 8;
 localparam STATE_IDLE_5  = 9;
 localparam STATE_RFSH    = 10;
-
+localparam STATE_RW3     = 11;
+localparam STATE_RW4     = 12;
 
 always @(posedge clk) begin
 	(*noprune*) reg [CAS_LATENCY+BURST_LENGTH:0] data_ready_delay1, data_ready_delay2, data_ready_delay3;
 
 	reg        saved_wr;
 	reg [12:0] cas_addr;
-	reg [31:0] saved_data;
+	reg [63:0] saved_data;
 	reg [15:0] dq_reg;
 	reg  [3:0] state = STATE_STARTUP;
 
@@ -133,13 +134,15 @@ always @(posedge clk) begin
 	data_ready_delay3 <= data_ready_delay3>>1;
 
 	dq_reg <= SDRAM_DQ;
-
-	if(data_ready_delay1[3]) ch1_dout[15:00] <= dq_reg;
-	if(data_ready_delay1[2]) ch1_dout[31:16] <= dq_reg;
-	if(data_ready_delay1[1]) ch1_dout[47:32] <= dq_reg;
-	if(data_ready_delay1[0]) ch1_dout[63:48] <= dq_reg;
+	
+	// MSB Byte is read/written FIRST now. ElectronAsh.
+	if(data_ready_delay1[3]) ch1_dout[63:48] <= dq_reg;
+	if(data_ready_delay1[2]) ch1_dout[47:32] <= dq_reg;
+	if(data_ready_delay1[1]) ch1_dout[31:16] <= dq_reg;
+	if(data_ready_delay1[0]) ch1_dout[15:00] <= dq_reg;
 	if(data_ready_delay1[1]) ch1_ready <= 1;
 
+	
 	if(data_ready_delay2[3]) ch2_dout[15:00] <= dq_reg;
 	if(data_ready_delay2[2]) ch2_dout[31:16] <= dq_reg;
 	if(data_ready_delay2[2]) ch2_ready <= 1;
@@ -237,7 +240,7 @@ always @(posedge clk) begin
 				state      <= STATE_WAIT;
 			end
 			else if(ch3_rq) begin
-				{cas_addr[12:9],SDRAM_BA,SDRAM_A,cas_addr[8:0]} <= {ch3_udqm_n, ch3_ldqm_n, ch3_rnw, ch3_addr[25:1]};
+				{cas_addr[12:9],SDRAM_BA,SDRAM_A,cas_addr[8:0]} <= {2'b00, ch3_rnw, ch3_addr[25:1]};
 				chip       <= ch3_addr[26];
 				saved_data <= ch3_din;
 				saved_wr   <= ~ch3_rnw;
@@ -248,19 +251,29 @@ always @(posedge clk) begin
 			end
 		end
 
-		STATE_WAIT: state <= STATE_RW1;
+		STATE_WAIT: state <= STATE_RW1;	// Wait state (NOP) for CL=2.
+													// CL=3 would need an extra wait state here, I think? ElectronAsh.
+		
 		STATE_RW1: begin
 			SDRAM_A <= cas_addr;
 			if(saved_wr) begin
 				command  <= CMD_WRITE;
-				SDRAM_DQ <= saved_data[15:0];
-				if(!ch) begin
-					ch1_ready  <= 1;
-					state <= STATE_IDLE_2;
+				if (ch==0) begin
+					SDRAM_DQ <= saved_data[63:48];
+					SDRAM_A[12:11] <= ~ch1_be[7:6];
 				end
 				else begin
-					state <= STATE_RW2;
+					SDRAM_DQ <= saved_data[15:0];
+					SDRAM_A[12:11] <= 2'b00;
 				end
+				
+				//if(ch==0) begin
+					//ch1_ready  <= 1;
+					//state <= STATE_IDLE_2;
+				//end
+				//else begin
+					state <= STATE_RW2;
+				//end
 			end
 			else begin
 				command <= CMD_READ;
@@ -272,11 +285,17 @@ always @(posedge clk) begin
 		end
 
 		STATE_RW2: begin
-			if(ch == 1) begin
+			if (ch == 0) begin
+				state       <= STATE_RW3;
+				command     <= CMD_NOP;
+				SDRAM_DQ    <= saved_data[47:32];
+				SDRAM_A[12:11] <= ~ch1_be[5:4];
+			end
+			else if(ch == 1) begin
 				state       <= STATE_IDLE_2;
 				SDRAM_A[10] <= 1;
 				SDRAM_A[0]  <= 1;
-				command     <= CMD_WRITE;
+				//command     <= CMD_WRITE;
 				SDRAM_DQ    <= saved_data[31:16];
 				ch2_ready   <= 1;
 			end
@@ -284,10 +303,26 @@ always @(posedge clk) begin
 				state       <= STATE_IDLE_2;
 				SDRAM_A[10] <= 1;
 				SDRAM_A[1]  <= 1;
-				command     <= CMD_WRITE;
+				//command     <= CMD_WRITE;
 				SDRAM_DQ    <= saved_data[31:16];
 				ch3_ready   <= 1;
 			end
+		end
+		
+		STATE_RW3: begin
+			state       <= STATE_RW4;
+			command     <= CMD_NOP;
+			SDRAM_DQ    <= saved_data[31:16];
+			SDRAM_A[12:11] <= ~ch1_be[3:2];
+		end
+		
+		STATE_RW4: begin
+			state       <= STATE_IDLE_3;
+			command     <= CMD_NOP;
+			SDRAM_DQ    <= saved_data[15:0];
+			SDRAM_A[12:11] <= ~ch1_be[1:0];
+			SDRAM_A[10] <= 1;	// Auto-Precharge at end of burst! (not sure if this is needed?) ElectronAsh.
+			ch1_ready   <= 1;
 		end
 	endcase
 

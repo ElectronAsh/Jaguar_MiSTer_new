@@ -715,10 +715,20 @@ assign iospd_1 = iospd_1_obuf;
 assign bs_2 = bs_2_obuf;
 assign bs_3 = bs_3_obuf;
 assign cpu32 = cpu32_obuf;
-assign refrate_0 = refrate_0_obuf;
-assign refrate_1 = refrate_1_obuf;
-assign refrate_2 = refrate_2_obuf;
-assign refrate_3 = refrate_3_obuf;
+
+//assign refrate_0 = refrate_0_obuf;
+//assign refrate_1 = refrate_1_obuf;
+//assign refrate_2 = refrate_2_obuf;
+//assign refrate_3 = refrate_3_obuf;
+
+// Inhibit the old DRAM refresh pulses.
+// Will help a bit with debugging via SignalTap, and might also help certain games to run a bit faster. ElectronAsh.
+//
+assign refrate_0 = 1'b0;
+assign refrate_1 = 1'b0;
+assign refrate_2 = 1'b0;
+assign refrate_3 = 1'b0;
+
 assign nocpu = nocpu_obuf;
 assign abs_2 = abs_2_obuf;
 assign abs_3 = abs_3_obuf;
