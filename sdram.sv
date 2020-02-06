@@ -321,7 +321,7 @@ always @(posedge clk) begin
 			command     <= CMD_NOP;
 			SDRAM_DQ    <= saved_data[15:0];
 			SDRAM_A[12:11] <= ~ch1_be[1:0];
-			SDRAM_A[10] <= 1;	// Auto-Precharge at end of burst! (not sure if this is needed?) ElectronAsh.
+			//SDRAM_A[10] <= 1;	// Auto-Precharge at end of burst! (not sure if this is needed?) ElectronAsh.
 			ch1_ready   <= 1;
 		end
 	endcase

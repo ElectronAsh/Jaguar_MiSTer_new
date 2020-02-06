@@ -1856,7 +1856,8 @@ wire fx68k_vpa_n = 1'b1;	// The real Jag has VPA_N on the 68K tied High.
 									// Which means it's NOT using auto-vector for the interrupt. ElectronAsh.
 
 wire fx68k_berr_n = 1'b1;	// The real Jag has BERR_N on the 68K tied High.
-												
+
+																							// NOTE: Old logic for j68!
 //(*keep*) wire [15:0] fx68k_din = (fx68k_fc==7) ? (16'h0100>>2) :	// Point to vector 0x100 during the Interrupt Acknowledge cycle! (value has to be shifted right by two bits!).
 //																   j68_rd_data;		// Else, route the normal bus data from the chipset.
 
