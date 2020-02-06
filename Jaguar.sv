@@ -270,7 +270,6 @@ end
 else begin
 	old_download <= ioctl_download;
 	
-	loader_reset <= 0;// Default!
 	loader_wr <= 0;	// Default!
 	
 	if (~old_download && ioctl_download && ioctl_index) begin
@@ -278,7 +277,6 @@ else begin
 																			// (The ROM actually gets written at 0x30800000 in DDR, which is done when load_addr gets assigned to DDRAM_ADDR below).
 		loader_en <= 1;
 		status_reg <= 0;
-		loader_reset <= 1;
 		ioctl_wait <= 0;
 		timeout <= 3000000;
 		cnt <= 0;
@@ -320,59 +318,8 @@ wire reset = RESET;
 `endif
 
 
-/*
-wire [22:1] rom_addr;
-wire [15:0] rom_data;
-wire rom_rd, rom_rdack;
-
-ddram ddram_inst
-(
-	.DDRAM_CLK(DDRAM_CLK) ,	// input  DDRAM_CLK
-	.DDRAM_BUSY(DDRAM_BUSY) ,	// input  DDRAM_BUSY
-	.DDRAM_BURSTCNT(DDRAM_BURSTCNT) ,	// output [7:0] DDRAM_BURSTCNT
-	.DDRAM_ADDR(DDRAM_ADDR) ,	// output [28:0] DDRAM_ADDR
-	.DDRAM_DOUT(DDRAM_DOUT) ,	// input [63:0] DDRAM_DOUT
-	.DDRAM_DOUT_READY(DDRAM_DOUT_READY) ,	// input  DDRAM_DOUT_READY
-	.DDRAM_RD(DDRAM_RD) ,	// output  DDRAM_RD
-	.DDRAM_DIN(DDRAM_DIN) ,	// output [63:0] DDRAM_DIN
-	.DDRAM_BE(DDRAM_BE) ,	// output [7:0] DDRAM_BE
-	.DDRAM_WE(DDRAM_WE) ,	// output  DDRAM_WE
-
-   .wraddr(ioctl_addr),		// input [27:0] wraddr
-   .din({ioctl_data[7:0],ioctl_data[15:8]}),	// input [15:0] din
-   .we_req(rom_wr),			// input  we_req
-   .we_ack(rom_wrack),		// output  we_ack
-
-   .rdaddr(rom_addr),		// input [27:1] rdaddr
-   .dout(rom_data),			// output [15:0] dout
-   .rd_req(rom_rd),			// input  rd_req
-   .rd_ack(rom_rdack) 		// output  rd_ack
-);
-
-
-reg  rom_wr;
-wire rom_wrack;
-
-always @(posedge clk_sys) begin
-	reg old_download, old_reset;
-	old_download <= ioctl_download;
-	old_reset <= reset;
-
-	if(~old_reset && reset) ioctl_wait <= 0;
-	if(~old_download && ioctl_download) rom_wr <= 0;
-	else begin
-		if(ioctl_wr) begin
-			ioctl_wait <= 1;
-			rom_wr <= ~rom_wr;
-		end else if(ioctl_wait && (rom_wr == rom_wrack)) begin
-			ioctl_wait <= 0;
-		end
-	end
-end
-*/
-
-//wire xresetl = !(reset | loader_reset | loader_en);
-wire xresetl = !(reset | ioctl_download);
+//wire xresetl = !(reset | loader_en);		// Forces reset only when ioctl_index>0, for cart load.
+wire xresetl = !(reset | ioctl_download);	// Forces reset on BIOS (boot.rom) load (ioctl_index==0), AND cart ROM.
 
 
 /* verilator lint_off PINMISSING */
@@ -392,40 +339,20 @@ jaguar jaguar_inst
 	.dram_q( dram_q ) ,			// input [0:63] dram_q
 	.dram_oe( dram_oe ) ,		// input [0:3] dram_oe
 	
+	.fdram( fdram ) ,				// output  fdram
 	.ram_rdy( ram_rdy ) ,		// input  ram_rdy
-/*
-	.DBG_CPU_RDEN( DBG_CPU_RDEN ) ,	// output  DBG_CPU_RDEN
-	.DBG_CPU_WREN( DBG_CPU_WREN ) ,	// output  DBG_CPU_WREN
-	.DBG_CPU_DTACK( DBG_CPU_DTACK ) ,// output  DBG_CPU_DTACK
-	.DBG_CPU_BENA( DBG_CPU_BENA ) ,	// output [1:0] DBG_CPU_BENA
-	.DBG_CPU_ADDR( DBG_CPU_ADDR ) ,	// output [31:0] DBG_CPU_ADDR
-	.DBG_CPU_RDATA( DBG_CPU_RDATA ) ,// output [15:0] DBG_CPU_RDATA
-	.DBG_CPU_WDATA( DBG_CPU_WDATA ) ,// output [15:0] DBG_CPU_WDATA
-	.DBG_REG_ADDR( DBG_REG_ADDR ) ,	// output [3:0] DBG_REG_ADDR
-	.DBG_REG_WREN( DBG_REG_WREN ) ,	// output [3:0] DBG_REG_WREN
-	.DBG_REG_DATA( DBG_REG_DATA ) ,	// output [15:0] DBG_REG_DATA
-	.DBG_SR_REG( DBG_SR_REG ) ,		// output [15:0] DBG_SR_REG
-	.DBG_PC_REG( DBG_PC_REG ) ,		// output [31:0] DBG_PC_REG
-	.DBG_USP_REG( DBG_USP_REG ) ,		// output [31:0] DBG_USP_REG
-	.DBG_SSP_REG( DBG_SSP_REG ) ,		// output [31:0] DBG_SSP_REG
-	.DBG_CYCLES( DBG_CYCLES ) ,		// output [31:0] DBG_CYCLES
-	.DBG_IFETCH( DBG_IFETCH ) ,		// output  DBG_IFETCH
-*/
-	.abus_out( abus_out ) ,				// output [23:0] Main Address bus for Tom/Jerry/68K/BIOS/CART.
 
-	//.os_rom_a( os_rom_a ) ,			// output [16:0] os_rom_a
+	.abus_out( abus_out ) ,			// output [23:0] Main Address bus for Tom/Jerry/68K/BIOS/CART.
+
 	.os_rom_ce_n( os_rom_ce_n ) ,	// output  os_rom_ce_n
 	.os_rom_oe_n( os_rom_oe_n ) ,	// output  os_rom_oe_n
 	.os_rom_q( os_rom_q ) ,			// input [7:0] os_rom_q
 	.os_rom_oe( os_rom_oe ) ,		// input  os_rom_oe
 	
-	//.cart_a( cart_a ) ,			// output [23:0] cart_a
 	.cart_ce_n( cart_ce_n ) ,	// output  cart_ce_n
 	.cart_oe_n( cart_oe_n ) ,	// output [1:0] cart_oe_n
 	.cart_q( cart_q ) ,			// input [31:0] cart_q
 	.cart_oe( cart_oe ) ,		// input [1:0] cart_oe
-	
-	.fdram( fdram ) ,			// output  fdram
 	
 	.vga_bl( vga_bl ) ,		// output  vga_bl
 	.vga_vs_n( vga_vs_n ) ,	// output  vga_vs_n
@@ -472,23 +399,6 @@ wire dtack_n_out;
 wire startcas;
 
 /* verilator lint_on PINMISSING */
-
-//wire DBG_CPU_RDEN/*synthesis keep*/;
-//wire DBG_CPU_WREN/*synthesis keep*/;
-//wire DBG_CPU_DTACK/*synthesis keep*/;
-//wire [1:0] DBG_CPU_BENA/*synthesis keep*/;
-//wire [31:0] DBG_CPU_ADDR/*synthesis keep*/;
-//wire [15:0] DBG_CPU_RDATA/*synthesis keep*/;
-//wire [15:0] DBG_CPU_WDATA/*synthesis keep*/;
-//wire [3:0] DBG_REG_ADDR/*synthesis keep*/;
-//wire [3:0] DBG_REG_WREN/*synthesis keep*/;
-//wire [15:0] DBG_REG_DATA/*synthesis keep*/;
-//wire [15:0] DBG_SR_REG/*synthesis keep*/;
-//wire [31:0] DBG_PC_REG/*synthesis keep*/;
-//wire [31:0] DBG_USP_REG/*synthesis keep*/;
-//wire [31:0] DBG_SSP_REG/*synthesis keep*/;
-//wire [31:0] DBG_CYCLES/*synthesis keep*/;
-//wire DBG_IFETCH/*synthesis keep*/;
 
 wire fdram;
 
@@ -617,11 +527,9 @@ assign DDRAM_BURSTCNT = 1;
 
 // Jag DRAM is now mapped at 0x30000000 in DDR on MiSTer, hence the setting of the upper bits here.
 // The cart ROM is loaded at 0x30800000, as the Jag normally expects the cart to be mapped at offset 0x800000.
-
 assign DDRAM_ADDR = (loader_en)  ? {8'b0110000, loader_addr[23:3]} :
 						                 {8'b0110000, abus_out[23:3]};	// DRAM address is using "abus_out" here (byte address, so three LSB bits are ignored!)
-																						// so the MSB bit will be set by the Jag core when reading that.
-
+																						// so the MSB bit [23] will be set by the Jag core when reading the cart at 0x800000. TODO - confirm this is always the case!
 assign DDRAM_RD = (loader_en) ? 1'b0 : cart_rd_trig;
 
 assign DDRAM_WE = (loader_en) ? loader_wr : 1'b0;
@@ -634,7 +542,7 @@ wire [15:0] loader_data_bs = {loader_data[7:0], loader_data[15:8]};
 
 assign DDRAM_DIN = {loader_data_bs, loader_data_bs, loader_data_bs, loader_data_bs};
 
-assign DDRAM_BE = (loader_en) ? loader_be : 8'b11111111;
+assign DDRAM_BE = (loader_en) ? loader_be : 8'b11111111;	// IIRC, the DDR controller needs the byte enables to be High during READS! ElectronAsh.
 
 (*keep*) wire rom_wrack = 1'b1;	// TESTING!!
 
@@ -823,8 +731,7 @@ sdram sdram
 
 //(*keep*) wire sdram_ready;
 //(*keep*) wire [31:0] sdram_dout;
-
-wire [26:1] sdram_word_addr = {4'b0000, abus_out[22:1]};
+//wire [26:1] sdram_word_addr = {4'b0000, abus_out[22:1]};
 
 (*keep*) wire ch1_rnw = ! ({dram_uw_n, dram_lw_n} != 8'b11111111);
 
@@ -835,53 +742,52 @@ wire [26:1] sdram_word_addr = {4'b0000, abus_out[22:1]};
 `define RDY_WAIT	4'b0001
 `define RAM_END	4'b1111
 
-//wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
-wire ram_rdy = (mem_cyc == `RAM_END);
-
-reg	[0:63]	r_dram_d;
-
-//reg ch1_rd_req;
-//reg ch1_wr_req;
-//reg [7:0] ch1_be;
-
-wire ch1_rd_req = (startcas && (dram_oe_n != 4'b1111)) && mem_cyc==`RAM_IDLE;
-wire ch1_wr_req = (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) && mem_cyc==`RAM_IDLE;
-
-wire [7:0] ch1_be = ~{ dram_uw_n[3], dram_lw_n[3], 
-							  dram_uw_n[2], dram_lw_n[2], 
-							  dram_uw_n[1], dram_lw_n[1], 
-							  dram_uw_n[0], dram_lw_n[0] };
-
+reg ch1_rd_req;
+reg ch1_wr_req;
+reg [07:00] ch1_be;
+reg [00:63] r_dram_d;
 
 (*noprune*) reg [3:0] mem_cyc;
+
+//wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
+wire ram_rdy = (mem_cyc == `RAM_END);
 
 always @(posedge clk_sys or posedge reset)
 if (reset) begin
 	mem_cyc <= `RAM_IDLE;
 end
 else begin
-	//ch1_rd_req <= 1'b0;
-	//ch1_wr_req <= 1'b0;
+	ch1_rd_req <= 1'b0;
+	ch1_wr_req <= 1'b0;
 	
-	r_dram_d <= dram_d;
-	
-		case (mem_cyc)
-			`RAM_IDLE: begin
-				if (ch1_rd_req) mem_cyc <= `RDY_WAIT;
-				if (ch1_wr_req) mem_cyc <= `RDY_WAIT;
+	case (mem_cyc)
+		`RAM_IDLE: begin
+			if (startcas && (dram_oe_n != 4'b1111)) begin
+				ch1_rd_req <= 1'b1;
+				mem_cyc <= `RDY_WAIT;
 			end
+		
+			if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111) begin
+				ch1_wr_req <= 1'b1;
+				r_dram_d <= dram_d;
+				ch1_be <= ~{dram_uw_n[3], dram_lw_n[3], 
+								dram_uw_n[2], dram_lw_n[2], 
+								dram_uw_n[1], dram_lw_n[1], 
+								dram_uw_n[0], dram_lw_n[0] };
+				mem_cyc <= `RDY_WAIT;	 
+			end
+		end
 
-			`RDY_WAIT: begin
-				if (ch1_ready) mem_cyc <= `RAM_END;
+		`RDY_WAIT: begin
+			if (ch1_ready) mem_cyc <= `RAM_END;
+		end
+		
+		`RAM_END:
+			//if (!startcas) begin
+			if (dram_cas_n) begin
+				mem_cyc <= `RAM_IDLE;
 			end
-			
-			`RAM_END:
-				//if (!startcas) begin
-				if (dram_cas_n) begin
-					mem_cyc <= `RAM_IDLE;
-				end
-		endcase
-	//end
+	endcase
 end
 
 

@@ -19,33 +19,14 @@ module jaguar
 	input	 [0:3]	dram_oe,
 
 	input				ram_rdy,
-/*	
-  output        DBG_CPU_RDEN,
-  output        DBG_CPU_WREN,
-  output        DBG_CPU_DTACK,
-  output  [1:0] DBG_CPU_BENA,
-  output [31:0] DBG_CPU_ADDR,
-  output [15:0] DBG_CPU_RDATA,
-  output [15:0] DBG_CPU_WDATA,
-  output  [3:0] DBG_REG_ADDR,
-  output  [3:0] DBG_REG_WREN,
-  output [15:0] DBG_REG_DATA,
-  output [15:0] DBG_SR_REG,
-  output [31:0] DBG_PC_REG,
-  output [31:0] DBG_USP_REG,
-  output [31:0] DBG_SSP_REG,
-  output [31:0] DBG_CYCLES,
-  output        DBG_IFETCH,
-*/
-	output	[23:0]	abus_out,
+	
+	output	[23:0]	abus_out,	// Main address bus output, used for OS ROM (BIOS), cart etc.
 
-	//output	[16:0]	os_rom_a,
 	output				os_rom_ce_n,
 	output				os_rom_oe_n,
 	input		[7:0]		os_rom_q,
 	input					os_rom_oe,
 
-	//output	[23:0]	cart_a,
 	output				cart_ce_n,
 	output	[1:0]		cart_oe_n,
 	input		[31:0]	cart_q,
@@ -1887,7 +1868,7 @@ assign vga_vs_n = !(vc < 2);
 assign vga_hs_n = (hc>=16'd80 && hc<=16'd180);
 assign vga_bl = 1'b0;
 
-(*keep*) wire my_h_de = (hc>=200) && (hc<=4680);
+(*keep*) wire my_h_de = (hc>=730) && (hc<=5000);
 (*keep*) wire my_v_de = (vc>2+17) && (vc<240+2+17);
 
 assign hblank = !my_h_de;
