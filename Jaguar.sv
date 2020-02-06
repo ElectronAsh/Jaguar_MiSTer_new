@@ -767,7 +767,7 @@ else begin
 				mem_cyc <= `RDY_WAIT;
 			end
 		
-			if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111) begin
+			if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
 				ch1_wr_req <= 1'b1;
 				r_dram_d <= dram_d;
 				ch1_be <= ~{dram_uw_n[3], dram_lw_n[3], 
