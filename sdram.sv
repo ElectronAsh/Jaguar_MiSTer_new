@@ -140,7 +140,8 @@ always @(posedge clk) begin
 	if(data_ready_delay1[2]) ch1_dout[47:32] <= dq_reg;
 	if(data_ready_delay1[1]) ch1_dout[31:16] <= dq_reg;
 	if(data_ready_delay1[0]) ch1_dout[15:00] <= dq_reg;
-	if(data_ready_delay1[1]) ch1_ready <= 1;
+	//if(data_ready_delay1[1]) ch1_ready <= 1;
+	if(data_ready_delay1[2]) ch1_ready <= 1;
 
 	
 	if(data_ready_delay2[3]) ch2_dout[15:00] <= dq_reg;

@@ -94,7 +94,7 @@ module emu
 	
 	(*noprune*)output reg [31:0] loader_addr,
 	
-	output wire [23:0] cart_a,
+	//output wire [23:0] cart_a,
 	
 	output wire [31:0] cart_q,
 	
@@ -411,13 +411,15 @@ jaguar jaguar_inst
 	.DBG_CYCLES( DBG_CYCLES ) ,		// output [31:0] DBG_CYCLES
 	.DBG_IFETCH( DBG_IFETCH ) ,		// output  DBG_IFETCH
 */
-	.os_rom_a( os_rom_a ) ,			// output [16:0] os_rom_a
+	.abus_out( abus_out ) ,				// output [23:0] Main Address bus for Tom/Jerry/68K/BIOS/CART.
+
+	//.os_rom_a( os_rom_a ) ,			// output [16:0] os_rom_a
 	.os_rom_ce_n( os_rom_ce_n ) ,	// output  os_rom_ce_n
 	.os_rom_oe_n( os_rom_oe_n ) ,	// output  os_rom_oe_n
 	.os_rom_q( os_rom_q ) ,			// input [7:0] os_rom_q
 	.os_rom_oe( os_rom_oe ) ,		// input  os_rom_oe
 	
-	.cart_a( cart_a ) ,			// output [23:0] cart_a
+	//.cart_a( cart_a ) ,			// output [23:0] cart_a
 	.cart_ce_n( cart_ce_n ) ,	// output  cart_ce_n
 	.cart_oe_n( cart_oe_n ) ,	// output [1:0] cart_oe_n
 	.cart_q( cart_q ) ,			// input [31:0] cart_q
@@ -456,6 +458,8 @@ jaguar jaguar_inst
 	.ntsc( status[4] )
 );
 
+wire [23:0] abus_out;
+
 //wire [1:0] romwidth = status[5:4];
 wire [1:0] romwidth = 2'd2;
 
@@ -493,19 +497,16 @@ wire os_rom_ce_n;
 wire os_rom_oe_n;
 wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe feeds back TO the core, to enable the internal drivers.
 
-wire [16:0] os_rom_a;	// Address from the core.
-
-
 wire os_download = ioctl_download && ioctl_index==0;
 
-wire [16:0] os_rom_address = (os_download) ? {ioctl_addr[16:1],os_lsb} : os_rom_a;
+wire [16:0] os_rom_addr = (os_download) ? {ioctl_addr[16:1],os_lsb} : abus_out[16:0];
 
 wire [7:0] os_rom_din = (!os_lsb) ? ioctl_data[7:0] : ioctl_data[15:8];
 
 os_rom_bram	os_rom_bram_inst (
 	.clock ( clk_sys ),
 	
-	.address ( os_rom_address ),
+	.address ( os_rom_addr ),
 	.data ( os_rom_din ),
 	.wren ( os_wren ),
 
@@ -514,8 +515,8 @@ os_rom_bram	os_rom_bram_inst (
 
 wire [7:0] os_rom_dout;
 
-wire [7:0] os_rom_q = (os_rom_a==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
-																		os_rom_dout;
+wire [7:0] os_rom_q = (abus_out[16:0]==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
+																				os_rom_dout;
 `endif
 
 
@@ -618,7 +619,7 @@ assign DDRAM_BURSTCNT = 1;
 // The cart ROM is loaded at 0x30800000, as the Jag normally expects the cart to be mapped at offset 0x800000.
 
 assign DDRAM_ADDR = (loader_en)  ? {8'b0110000, loader_addr[23:3]} :
-						                 {8'b0110000, cart_a[23:3]};		// DRAM address is using "cart_a" here (byte address, so three LSB bits are ignored!)
+						                 {8'b0110000, abus_out[23:3]};	// DRAM address is using "abus_out" here (byte address, so three LSB bits are ignored!)
 																						// so the MSB bit will be set by the Jag core when reading that.
 
 assign DDRAM_RD = (loader_en) ? 1'b0 : cart_rd_trig;
@@ -638,15 +639,15 @@ assign DDRAM_BE = (loader_en) ? loader_be : 8'b11111111;
 (*keep*) wire rom_wrack = 1'b1;	// TESTING!!
 
 
-//wire [31:0] cart_q_8bit = (!cart_a[0]) ? {sdram_dout[15:8], sdram_dout[15:8]} :
+//wire [31:0] cart_q_8bit = (!abus_out[0]) ? {sdram_dout[15:8], sdram_dout[15:8]} :
 //															{sdram_dout[7:0],  sdram_dout[7:0]};
 
 //wire [31:0] cart_q_16bit = {sdram_dout[15:0], sdram_dout[15:0]};
 
-// With MEMCON1 in 32-bit wide mode, cart_a seems to increment by ONE when reading each 32-bit word.
+// With MEMCON1 in 32-bit wide mode, abus_out seems to increment by ONE when reading each 32-bit word.
 // So we need to add an extra LSB bit to the address sent to the SDRAM controller (because 16-bit).
 //
-// Then route bits [22:0] of cart_a as well, since the SDRAM controller address is in 16-bit WORDs,
+// Then route bits [22:0] of abus_out as well, since the SDRAM controller address is in 16-bit WORDs,
 // but also does burst reads, so will output full 32-bit data. Phew.
 //
 //wire [31:0] cart_q_32bit = {sdram_dout[15:0], sdram_dout[31:16]};
@@ -658,18 +659,18 @@ assign DDRAM_BE = (loader_en) ? loader_be : 8'b11111111;
 reg cart_ce_n_1 = 1;
 wire cart_ce_n_falling = (cart_ce_n_1 && !cart_ce_n);
 
-reg [23:0] old_cart_a;
+reg [23:0] old_abus_out;
 
-wire cart_rd_trig = !cart_ce_n && (cart_ce_n_falling || (cart_a != old_cart_a));
+wire cart_rd_trig = !cart_ce_n && (cart_ce_n_falling || (abus_out != old_abus_out));
 
 always @(posedge clk_sys or posedge reset)
 if (reset) begin
 	xwaitl <= 1'b1;	// De-assert on reset!
-	old_cart_a <= 24'h112233;
+	old_abus_out <= 24'h112233;
 end
 else begin
 	cart_ce_n_1 <= cart_ce_n;
-	old_cart_a <= cart_a;
+	old_abus_out <= abus_out;
 
 	if (cart_rd_trig) begin
 		xwaitl <= 1'b0;	// Assert this (low) until the Cart data is ready.
@@ -679,7 +680,7 @@ end
 
 
 `ifndef VERILATOR
-wire [23:0] cart_a;
+//wire [23:0] cart_a;
 wire [31:0] cart_q;
 wire [1:0] cart_oe;
 `endif
@@ -693,32 +694,32 @@ assign cart_oe[1] = (~cart_oe_n[1] & ~cart_ce_n);
 
 // 32-bit cart mode...
 //
-assign cart_q = (!cart_a[2]) ? DDRAM_DOUT[63:32] : DDRAM_DOUT[31:00];
+assign cart_q = (!abus_out[2]) ? DDRAM_DOUT[63:32] : DDRAM_DOUT[31:00];
 
 
 // 16-bit cart mode...
 //
 //
 //assign cart_q = cart_q_16bit;
-//assign cart_q = (cart_a>=24'h800400 && cart_a<=24'h800403) ? 16'h0202 :	// Patch the cart header to force 16-bit ROMWIDTH.
+//assign cart_q = (abus_out>=24'h800400 && abus_out<=24'h800403) ? 16'h0202 :	// Patch the cart header to force 16-bit ROMWIDTH.
 //																				 SDRAM_DQ;
 //
-//assign cart_q = ({cart_a[2:1],1'b0}==0) ? {DDRAM_DOUT[63:48],DDRAM_DOUT[63:48]} :
-//					 ({cart_a[2:1],1'b0}==2) ? {DDRAM_DOUT[47:32],DDRAM_DOUT[47:32]} :
-//					 ({cart_a[2:1],1'b0}==4) ? {DDRAM_DOUT[31:16],DDRAM_DOUT[31:16]} :
+//assign cart_q = ({abus_out[2:1],1'b0}==0) ? {DDRAM_DOUT[63:48],DDRAM_DOUT[63:48]} :
+//					 ({abus_out[2:1],1'b0}==2) ? {DDRAM_DOUT[47:32],DDRAM_DOUT[47:32]} :
+//					 ({abus_out[2:1],1'b0}==4) ? {DDRAM_DOUT[31:16],DDRAM_DOUT[31:16]} :
 //														{DDRAM_DOUT[15:00],DDRAM_DOUT[15:00]};
 
 
 /*
 // 8-bit cart mode... WORKING in Verilator! ElectronAsh.
 //
-assign cart_q = ({cart_a[2:0]}==0) ? {DDRAM_DOUT[63:56],DDRAM_DOUT[63:56],DDRAM_DOUT[63:56],DDRAM_DOUT[63:56]} :
-					 ({cart_a[2:0]}==1) ? {DDRAM_DOUT[55:48],DDRAM_DOUT[55:48],DDRAM_DOUT[55:48],DDRAM_DOUT[55:48]} :
-					 ({cart_a[2:0]}==2) ? {DDRAM_DOUT[47:40],DDRAM_DOUT[47:40],DDRAM_DOUT[47:40],DDRAM_DOUT[47:40]} :
-					 ({cart_a[2:0]}==3) ? {DDRAM_DOUT[39:32],DDRAM_DOUT[39:32],DDRAM_DOUT[39:32],DDRAM_DOUT[39:32]} :
-					 ({cart_a[2:0]}==4) ? {DDRAM_DOUT[31:24],DDRAM_DOUT[31:24],DDRAM_DOUT[31:24],DDRAM_DOUT[31:24]} :
-					 ({cart_a[2:0]}==5) ? {DDRAM_DOUT[23:16],DDRAM_DOUT[23:16],DDRAM_DOUT[23:16],DDRAM_DOUT[23:16]} :
-					 ({cart_a[2:0]}==6) ? {DDRAM_DOUT[15:08],DDRAM_DOUT[15:08],DDRAM_DOUT[15:08],DDRAM_DOUT[15:08]} :
+assign cart_q = ({abus_out[2:0]}==0) ? {DDRAM_DOUT[63:56],DDRAM_DOUT[63:56],DDRAM_DOUT[63:56],DDRAM_DOUT[63:56]} :
+					 ({abus_out[2:0]}==1) ? {DDRAM_DOUT[55:48],DDRAM_DOUT[55:48],DDRAM_DOUT[55:48],DDRAM_DOUT[55:48]} :
+					 ({abus_out[2:0]}==2) ? {DDRAM_DOUT[47:40],DDRAM_DOUT[47:40],DDRAM_DOUT[47:40],DDRAM_DOUT[47:40]} :
+					 ({abus_out[2:0]}==3) ? {DDRAM_DOUT[39:32],DDRAM_DOUT[39:32],DDRAM_DOUT[39:32],DDRAM_DOUT[39:32]} :
+					 ({abus_out[2:0]}==4) ? {DDRAM_DOUT[31:24],DDRAM_DOUT[31:24],DDRAM_DOUT[31:24],DDRAM_DOUT[31:24]} :
+					 ({abus_out[2:0]}==5) ? {DDRAM_DOUT[23:16],DDRAM_DOUT[23:16],DDRAM_DOUT[23:16],DDRAM_DOUT[23:16]} :
+					 ({abus_out[2:0]}==6) ? {DDRAM_DOUT[15:08],DDRAM_DOUT[15:08],DDRAM_DOUT[15:08],DDRAM_DOUT[15:08]} :
 												 {DDRAM_DOUT[07:00],DDRAM_DOUT[07:00],DDRAM_DOUT[07:00],DDRAM_DOUT[07:00]};
 */
 
@@ -741,8 +742,6 @@ wire [0:3] dram_oe_n;
 wire [0:3] dram_uw_n;
 wire [0:3] dram_lw_n;
 wire [0:63] dram_d;
-
-reg [7:0] ch1_be;
 
 // From the core into SDRAM.
 wire [63:0] ch1_din = {r_dram_d[63], r_dram_d[62], r_dram_d[61], r_dram_d[60], r_dram_d[59], r_dram_d[58], r_dram_d[57], r_dram_d[56], 
@@ -795,7 +794,7 @@ sdram sdram
 //	.ch1_ready( rom_wrack ),
 
 	// Port 1.
-	.ch1_addr( {4'b0000, cart_a[22:3], 2'b00} ),	// 64-bit WORD address. Burst Length=4. On 64-bit boundaries when the lower two bits are b00!!
+	.ch1_addr( {4'b0000, abus_out[22:3], 2'b00} ),	// 64-bit WORD address. Burst Length=4. On 64-bit boundaries when the lower two bits are b00!!
 	.ch1_dout( ch1_dout ),								// output [63:0]
 	.ch1_rnw( ch1_rnw ),									// Read when HIGH. Write when LOW.
 	.ch1_be( ch1_be ),									// Byte enable (bits [7:0]) for 64-bit burst writes.
@@ -812,7 +811,7 @@ sdram sdram
 //	.ch2_ready( sdram_ready ),
 	
 	// Port 3.
-	//.ch3_addr( {4'b0000, cart_a[22:1]} ),	// 16-bit WORD address!! [26:1]
+	//.ch3_addr( {4'b0000, abus_out[22:1]} ),	// 16-bit WORD address!! [26:1]
 	//.ch3_dout( sdram_dout ),						// output [15:0]
 	//.ch3_rnw( 1'b1 ),								// Read-only for cart ROM reading!
 	//.ch3_din( 16'h0000 ),							// input [15:0]
@@ -825,7 +824,7 @@ sdram sdram
 //(*keep*) wire sdram_ready;
 //(*keep*) wire [31:0] sdram_dout;
 
-wire [26:1] sdram_word_addr = {4'b0000, cart_a[22:1]};
+wire [26:1] sdram_word_addr = {4'b0000, abus_out[22:1]};
 
 (*keep*) wire ch1_rnw = ! ({dram_uw_n, dram_lw_n} != 8'b11111111);
 
@@ -841,8 +840,18 @@ wire ram_rdy = (mem_cyc == `RAM_END);
 
 reg	[0:63]	r_dram_d;
 
-reg ch1_rd_req;
-reg ch1_wr_req;
+//reg ch1_rd_req;
+//reg ch1_wr_req;
+//reg [7:0] ch1_be;
+
+wire ch1_rd_req = (startcas && (dram_oe_n != 4'b1111)) && mem_cyc==`RAM_IDLE;
+wire ch1_wr_req = (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) && mem_cyc==`RAM_IDLE;
+
+wire [7:0] ch1_be = ~{ dram_uw_n[3], dram_lw_n[3], 
+							  dram_uw_n[2], dram_lw_n[2], 
+							  dram_uw_n[1], dram_lw_n[1], 
+							  dram_uw_n[0], dram_lw_n[0] };
+
 
 (*noprune*) reg [3:0] mem_cyc;
 
@@ -851,29 +860,15 @@ if (reset) begin
 	mem_cyc <= `RAM_IDLE;
 end
 else begin
-	ch1_rd_req <= 1'b0;
-	ch1_wr_req <= 1'b0;
+	//ch1_rd_req <= 1'b0;
+	//ch1_wr_req <= 1'b0;
 	
-	//if (~fdram) begin	// Seems to make the games more stable. Maybe the games abort certain RAM accesses?
-		//mem_cyc <= `RAM_IDLE;
-	//end else begin
+	r_dram_d <= dram_d;
+	
 		case (mem_cyc)
 			`RAM_IDLE: begin
-				//if (startcas && (dram_oe_n != 4'b1111)) begin
-				if (!dram_cas_n && (dram_oe_n != 4'b1111)) begin
-					ch1_rd_req <= 1'b1;
-					mem_cyc <= `RDY_WAIT;
-				end
-				//else if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
-				else if (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
-					ch1_be <= ~{ dram_uw_n[3], dram_lw_n[3], 
-									 dram_uw_n[2], dram_lw_n[2], 
-									 dram_uw_n[1], dram_lw_n[1], 
-									 dram_uw_n[0], dram_lw_n[0] };
-					r_dram_d <= dram_d;
-					ch1_wr_req <= 1'b1;
-					mem_cyc <= `RDY_WAIT;
-				end
+				if (ch1_rd_req) mem_cyc <= `RDY_WAIT;
+				if (ch1_wr_req) mem_cyc <= `RDY_WAIT;
 			end
 
 			`RDY_WAIT: begin
@@ -881,7 +876,7 @@ else begin
 			end
 			
 			`RAM_END:
-			//if (!startcas) begin
+				//if (!startcas) begin
 				if (dram_cas_n) begin
 					mem_cyc <= `RAM_IDLE;
 				end
