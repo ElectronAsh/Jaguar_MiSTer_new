@@ -41,6 +41,8 @@ module jaguar
 	output [7:0] vga_g,
 	output [7:0] vga_b,
 	
+	output pix_clk,
+	
 	//output	aud_l_pwm,
 	//output	aud_r_pwm,
 	
@@ -56,9 +58,7 @@ module jaguar
 	input xwaitl,		// Assert (LOW) to pause cart ROM reading until the data is ready!
 	
 	output vid_ce,
-	
-	output dtack_n_out,
-	
+
 	input [31:0] joystick_0,
 	input [31:0] joystick_1,
 	
@@ -69,7 +69,7 @@ module jaguar
 	input ntsc
 );
 
-assign dtack_n_out = fx68k_dtack_n;
+assign pix_clk = xvclk;
 
 wire rst = ~xresetl;
 
@@ -79,14 +79,24 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_aud_l;
 //assign aud_16_r = r_aud_r;
 
-assign aud_16_l = w_aud_l;
-assign aud_16_r = w_aud_r;
+//assign aud_16_l = w_aud_l;
+//assign aud_16_r = w_aud_r;
+
+reg [15:0] samp_l;
+reg [15:0] samp_r;
+always @(posedge xpclk) begin
+	if (snd_l_en) samp_l <= dspwd;
+	if (snd_r_en) samp_r <= dspwd;
+end
+assign aud_16_l = samp_l;
+assign aud_16_r = samp_r;
 
 
-reg [2:0] clkdiv;
-reg xpclk;
-reg xvclk;
-reg tlw;
+//reg [2:0] clkdiv;
+reg [3:0] clkdiv;
+reg xpclk;			// Processor (Tom & Jerry) Clock.
+reg xvclk;			// Video Clock.
+reg tlw;			// Transparent Latch Write?
 
 reg fx68k_enPhi1;
 reg fx68k_enPhi2;
@@ -97,39 +107,47 @@ reg pix_ce;
 // So these clocks need to be left running during reset, else the core won't start up correctly the next time the HPS resets it. ElectronAsh.
 
 always @(posedge sys_clk) begin
+	xpclk <= 1'b0;
+	xvclk <= 1'b0;
+	  tlw <= 1'b0;
 
-	clkdiv <= clkdiv + 3'b001;
-	if (clkdiv==3'b101) begin
-		clkdiv <= 3'b000;
+	//clkdiv <= clkdiv + 3'd1;
+	//if (clkdiv==3'd5) begin
+		//clkdiv <= 3'b000;
+	//end
+	
+	clkdiv <= clkdiv + 4'd1;
+	if (clkdiv==4'd9) begin
+		clkdiv <= 4'd0;
 	end
 
-	if ((clkdiv==3'd0) || (clkdiv==3'd3)) begin
+	//if ((clkdiv==3'd0) || (clkdiv==3'd3)) begin
+	if ((clkdiv==4'd0) || (clkdiv==4'd5)) begin
 		xpclk <= 1'b1;
 		xvclk <= 1'b1;
-	end else begin
-		xpclk <= 1'b0;
-		xvclk <= 1'b0;
 	end
-	if ((clkdiv==3'd2) || (clkdiv==3'd5)) begin
+	
+	if ((clkdiv==4'd4) || (clkdiv==4'd9)) begin
 		tlw <= 1'b1;
-	end else begin
-		tlw <= 1'b0;
 	end
 	
 	fx68k_enPhi1 <= 1'b0;
 	fx68k_enPhi2 <= 1'b0;
 	
-	if ((clkdiv==3'd0) || (clkdiv==3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
-	if ((clkdiv==3'd1) || (clkdiv==3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
+	//if ((clkdiv==3'd0) || (clkdiv==3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
+	//if ((clkdiv==3'd1) || (clkdiv==3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
+	
+	if ((clkdiv==4'd0) || (clkdiv==4'd5 && turbo)) fx68k_enPhi1 <= 1'b1;
+	if ((clkdiv==4'd1) || (clkdiv==4'd6 && turbo)) fx68k_enPhi2 <= 1'b1;
 	
 	//if (clkdiv==3'd0) pix_ce <= 1'b1;
 	//else pix_ce <= 1'b0;
 end
 
-
 //assign vid_ce = pix_ce;
 assign vid_ce = xvclk;
 //assign vid_cd = j_xvclkdiv;
+
 
 
 // `ifndef verilator3
@@ -211,7 +229,7 @@ wire				xintl;
 wire				hs_o;
 wire				hhs_o;
 wire				vs_o;
-wire				blank;
+(*keep*) wire	blank;
 
 wire	[0:2]		den;
 wire				aen;
@@ -1426,7 +1444,9 @@ tom tom_inst
 	.den_1(den[1]),
 	.den_2(den[2]),
 	.sys_clk(sys_clk),
-	.startcas(startcas)
+	.startcas(startcas),
+	.hsl(hsl),
+	.vsl(vsl)
 );
 
 j_jerry jerry_inst
@@ -1687,8 +1707,15 @@ j_jerry jerry_inst
 	.snd_r(snd_r),
 	.snd_l_en(snd_l_en),
 	.snd_r_en(snd_r_en),
+	.dspwd( dspwd ),
+	
 	.sys_clk(sys_clk)
 );
+
+(*keep*) wire hsl;
+(*keep*) wire vsl;
+
+wire [15:0] dspwd;
 
 (*keep*) wire fx68k_clk = sys_clk;
 (*keep*) wire fx68k_rst = !xresetl;
@@ -1778,16 +1805,6 @@ fx68k fx68k_inst
 	.eab( fx68k_address ) 		// output [23:1] eab
 );
 
-// `ifndef verilator3
-// os_rom os_rom_inst
-// (
-	// .a(os_rom_a),
-	// .ce_n(os_rom_ce_n),
-	// .oe_n(os_rom_oe_n),
-	// .q(os_rom_q),
-	// .oe(os_rom_oe)
-// );
-// `endif
 
 assign dram_a = xma_in[0:9];
 assign dram_ras_n = xrasl[0];
@@ -1797,90 +1814,30 @@ assign dram_lw_n = {xwel[0], xwel[2], xwel[4], xwel[6]};
 assign dram_oe_n = {xoel[0], xoel[1], xoel[2], xoel[2]}; // /!\
 assign dram_d = dbus; // xd_in;
 
-// `ifndef verilator3
-// dram dram_inst
-// (
-	// .a(dram_a),
-	// .ras_n(dram_ras_n),
-	// .cas_n(dram_cas_n),
-	// .uw_n(dram_uw_n),
-	// .lw_n(dram_lw_n),
-	// .oe_n(dram_oe_n),
-	// .d(dram_d),
-	// .q(dram_q),
-	// .oe(dram_oe),
-	// .sys_clk(sys_clk)
-// );
-// `endif
-
-
-/*
-vgalb vgalb0
-(
-	.q(lb0_q),
-	.d(lb_d),
-	.we(lb0_we),
-	.a(lb0_a),
-	.sys_clk(sys_clk)
-);
-
-vgalb vgalb1
-(
-	.q(lb1_q),
-	.d(lb_d),
-	.we(lb1_we),
-	.a(lb1_a),
-	.sys_clk(sys_clk)
-);
-
-// vc even : vga read lb1, jag write lb0
-
-wire vga_blank;
-
-assign vga_bl = vga_blank;
-
-assign lb_d = (~blank) ? { 
-	xr[7], xr[6], xr[5], xr[4], xr[3], xr[2], xr[1], xr[0],
-	xg[7], xg[6], xg[5], xg[4], xg[3], xg[2], xg[1], xg[0],
-	xb[7], xb[6], xb[5], xb[4], xb[3], xb[2], xb[1], xb[0]
-} : 24'd0;
-
-
-assign vga_r = (vga_blank) ? 8'd0 : (vc[0] == 1'b0) ? lb1_q[23:16] : lb0_q[23:16];
-assign vga_g = (vga_blank) ? 8'd0 : (vc[0] == 1'b0) ? lb1_q[15:8] : lb0_q[15:8];
-assign vga_b = (vga_blank) ? 8'd0 : (vc[0] == 1'b0) ? lb1_q[7:0] : lb0_q[7:0];
-
-
-assign lb0_a = (vc[0] == 1'b0) ? hc[11:2] : vga_hc[10:1];
-assign lb0_we = (vc[0] == 1'b0) ? hc[1] : 1'b0;
-
-assign lb1_a = (vc[0] == 1'b0) ? vga_hc[10:1] : hc[11:2];
-assign lb1_we = (vc[0] == 1'b0) ? 1'b0 : hc[1]; 
-*/
 
 // 15 KHz (native) output...
-
 assign vga_r = {xr[7], xr[6], xr[5], xr[4], xr[3], xr[2], xr[1], xr[0]};
 assign vga_g = {xg[7], xg[6], xg[5], xg[4], xg[3], xg[2], xg[1], xg[0]};
 assign vga_b = {xb[7], xb[6], xb[5], xb[4], xb[3], xb[2], xb[1], xb[0]};
 
+assign vga_hs_n = (hc>=16'd40 && hc<=16'd120);
 assign vga_vs_n = !(vc < 2);
-assign vga_hs_n = (hc>=16'd80 && hc<=16'd180);
+
+//assign vga_hs_n = hsl;
+//assign vga_vs_n = vsl;
+
 assign vga_bl = 1'b0;
 
-(*keep*) wire my_h_de = (hc>=730) && (hc<=5000);
+(*keep*) wire my_h_de = (hc>=252) && (hc<=1661);
 (*keep*) wire my_v_de = (vc>2+17) && (vc<240+2+17);
-
 assign hblank = !my_h_de;
 assign vblank = !my_v_de;
 
-//assign vga_hs_n = !(hc>=16'h0000 && hc<=16'h0080);
-//assign vga_vs_n = !(vc < 2);
+//assign hblank = blank;
+//assign vblank = blank;
 
-//assign vga_bl = vga_blank;
-
-
-always @(posedge sys_clk)
+//always @(posedge sys_clk)
+always @(posedge pix_clk)
 begin
 	hs_o_prev <= hs_o;
 	hhs_o_prev <= hhs_o;
@@ -1893,7 +1850,7 @@ begin
 	end else begin
 		if (vs_o == 1'b1) begin
 			vc <= 16'h0000;
-		end else if ( (hs_o_prev == 1'b0) & (hs_o == 1'b1) ) begin
+		end else if (!hs_o_prev && hs_o) begin
 			vc <= vc + 1;
 		end
 		
@@ -1911,19 +1868,6 @@ begin
 
 	end
 end
-
-// old - VGA_HC : 0..1688 = 800 x 2.11
-// VGA_HC : 0..2532 = 800 x 3.165
-// HS = 96px
-// BP = 48px
-// VA = 640px
-// FP = 16px 
-//assign vga_hs_n = (vga_hc < 304) ? 1'b0 : 1'b1;
-//assign vga_vs_n = (vc < 2) ? 1'b0 : 1'b1;
-assign vga_blank = ( (vc > 2+17) && (vc < 240+2+17) && (vga_hc > 304+152) && (vga_hc < 304+152+2026) ) ? 1'b0 : 1'b1;
-
-//assign hblank = !(vga_hc > 304+152) && (vga_hc < 304+152+2026);
-//assign vblank = !(vc > 2+17) && (vc < 240+2+17);
 
 
 assign w_aud_l[15:0] = { 
@@ -1947,12 +1891,12 @@ begin
     r_aud_l <= 16'd0;
     r_aud_r <= 16'd0;
   end else begin
-		//if (snd_l_en) r_aud_l <= w_aud_l;	// TESTING. ElectronAsh.
-		//if (snd_r_en) r_aud_r <= w_aud_r;
+		if (snd_l_en) r_aud_l <= w_aud_l;	// TESTING. ElectronAsh.
+		if (snd_r_en) r_aud_r <= w_aud_r;
   
 		if (snd_clk) begin
-			r_aud_l <= w_aud_l;
-			r_aud_r <= w_aud_r;
+			//r_aud_l <= w_aud_l;
+			//r_aud_r <= w_aud_r;
 			
 			/*if (w_aud_l[15]) begin
 				r_aud_l <= {1'b0, ~w_aud_l[14:0]};

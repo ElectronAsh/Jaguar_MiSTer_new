@@ -79,7 +79,6 @@ module emu
 	input         SD_CD,
 
 `ifdef VERILATOR
-	output	[16:0]	os_rom_a,
 	output					os_rom_ce_n,
 	output					os_rom_oe_n,
 	input		[7:0]		os_rom_q,
@@ -93,8 +92,6 @@ module emu
 	output reg         ioctl_wait,
 	
 	(*noprune*)output reg [31:0] loader_addr,
-	
-	//output wire [23:0] cart_a,
 	
 	output wire [31:0] cart_q,
 	
@@ -361,8 +358,10 @@ jaguar jaguar_inst
 	.vga_g( vga_g ) ,			// output [7:0] vga_g
 	.vga_b( vga_b ) ,			// output [7:0] vga_b
 	
-	.hblank( hblank ) ,
-	.vblank( vblank ) ,
+	.pix_clk( pix_clk ) ,	// output  pix_clk
+	
+	.hblank( hblank ) ,		// output hblank
+	.vblank( vblank ) ,		// output vblank
 	
 //	.aud_l_pwm( aud_l_pwm ) ,	// output  aud_l_pwm
 //	.aud_r_pwm( aud_r_pwm ) , 	// output  aud_r_pwm
@@ -374,8 +373,6 @@ jaguar jaguar_inst
 	
 	.vid_ce( vid_ce ) ,
 	
-	.dtack_n_out( dtack_n_out ) ,
-	
 	.joystick_0( joystick_0 ) ,
 	
 	.startcas( startcas ) ,
@@ -385,6 +382,8 @@ jaguar jaguar_inst
 	.ntsc( status[4] )
 );
 
+wire pix_clk;
+
 wire [23:0] abus_out;
 
 //wire [1:0] romwidth = status[5:4];
@@ -393,8 +392,6 @@ wire [1:0] romwidth = 2'd2;
 reg xwaitl;
 
 wire vid_ce;
-
-wire dtack_n_out;
 
 wire startcas;
 
@@ -588,7 +585,6 @@ end
 
 
 `ifndef VERILATOR
-//wire [23:0] cart_a;
 wire [31:0] cart_q;
 wire [1:0] cart_oe;
 `endif
@@ -742,32 +738,44 @@ sdram sdram
 `define RDY_WAIT	4'b0001
 `define RAM_END	4'b1111
 
-reg ch1_rd_req;
-reg ch1_wr_req;
-reg [07:00] ch1_be;
-reg [00:63] r_dram_d;
-
 (*noprune*) reg [3:0] mem_cyc;
 
-//wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
-wire ram_rdy = (mem_cyc == `RAM_END);
+//reg ch1_rd_req;
+//reg ch1_wr_req;
+//reg [07:00] ch1_be;
+//reg [00:63] r_dram_d;
+
+wire [07:00] ch1_be = ~{dram_uw_n[3], dram_lw_n[3], 
+								dram_uw_n[2], dram_lw_n[2], 
+								dram_uw_n[1], dram_lw_n[1], 
+								dram_uw_n[0], dram_lw_n[0] };
+
+wire [00:63] r_dram_d = dram_d;
+
+
+wire ch1_rd_req = (startcas && (dram_oe_n != 4'b1111)) && mem_cyc==`RAM_IDLE;
+wire ch1_wr_req = (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) && mem_cyc==`RAM_IDLE;
+
+wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
 
 always @(posedge clk_sys or posedge reset)
 if (reset) begin
 	mem_cyc <= `RAM_IDLE;
 end
 else begin
-	ch1_rd_req <= 1'b0;
-	ch1_wr_req <= 1'b0;
+	//ch1_rd_req <= 1'b0;
+	//ch1_wr_req <= 1'b0;
 	
 	case (mem_cyc)
 		`RAM_IDLE: begin
+			if (ch1_rd_req || ch1_wr_req) mem_cyc <= `RDY_WAIT;
+			/*
 			if (startcas && (dram_oe_n != 4'b1111)) begin
 				ch1_rd_req <= 1'b1;
 				mem_cyc <= `RDY_WAIT;
 			end
 		
-			if (startcas && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
+			if (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) begin
 				ch1_wr_req <= 1'b1;
 				r_dram_d <= dram_d;
 				ch1_be <= ~{dram_uw_n[3], dram_lw_n[3], 
@@ -776,14 +784,14 @@ else begin
 								dram_uw_n[0], dram_lw_n[0] };
 				mem_cyc <= `RDY_WAIT;	 
 			end
+			*/
 		end
-
+		
 		`RDY_WAIT: begin
 			if (ch1_ready) mem_cyc <= `RAM_END;
 		end
 		
 		`RAM_END:
-			//if (!startcas) begin
 			if (dram_cas_n) begin
 				mem_cyc <= `RAM_IDLE;
 			end

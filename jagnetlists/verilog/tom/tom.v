@@ -411,7 +411,10 @@ module tom
 	output den_1,
 	output den_2,
 	input sys_clk, // Generated
-	output startcas
+	output startcas,
+	
+	output wire hsl,
+	output wire vsl
 );
 wire wd_0_out;
 wire wd_0_oe;
@@ -1101,12 +1104,12 @@ wire intlt;
 wire intl;
 wire hlock;
 wire nt_1;
-wire hsl;
+//wire hsl;
 wire snden;
 wire vcc;
 wire vlock;
 wire nt_2;
-wire vsl;
+//wire vsl;
 wire syncen;
 wire lp;
 wire nt_3;

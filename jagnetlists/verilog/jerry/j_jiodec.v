@@ -263,31 +263,31 @@ assign axx3x = al_7 & al_6 & a_5 & a_4;
 assign axx6x = al_7 & a_6 & a_5 & al_4;
 
 // JIODEC.NET (71) - gpiol[0] : nd6
-assign gpiol_0 = ~(dspcs & al_15 & a_14 & al_13 & al_12 & a_11);
+assign gpiol_0 = ~(dspcs & al_15 & a_14 & al_13 & al_12 & a_11);						// F14800-F14FFF. GPIO0. (CD-Interface).
 
 // JIODEC.NET (72) - gpiol[1] : nd6
-assign gpiol_1 = ~(dspcs & al_15 & a_14 & al_13 & a_12 & vcc);
+assign gpiol_1 = ~(dspcs & al_15 & a_14 & al_13 & a_12 & vcc);							// F15000-F15FFF. GPIO1. (DMA ACK).
 
 // JIODEC.NET (73) - gpiol[2] : nd6
-assign gpiol_2 = ~(dspcs & al_15 & a_14 & a_13 & al_12 & vcc);
+assign gpiol_2 = ~(dspcs & al_15 & a_14 & a_13 & al_12 & vcc);							// F16000-F16FFF. GPIO2. (Cartridge).
 
 // JIODEC.NET (74) - gpiol[3] : nd6
-assign gpiol_3 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & al_11);
+assign gpiol_3 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & al_11);						// F17000-F177FF. GPIO3.
 
 // JIODEC.NET (75) - gpiol[4] : nd8
-assign gpiol_4 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & a_11 & al_10 & vcc);
+assign gpiol_4 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & a_11 & al_10 & vcc);		// F17800-F17BFF. GPIO4.
 
 // JIODEC.NET (76) - gpiol[5] : nd8
-assign gpiol_5 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & a_11 & a_10 & vcc);
+assign gpiol_5 = ~(dspcs & al_15 & a_14 & a_13 & a_12 & a_11 & a_10 & vcc);		// F17C00-F17FFF. GPIO5. (Paddle Interface).
 
 // JIODEC.NET (78) - joy1r : nd8
-assign joy1rl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx0 & oet);
+assign joy1rl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx0 & oet);	// F14000. JOY1. Joystick register. READ.
 
 // JIODEC.NET (79) - joy2r : nd8
-assign joy2rl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx2 & oet);
+assign joy2rl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx2 & oet);	// F14002. JOY2. Button register. READ.
 
 // JIODEC.NET (80) - joy1w : nd8
-assign joy1wl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx0 & wet);
+assign joy1wl = ~(dspcs & al_15 & a_14 & al_13 & al_12 & al_11 & axxx0 & wet);	// F14000. JOY1. Joystick register. WRITE
 
 // JIODEC.NET (82) - gpio : nd2
 assign notgpio = ~(al_15 & a_14);
@@ -296,28 +296,28 @@ assign notgpio = ~(al_15 & a_14);
 assign internal = dspcs & notgpio;
 
 // JIODEC.NET (87) - int1r : an4h
-assign int1r_obuf = i00xx & axx2x & axxx0 & oet;
+assign int1r_obuf = i00xx & axx2x & axxx0 & oet;	// F10020. INT.
 
 // JIODEC.NET (88) - u2drd : an4h
-assign u2drd_obuf = i00xx & axx3x & axxx0 & oet;
+assign u2drd_obuf = i00xx & axx3x & axxx0 & oet;	// F10030. ASIDATA.
 
 // JIODEC.NET (89) - u2strd : an4h
-assign u2strd_obuf = i00xx & axx3x & axxx2 & oet;
+assign u2strd_obuf = i00xx & axx3x & axxx2 & oet;	// F10032. ASICTRL.
 
 // JIODEC.NET (90) - u2psclr : an4h
-assign u2psclr_obuf = i00xx & axx3x & axxx4 & oet;
+assign u2psclr_obuf = i00xx & axx3x & axxx4 & oet;	// F10034. ASICLK.
 
 // JIODEC.NET (92) - pit1r : an4h
-assign pit1r_obuf = i00xx & axx3x & axxx6 & oet;
+assign pit1r_obuf = i00xx & axx3x & axxx6 & oet;	// F10036. Timer 1 Pre-scaler (READ).
 
 // JIODEC.NET (93) - pit2r : an4h
-assign pit2r_obuf = i00xx & axx3x & axxx8 & oet;
+assign pit2r_obuf = i00xx & axx3x & axxx8 & oet;	// F10038. Timer 1 Divider (READ).
 
 // JIODEC.NET (94) - pit3r : an4h
-assign pit3r_obuf = i00xx & axx3x & axxxa & oet;
+assign pit3r_obuf = i00xx & axx3x & axxxa & oet;	// F1003A. Timer 2 Pre-scaler (READ).
 
 // JIODEC.NET (95) - pit4r : an4h
-assign pit4r_obuf = i00xx & axx3x & axxxc & oet;
+assign pit4r_obuf = i00xx & axx3x & axxxc & oet;	// F1003C. Timer 2 Divider (READ).
 
 // JIODEC.NET (108) - float1 : nr6
 assign float1 = ~(int1r_obuf | u2drd_obuf | u2strd_obuf | u2psclr_obuf | dspen | gnd);
@@ -366,37 +366,37 @@ assign dr_15_out = gnd;
 assign dr_15_oe = float;
 
 // JIODEC.NET (120) - pit1w : an4h
-assign pit1w = i00xx & axx0x & axxx0 & wet;
+assign pit1w = i00xx & axx0x & axxx0 & wet;	// F10000. Timer 1 Pre-scaler (WRITE).
 
 // JIODEC.NET (121) - pit2w : an4h
-assign pit2w = i00xx & axx0x & axxx2 & wet;
+assign pit2w = i00xx & axx0x & axxx2 & wet;	// F10002. Timer 1 Divider (WRITE).
 
 // JIODEC.NET (122) - pit3w : an4h
-assign pit3w = i00xx & axx0x & axxx4 & wet;
+assign pit3w = i00xx & axx0x & axxx4 & wet;	// F10004. Timer 2 Pre-scaler (WRITE).
 
 // JIODEC.NET (123) - pit4w : an4h
-assign pit4w = i00xx & axx0x & axxx6 & wet;
+assign pit4w = i00xx & axx0x & axxx6 & wet;	// F10006. Timer 2 Pre-scaler (WRITE).
 
 // JIODEC.NET (124) - clk1w : an4h
-assign clk1w = i00xx & axx1x & axxx0 & wet;
+assign clk1w = i00xx & axx1x & axxx0 & wet;	// F10010. CLK1 Processor Clock Divider (WRITE).
 
 // JIODEC.NET (125) - clk2w : an4h
-assign clk2w = i00xx & axx1x & axxx2 & wet;
+assign clk2w = i00xx & axx1x & axxx2 & wet;	// F10012. CLK2 Video Clock Divider (WRITE). 
 
 // JIODEC.NET (126) - clk3w : an4h
-assign clk3w = i00xx & axx1x & axxx4 & wet;
+assign clk3w = i00xx & axx1x & axxx4 & wet;	// F10014. CLK3 Chroma Clock Divider (WRITE).
 
 // JIODEC.NET (127) - int1w : an4h
-assign int1w = i00xx & axx2x & axxx0 & wet;
+assign int1w = i00xx & axx2x & axxx0 & wet;	// F10020. INT (WRITE).
 
 // JIODEC.NET (128) - u2dwr : an4h
-assign u2dwr = i00xx & axx3x & axxx0 & wet;
+assign u2dwr = i00xx & axx3x & axxx0 & wet;	// F10030. ASIDATA (WRITE).
 
 // JIODEC.NET (129) - u2ctwr : an4h
-assign u2ctwr = i00xx & axx3x & axxx2 & wet;
+assign u2ctwr = i00xx & axx3x & axxx2 & wet;	// F10032. ASICTRL (WRITE).
 
 // JIODEC.NET (130) - u2psclw : an4h
-assign u2psclw = i00xx & axx3x & axxx4 & wet;
+assign u2psclw = i00xx & axx3x & axxx4 & wet;// F10034. ASICLK (WRITE).
 
 // JIODEC.NET (132) - test1w : tie0
 assign test1w = 1'b0;

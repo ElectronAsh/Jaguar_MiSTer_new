@@ -258,9 +258,14 @@ module j_jerry
 	output [0:15] snd_r,
 	output snd_l_en,
 	output snd_r_en,
+	
+	output [15:0] dspwd,
+	
 	input sys_clk // Generated
 );
 
+assign dspwd = {dspwd_15, dspwd_14, dspwd_13, dspwd_12, dspwd_11, dspwd_10, dspwd_9, dspwd_8, 
+					 dspwd_7, dspwd_6, dspwd_5, dspwd_4, dspwd_3, dspwd_2, dspwd_1, dspwd_0};
 
 wire dsprd_0_out;
 wire dsprd_0_oe;
