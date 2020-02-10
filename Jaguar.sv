@@ -341,15 +341,15 @@ jaguar jaguar_inst
 
 	.abus_out( abus_out ) ,			// output [23:0] Main Address bus for Tom/Jerry/68K/BIOS/CART.
 
-	.os_rom_ce_n( os_rom_ce_n ) ,	// output  os_rom_ce_n
-	.os_rom_oe_n( os_rom_oe_n ) ,	// output  os_rom_oe_n
+	//.os_rom_ce_n( os_rom_ce_n ) ,	// output  os_rom_ce_n
+	//.os_rom_oe_n( os_rom_oe_n ) ,	// output  os_rom_oe_n
+	//.os_rom_oe( os_rom_oe ) ,		// input  os_rom_oe
 	.os_rom_q( os_rom_q ) ,			// input [7:0] os_rom_q
-	.os_rom_oe( os_rom_oe ) ,		// input  os_rom_oe
 	
+	//.cart_oe_n( cart_oe_n ) ,	// output [1:0] cart_oe_n
 	.cart_ce_n( cart_ce_n ) ,	// output  cart_ce_n
-	.cart_oe_n( cart_oe_n ) ,	// output [1:0] cart_oe_n
 	.cart_q( cart_q ) ,			// input [31:0] cart_q
-	.cart_oe( cart_oe ) ,		// input [1:0] cart_oe
+	//.cart_oe( cart_oe ) ,		// input [1:0] cart_oe
 	
 	.vga_bl( vga_bl ) ,		// output  vga_bl
 	.vga_vs_n( vga_vs_n ) ,	// output  vga_vs_n
@@ -391,6 +391,8 @@ wire [1:0] romwidth = 2'd2;
 
 reg xwaitl;
 
+wire [7:0] os_rom_q;
+
 wire vid_ce;
 
 wire startcas;
@@ -400,9 +402,9 @@ wire startcas;
 wire fdram;
 
 `ifndef VERILATOR
-wire os_rom_ce_n;
-wire os_rom_oe_n;
-wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe feeds back TO the core, to enable the internal drivers.
+//wire os_rom_ce_n;
+//wire os_rom_oe_n;
+//wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe feeds back TO the core, to enable the internal drivers.
 
 wire os_download = ioctl_download && ioctl_index==0;
 
@@ -422,7 +424,7 @@ os_rom_bram	os_rom_bram_inst (
 
 wire [7:0] os_rom_dout;
 
-wire [7:0] os_rom_q = (abus_out[16:0]==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
+assign os_rom_q = (abus_out[16:0]==17'h0136E && status[2]) ? 8'h60 :	// Patch the BEQ instruction to a BRA, to skip the cart checksum fail.
 																				os_rom_dout;
 `endif
 
@@ -590,11 +592,11 @@ wire [1:0] cart_oe;
 `endif
 
 wire cart_ce_n;
-wire [1:0] cart_oe_n;
+//wire [1:0] cart_oe_n;
 
 // cart_oe signals (Active-High) just feed back to the core.
-assign cart_oe[0] = (~cart_oe_n[0] & ~cart_ce_n);
-assign cart_oe[1] = (~cart_oe_n[1] & ~cart_ce_n);
+//assign cart_oe[0] = (~cart_oe_n[0] & ~cart_ce_n);
+//assign cart_oe[1] = (~cart_oe_n[1] & ~cart_ce_n);
 
 // 32-bit cart mode...
 //
@@ -734,42 +736,44 @@ sdram sdram
 (*keep*) wire [63:0] ch1_dout;
 
 
+
+
+/*
+wire [00:63] r_dram_d = dram_d;
+wire ch1_rd_req = (startcas && (dram_oe_n != 4'b1111)) && mem_cyc==`RAM_IDLE;
+wire ch1_wr_req = (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) && mem_cyc==`RAM_IDLE;
+wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
+wire [07:00] ch1_be = ~{dram_uw_n[3], dram_lw_n[3], 
+								dram_uw_n[2], dram_lw_n[2], 
+								dram_uw_n[1], dram_lw_n[1], 
+								dram_uw_n[0], dram_lw_n[0] };
+*/
+
+
 `define RAM_IDLE	4'b0000
 `define RDY_WAIT	4'b0001
 `define RAM_END	4'b1111
 
 (*noprune*) reg [3:0] mem_cyc;
 
-//reg ch1_rd_req;
-//reg ch1_wr_req;
-//reg [07:00] ch1_be;
-//reg [00:63] r_dram_d;
+reg ch1_rd_req;
+reg ch1_wr_req;
+reg [07:00] ch1_be;
+reg [00:63] r_dram_d;
 
-wire [07:00] ch1_be = ~{dram_uw_n[3], dram_lw_n[3], 
-								dram_uw_n[2], dram_lw_n[2], 
-								dram_uw_n[1], dram_lw_n[1], 
-								dram_uw_n[0], dram_lw_n[0] };
-
-wire [00:63] r_dram_d = dram_d;
-
-
-wire ch1_rd_req = (startcas && (dram_oe_n != 4'b1111)) && mem_cyc==`RAM_IDLE;
-wire ch1_wr_req = (!dram_cas_n && ({dram_uw_n, dram_lw_n} != 8'b11111111)) && mem_cyc==`RAM_IDLE;
-
-wire ram_rdy = ch1_ready || (mem_cyc == `RAM_END);
+wire ram_rdy = mem_cyc == `RAM_END;
 
 always @(posedge clk_sys or posedge reset)
 if (reset) begin
 	mem_cyc <= `RAM_IDLE;
 end
 else begin
-	//ch1_rd_req <= 1'b0;
-	//ch1_wr_req <= 1'b0;
+	ch1_rd_req <= 1'b0;
+	ch1_wr_req <= 1'b0;
 	
 	case (mem_cyc)
 		`RAM_IDLE: begin
-			if (ch1_rd_req || ch1_wr_req) mem_cyc <= `RDY_WAIT;
-			/*
+			//if (ch1_rd_req || ch1_wr_req) mem_cyc <= `RDY_WAIT;
 			if (startcas && (dram_oe_n != 4'b1111)) begin
 				ch1_rd_req <= 1'b1;
 				mem_cyc <= `RDY_WAIT;
@@ -784,7 +788,6 @@ else begin
 								dram_uw_n[0], dram_lw_n[0] };
 				mem_cyc <= `RDY_WAIT;	 
 			end
-			*/
 		end
 		
 		`RDY_WAIT: begin

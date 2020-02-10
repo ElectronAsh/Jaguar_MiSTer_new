@@ -20,17 +20,17 @@ module jaguar
 
 	input				ram_rdy,
 	
-	output	[23:0]	abus_out,	// Main address bus output, used for OS ROM (BIOS), cart etc.
+	output	[23:0]	abus_out,	// Main address bus output, used for DRAM, OS ROM (BIOS), cart etc.
 
-	output				os_rom_ce_n,
-	output				os_rom_oe_n,
+	//output				os_rom_ce_n,
+	//output				os_rom_oe_n,
 	input		[7:0]		os_rom_q,
-	input					os_rom_oe,
+	//input					os_rom_oe,
 
 	output				cart_ce_n,
-	output	[1:0]		cart_oe_n,
+	//output	[1:0]		cart_oe_n,
 	input		[31:0]	cart_q,
-	input		[1:0]		cart_oe,
+	//input		[1:0]		cart_oe,
 
 	output	fdram,
 	
@@ -69,6 +69,16 @@ module jaguar
 	input ntsc
 );
 
+wire [1:0] cart_oe_n;
+wire [1:0] cart_oe;
+
+assign cart_oe[0] = (~cart_oe_n[0] & ~cart_ce_n);
+assign cart_oe[1] = (~cart_oe_n[1] & ~cart_ce_n);
+
+wire os_rom_ce_n;
+wire os_rom_oe_n;
+wire os_rom_oe = (~os_rom_ce_n & ~os_rom_oe_n);	// os_rom_oe feeds back TO the core, to enable the internal drivers.
+
 assign pix_clk = xvclk;
 
 wire rst = ~xresetl;
@@ -79,24 +89,15 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_aud_l;
 //assign aud_16_r = r_aud_r;
 
-//assign aud_16_l = w_aud_l;
-//assign aud_16_r = w_aud_r;
-
-reg [15:0] samp_l;
-reg [15:0] samp_r;
-always @(posedge xpclk) begin
-	if (snd_l_en) samp_l <= dspwd;
-	if (snd_r_en) samp_r <= dspwd;
-end
-assign aud_16_l = samp_l;
-assign aud_16_r = samp_r;
+assign aud_16_l = w_aud_l;
+assign aud_16_r = w_aud_r;
 
 
 //reg [2:0] clkdiv;
 reg [3:0] clkdiv;
 reg xpclk;			// Processor (Tom & Jerry) Clock.
 reg xvclk;			// Video Clock.
-reg tlw;			// Transparent Latch Write?
+reg tlw;				// Transparent Latch Write?
 
 reg fx68k_enPhi1;
 reg fx68k_enPhi2;
@@ -255,9 +256,9 @@ wire				j_xresetil;
 wire	[0:31]	j_xd_out;
 wire	[0:31]	j_xd_oe;
 
-`ifndef VERILATOR
+//`ifndef VERILATOR
 wire	[0:31]	j_xd_in;
-`endif
+//`endif
 
 wire	[0:23]	j_xa_out;
 wire	[0:23]	j_xa_oe;
@@ -991,18 +992,18 @@ eeprom eeprom_inst
 
 assign fx68k_rd_data[15:0] = { 
 	dbus[15], dbus[14], dbus[13], dbus[12],
-	dbus[11], dbus[10], dbus[9], dbus[8],
-	dbus[7], dbus[6], dbus[5], dbus[4],
-	dbus[3], dbus[2], dbus[1], dbus[0]
+	dbus[11], dbus[10], dbus[09], dbus[08],
+	dbus[07], dbus[06], dbus[05], dbus[04],
+	dbus[03], dbus[02], dbus[01], dbus[00]
 };
 
 assign abus_out[23:0] = { 
 	abus[23], abus[22], abus[21], abus[20], 
 	abus[19], abus[18], abus[17], abus[16], 
 	abus[15], abus[14], abus[13], abus[12],
-	abus[11], abus[10], abus[9], abus[8],
-	abus[7], abus[6], abus[5], abus[4],
-	abus[3], xmaska[2], xmaska[1], xmaska[0]
+	abus[11], abus[10], abus[09], abus[08],
+	abus[07], abus[06], abus[05], abus[04],
+	abus[03], xmaska[2], xmaska[1], xmaska[0]
 };
 
 // OS ROM

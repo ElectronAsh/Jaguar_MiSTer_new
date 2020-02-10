@@ -2310,11 +2310,11 @@ j_dsp dsp_inst
 	.gpu_din_13 /* OUT */ (dspwd_13),
 	.gpu_din_14 /* OUT */ (dspwd_14),
 	.gpu_din_15 /* OUT */ (dspwd_15),
-	.i2sw_0 /* OUT */ (i2s1w),				// internal I2S write strobes.
-	.i2sw_1 /* OUT */ (i2s2w),
-	.i2sw_2 /* OUT */ (i2s3w),
-	.i2sw_3 /* OUT */ (i2s4w),
-	.i2sr_0 /* OUT */ (i2s1r),				// internal I2S read strobes.
+	.i2sw_0 /* OUT */ (i2s1w),    // LTXD Left transmit data F1A148 WO.
+	.i2sw_1 /* OUT */ (i2s2w),    // RTXD Right transmit data F1A14C WO.
+	.i2sw_2 /* OUT */ (i2s3w),    // SCLK Serial Clock Frequency F1A150 WO.
+	.i2sw_3 /* OUT */ (i2s4w),    // SMODE Serial Mode F1A154 WO.
+	.i2sr_0 /* OUT */ (i2s1r),		// internal I2S read strobes.
 	.i2sr_1 /* OUT */ (i2s2r),
 	.i2sr_2 /* OUT */ (i2s3r),
 	.dr_0_out /* BUS */ (ts_local_pe_183_a0_out),	// I/O read data (busses split, and OE added, for Verilog translation).

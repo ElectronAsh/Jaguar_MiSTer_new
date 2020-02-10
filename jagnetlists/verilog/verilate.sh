@@ -1,0 +1,2 @@
+verilator --public --compiler msvc --converge-limit 2000 -Wno-PINMISSING -Wno-WIDTH -Wno-IMPLICIT -Wno-MODDUP -Wno-UNSIGNED -Wno-CASEINCOMPLETE -Wno-CASEX -Wno-SYMRSVDWORD -Wno-COMBDLY -Wno-INITIALDLY -Wno-BLKANDNBLK -Wno-UNOPT jaguar.v -I. -I../../ -I../../FX68K/pla_lined.sv -I../../FX68K -Ibase -Itom -Ijerry -cc -O3 -Wno-fatal -Mdir out -top-module jaguar -exe sim_main.cpp vga_out.cpp EasyBMP.cpp bios.cpp ssram.cpp
+

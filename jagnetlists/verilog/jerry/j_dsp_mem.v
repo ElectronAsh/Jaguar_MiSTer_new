@@ -143,6 +143,7 @@ module j_dsp_mem
 	output ram_addr_9,
 	output ram_addr_10,
 	output ram_addr_11,
+	output wire [11:0] dsp_ram_byte_addr,
 	output ramen_0,
 	output ramen_1,
 	output remrd,
@@ -362,6 +363,8 @@ assign ram_addr_10 = ram_addr_10_obuf;
 assign ram_addr_11 = ram_addr_11_obuf;
 assign statrd = statrd_obuf;
 
+// SignalTap Debug.
+(*keep*) assign dsp_ram_byte_addr = {ram_addr_11, ram_addr_10, ram_addr_9, ram_addr_8, ram_addr_7, ram_addr_6, ram_addr_5, ram_addr_4, ram_addr_3, ram_addr_2, 2'b00};
 
 // DSP_MEM.NET (111) - one : tie1
 assign one = 1'b1;
@@ -1633,16 +1636,16 @@ assign dacw_0 = gpu_addr_n_2 & gpu_addr_n_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_
 assign dacw_1 = gpu_addr_2 & gpu_addr_n_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;
 
 // DSP_MEM.NET (391) - i2sw[0] : an7h
-assign i2sw_0 = gpu_addr_n_2 & gpu_addr_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;
+assign i2sw_0 = gpu_addr_n_2 & gpu_addr_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;	// LTXD Left transmit data F1A148 WO.
 
 // DSP_MEM.NET (394) - i2sw[1] : an7h
-assign i2sw_1 = gpu_addr_2 & gpu_addr_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;
+assign i2sw_1 = gpu_addr_2 & gpu_addr_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;		// RTXD Right transmit data F1A14C WO.
 
 // DSP_MEM.NET (397) - i2sw[2] : an7h
-assign i2sw_2 = gpu_addr_n_2 & gpu_addr_n_3 & gpu_addr_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;
+assign i2sw_2 = gpu_addr_n_2 & gpu_addr_n_3 & gpu_addr_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;	// SCLK Serial Clock Frequency F1A150 WO.
 
 // DSP_MEM.NET (400) - i2sw[3] : an7h
-assign i2sw_3 = gpu_addr_2 & gpu_addr_n_3 & gpu_addr_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;
+assign i2sw_3 = gpu_addr_2 & gpu_addr_n_3 & gpu_addr_4 & gpu_addr_n_5 & gpu_addrb_6 & gpuireg & gpu_memw_obuf;		// SMODE Serial Mode F1A154 WO.
 
 // DSP_MEM.NET (406) - flagrd : an7h
 assign flagrd_obuf = gpu_addr_n_2 & gpu_addr_n_3 & gpu_addr_n_4 & gpu_addr_n_5 & gpu_addr_n_6 & gpuireg & gpu_memw_n;
