@@ -137,19 +137,19 @@ assign LED_DISK  = 0;
 assign LED_POWER = 0;
 
 
-wire clk_78m;
+wire clk_132m;
 
 wire pll_locked;
 pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
-	.outclk_0(clk_78m),
+	.outclk_0(clk_132m),
 	.locked(pll_locked)
 );
 
 
-(*keep*)wire clk_sys = clk_78m;
+(*keep*)wire clk_sys = clk_132m;
 
 
 wire [1:0] scale = status[3:2];
@@ -761,7 +761,8 @@ reg ch1_wr_req;
 reg [07:00] ch1_be;
 reg [00:63] r_dram_d;
 
-wire ram_rdy = mem_cyc == `RAM_END;
+//wire ram_rdy = mem_cyc == `RAM_END;
+wire ram_rdy = (mem_cyc == `RAM_END) || ch1_ready;	// Latency kludge.
 
 always @(posedge clk_sys or posedge reset)
 if (reset) begin
@@ -795,7 +796,8 @@ else begin
 		end
 		
 		`RAM_END:
-			if (dram_cas_n) begin
+			if (dram_cas_n) begin	// Have to wait for dram_cas_n to go high here.
+			//if (!startcas) begin		// Using startcas (low) causes a crash at the Jag logo.
 				mem_cyc <= `RAM_IDLE;
 			end
 	endcase

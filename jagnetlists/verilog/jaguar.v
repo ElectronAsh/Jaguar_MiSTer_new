@@ -299,7 +299,7 @@ wire				j_xvclkdiv;
 wire				j_xchrdiv;
 wire				j_xpclkout;
 wire				j_xpclkdiv;
-wire				j_xresetl;
+wire				j_xresetl;	// OUTPUT from Jerry. Would normally drive xresetl on Tom etc. ElectronAsh.
 wire				j_xchrout;
 wire	[0:1]		j_xrdac;
 wire	[0:1]		j_xldac;
@@ -352,7 +352,7 @@ wire	[31:0]	j_xd_r;
 wire	[23:0]	j_xa_r;
 
 
-(*keep*) wire [23:0] fx68k_byte_addr;	// Address bus
+(*keep*) wire [23:0] fx68k_byte_addr;	// Address bus. (LSB bit forced to zero here, for easier debug. ElectronAsh).
 (*keep*) wire [15:0] fx68k_rd_data;		// Data bus in
 //(*keep*) wire [15:0] j68_wr_data;		// Data bus out
 
@@ -385,12 +385,12 @@ wire	ee_di;
 wire	ee_do;
 
 // Scandoubler
-(*noprune*) reg [15:0]	vc				= 16'h0000;
-(*noprune*) reg [15:0]	hc				= 16'h0000;
-(*noprune*) reg [15:0]	vga_hc		= 16'h0000;
-(*noprune*) reg hs_o_prev				= 1'b0;
-(*noprune*) reg hhs_o_prev				= 1'b0;
-(*noprune*) reg vs_o_prev				= 1'b0;
+(*noprune*) reg [15:0]	vc			= 16'h0000;
+(*noprune*) reg [15:0]	hc			= 16'h0000;
+(*noprune*) reg [15:0]	vga_hc	= 16'h0000;
+(*noprune*) reg hs_o_prev			= 1'b0;
+(*noprune*) reg hhs_o_prev			= 1'b0;
+(*noprune*) reg vs_o_prev			= 1'b0;
 
 wire	[23:0]	lb_d;
 wire				lb0_we;
@@ -420,8 +420,8 @@ assign casl = xcasl[0];
 
 assign xa_r = { 
 	xa_in[23], xa_in[22], xa_in[21], xa_in[20], xa_in[19], xa_in[18], xa_in[17], xa_in[16], 
-	xa_in[15], xa_in[14], xa_in[13], xa_in[12], xa_in[11], xa_in[10], xa_in[9], xa_in[8], 
-	xa_in[7], xa_in[6], xa_in[5], xa_in[4], xa_in[3], xa_in[2], xa_in[1], xa_in[0]
+	xa_in[15], xa_in[14], xa_in[13], xa_in[12], xa_in[11], xa_in[10], xa_in[09], xa_in[08], 
+	xa_in[07], xa_in[06], xa_in[05], xa_in[04], xa_in[03], xa_in[02], xa_in[01], xa_in[00]
 };
 assign xd_r = { 
 	xd_in[63], xd_in[62], xd_in[61], xd_in[60], xd_in[59], xd_in[58], xd_in[57], xd_in[56], 
@@ -430,21 +430,21 @@ assign xd_r = {
 	xd_in[39], xd_in[38], xd_in[37], xd_in[36], xd_in[35], xd_in[34], xd_in[33], xd_in[32], 
 	xd_in[31], xd_in[30], xd_in[29], xd_in[28], xd_in[27], xd_in[26], xd_in[25], xd_in[24], 
 	xd_in[23], xd_in[22], xd_in[21], xd_in[20], xd_in[19], xd_in[18], xd_in[17], xd_in[16], 
-	xd_in[15], xd_in[14], xd_in[13], xd_in[12], xd_in[11], xd_in[10], xd_in[9], xd_in[8], 
-	xd_in[7], xd_in[6], xd_in[5], xd_in[4], xd_in[3], xd_in[2], xd_in[1], xd_in[0]
+	xd_in[15], xd_in[14], xd_in[13], xd_in[12], xd_in[11], xd_in[10], xd_in[09], xd_in[08], 
+	xd_in[07], xd_in[06], xd_in[05], xd_in[04], xd_in[03], xd_in[02], xd_in[01], xd_in[00]
 };
 
 assign j_xa_r = { 
 	j_xa_in[23], j_xa_in[22], j_xa_in[21], j_xa_in[20], j_xa_in[19], j_xa_in[18], j_xa_in[17], j_xa_in[16], 
-	j_xa_in[15], j_xa_in[14], j_xa_in[13], j_xa_in[12], j_xa_in[11], j_xa_in[10], j_xa_in[9], j_xa_in[8], 
-	j_xa_in[7], j_xa_in[6], j_xa_in[5], j_xa_in[4], j_xa_in[3], j_xa_in[2], j_xa_in[1], j_xa_in[0]
+	j_xa_in[15], j_xa_in[14], j_xa_in[13], j_xa_in[12], j_xa_in[11], j_xa_in[10], j_xa_in[09], j_xa_in[08], 
+	j_xa_in[07], j_xa_in[06], j_xa_in[05], j_xa_in[04], j_xa_in[03], j_xa_in[02], j_xa_in[01], j_xa_in[00]
 };
 
 assign j_xd_r = { 
 	j_xd_in[31], j_xd_in[30], j_xd_in[29], j_xd_in[28], j_xd_in[27], j_xd_in[26], j_xd_in[25], j_xd_in[24], 
 	j_xd_in[23], j_xd_in[22], j_xd_in[21], j_xd_in[20], j_xd_in[19], j_xd_in[18], j_xd_in[17], j_xd_in[16], 
-	j_xd_in[15], j_xd_in[14], j_xd_in[13], j_xd_in[12], j_xd_in[11], j_xd_in[10], j_xd_in[9], j_xd_in[8], 
-	j_xd_in[7], j_xd_in[6], j_xd_in[5], j_xd_in[4], j_xd_in[3], j_xd_in[2], j_xd_in[1], j_xd_in[0]
+	j_xd_in[15], j_xd_in[14], j_xd_in[13], j_xd_in[12], j_xd_in[11], j_xd_in[10], j_xd_in[09], j_xd_in[08], 
+	j_xd_in[07], j_xd_in[06], j_xd_in[05], j_xd_in[04], j_xd_in[03], j_xd_in[02], j_xd_in[01], j_xd_in[00]
 };
 
 
@@ -476,6 +476,7 @@ assign j_xd_r = {
 	// #80 xresetl  = 1'b1;
 // end
 // `endif
+
 
 
 wire refreq;
@@ -517,9 +518,9 @@ end
 
 assign xdbrl[0] = j_xdbrl[0];	// Requests the bus for the DSP
 assign xdbrl[1] = 1'b1; // Unconnected
-assign xlp = 1'b0; // Light Pen
+assign xlp = 1'b0; 		// Light Pen
 assign xdint = j_xint;
-assign xtest = 1'b0;
+assign xtest = 1'b0;		// "test" pins on both Tom and Jerry are tied to GND on the Jag.
 //assign xwaitl = 1'b1;
 
 // JERRY - Inputs
@@ -527,15 +528,17 @@ assign j_xdspcsl = xdspcsl;
 assign j_xpclkosc = xvclk;
 assign j_xpclkin = xpclk;
 //assign j_xpclkin = tlw; // /!\
-assign j_xdbgl = xdbgl; 
-assign j_xoel_0 = xoel[0];
-assign j_xwel_0 = xwel[0];
+assign j_xdbgl = xdbgl; 	// Bus Grant from Tom.
+assign j_xoel_0 = xoel[0];	// Output Enable.
+assign j_xwel_0 = xwel[0];	// Write Enable.
 assign j_xserin = 1'b1;
-assign j_xdtackl = xdtackl; 
-assign j_xi2srxd = 1'b1;
-assign j_xeint[0] = 1'b1;
-assign j_xeint[1] = 1'b1;
-assign j_xtest = xtest;
+assign j_xdtackl = xdtackl;// Data Acknowledge from Tom (also goes to the 68K).
+assign j_xi2srxd = 1'b1;	// (Async?) I2S receive.
+assign j_xeint[0] = 1'b1;	// External Interrupt.
+assign j_xeint[1] = 1'b1;	// External Interrupt.
+
+assign j_xtest = 1'b0;	// "test" pins on both Tom and Jerry are tied to GND on the Jag.
+
 assign j_xchrin = 1'b1;	// Not used
 assign j_xresetil = xresetl;
 
@@ -792,7 +795,7 @@ assign j_xd_in[14] = (den[0]) ? xd_out[14] :
 assign j_xd_in[15] = (den[0]) ? xd_out[15] : 
 	(dram_oe[0]) ? dram_q[15] : (!fx68k_as_n & !fx68k_rw & !fx68k_uds_n & xba_in) ? fx68k_dout[15] : (cart_oe[0]) ? cart_q[15] : (joy_bus_oe) ? joy_bus[15] : 1'bz;
 
-assign j_xd_in[16:31] = 16'b11111111_11111111;
+assign j_xd_in[16:31] = 16'b11111111_11111111;	// Data bus bits [31:16] on Jerry are pulled High on the Jag schematics.
 
 /*assign xd_in[0:15] = (den[0]) ? xd_out[0:15] : dbus_dly[0:15];
 assign xd_in[16:31] = (den[1]) ? xd_out[16:31] : dbus_dly[16:31];
@@ -815,6 +818,7 @@ assign xhs_in = xhs_out;
 assign xvs_in = xvs_out;
 
 // Latching of memory configuration register on startup
+// This XMA pins are pulled High or Low by resistors on the Jag board.
 assign xma_in[0] = (xma_oe[0]) ? xma_out[0] : 1'b1; // ROMHI
 assign xma_in[1] = (xma_oe[1]) ? xma_out[1] : 1'b0; // ROMWID0
 assign xma_in[2] = (xma_oe[2]) ? xma_out[2] : 1'b0; // ROMWID1

@@ -11,6 +11,11 @@
 #include <verilated.h>
 #include "Vjaguar.h"
 
+#define VM_TRACE 1
+#if VM_TRACE
+#include <verilated_vcd_c.h>       // Trace file format header
+VerilatedVcdC* tfp = new VerilatedVcdC;
+#endif
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -747,10 +752,12 @@ int verilate() {
 int verilate()
 {
 	if (!Verilated::gotFinish()) {
+/*
 #if VM_TRACE
 		if ((ms % LOG_EVERY_MS) == 0)
 			tfp->openNext();
 #endif
+*/
 		//fprintf(stderr, "@%d ms\n", ms);
 		//fprintf(stdout, "@%d ms\n", ms);
 
@@ -768,13 +775,17 @@ int verilate()
 			top->ntsc = 1;
 			top->ram_rdy = 1;
 
+			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__go = 1;
+			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__got = 1;
+			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__go = 1;
+
 			//top->os_rom_oe = (!top->os_rom_oe_n) && (!top->os_rom_ce_n);
 			top->os_rom_q = rom_ptr[top->abus_out];
 
-			if (main_time < 100) {
+			if (main_time < 10) {
 				top->xresetl = 0;		// Assert reset
 			}
-			if (main_time == 100) {
+			if (main_time == 10) {
 				top->xresetl = 1;   	// Deassert reset
 			}
 
@@ -865,12 +876,8 @@ int verilate()
 				*/
 
 #if VM_TRACE
-				// Dump signals into VCD file
-				if (tfp) {
-					if (ms >= LOG_START_MS) {
-						tfp->dump(hcycle * HALF_PER_PS);
-					}
-				}
+	// Dump signals into VCD file
+	if (tfp) tfp->dump(main_time);
 #endif
 			//} // if ((main_time & 1) == 0)
 
@@ -951,6 +958,14 @@ int main(int argc, char** argv, char** env) {
 
 
 	Verilated::commandArgs(argc, argv);
+
+#if VM_TRACE                       // If verilator was invoked with --trace
+	Verilated::traceEverOn(true);    // Verilator must compute traced signals
+	VL_PRINTF("Enabling waves...\n");
+//	VerilatedVcdC* tfp = new VerilatedVcdC;
+	top->trace(tfp,99);            // Trace 99 levels of hierarchy
+	tfp->open("vlt_dump.vcd");      // Open the dump file
+#endif
 	
 	memset(fb0_ptr, 0x00, fb0_size);
 
@@ -1196,19 +1211,19 @@ int main(int argc, char** argv, char** env) {
 		ImGui::End();
 
 		ImGui::Begin("Core Registers");
-		ImGui::Text("Tom aen:	 %d",top->jaguar__DOT__aen);
-		ImGui::Text("Jerry aen:	 %d",top->jaguar__DOT__j_aen);
-		ImGui::Text("abus_out:	 0x%06X", top->abus_out);
-		ImGui::Text("dbus:       0x%016X",top->jaguar__DOT__dbus);
+		ImGui::Text("Tom aen:       %d",top->jaguar__DOT__aen);
+		ImGui::Text("Jerry aen:     %d",top->jaguar__DOT__j_aen);
+		ImGui::Text("abus_out:      0x%06X", top->abus_out);
+		ImGui::Text("dbus:          0x%016X",top->jaguar__DOT__dbus);
 		ImGui::Separator();
-		ImGui::Text("fx68k_addr: 0x%06X",top->jaguar__DOT__fx68k_byte_addr);
-		ImGui::Text("fx68k_din:  0x%04X",top->jaguar__DOT__fx68k_din);
-		ImGui::Text("fx68k_dout: 0x%04X",top->jaguar__DOT__fx68k_dout);
-		ImGui::Text("fx68k_br_n: %d",top->jaguar__DOT__fx68k_br_n);
-		ImGui::Text("fx68k_bg_n: %d",top->jaguar__DOT__fx68k_bg_n);
+		ImGui::Text("fx68k_addr:    0x%06X",top->jaguar__DOT__fx68k_byte_addr);
+		ImGui::Text("fx68k_din:     0x%04X",top->jaguar__DOT__fx68k_din);
+		ImGui::Text("fx68k_dout:    0x%04X",top->jaguar__DOT__fx68k_dout);
+		ImGui::Text("fx68k_br_n:    %d",top->jaguar__DOT__fx68k_br_n);
+		ImGui::Text("fx68k_bg_n:    %d",top->jaguar__DOT__fx68k_bg_n);
 		ImGui::Text("fx68k_bgack_n: %d",top->jaguar__DOT__fx68k_bgack_n);
-		ImGui::Text("fx68k_pch: 0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcH);
-		ImGui::Text("fx68k_pcl: 0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcL);
+		ImGui::Text("fx68k_pch:     0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcH);
+		ImGui::Text("fx68k_pcl:     0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcL);
 		ImGui::Separator();
 		ImGui::Text("clkdiv:     %d", top->jaguar__DOT__clkdiv);
 		ImGui::Text("tlw:        %d",top->jaguar__DOT__tom_inst__DOT__tlw);
@@ -1285,6 +1300,10 @@ int main(int argc, char** argv, char** env) {
 	CleanupDeviceD3D();
 	DestroyWindow(hwnd);
 	UnregisterClass(wc.lpszClassName, wc.hInstance);
+
+#if VM_TRACE
+	if (tfp) tfp->close();
+#endif
 
 	return 0;
 }
