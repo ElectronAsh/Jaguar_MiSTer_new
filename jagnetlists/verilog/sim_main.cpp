@@ -5,13 +5,15 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <inttypes.h>
+
 //#include <atomic>
 //#include <fstream>
 
 #include <verilated.h>
 #include "Vjaguar.h"
 
-#define VM_TRACE 1
+#define VM_TRACE 0
 #if VM_TRACE
 #include <verilated_vcd_c.h>       // Trace file format header
 VerilatedVcdC* tfp = new VerilatedVcdC;
@@ -26,6 +28,9 @@ VerilatedVcdC* tfp = new VerilatedVcdC;
 #include <tchar.h>
 
 #include "imgui_memory_editor.h"
+
+bool dram_cas_n_old;
+bool os_rom_oe_old;
 
 uint32_t t_size;
 uint32_t t_addr;
@@ -232,11 +237,14 @@ unsigned int file_size;
 
 unsigned char buffer[16];
 
-unsigned int rom_size = 1024 * 128;			// 128KB. (8-bit wide).
-uint8_t *rom_ptr = (uint8_t *) malloc(rom_size);
+unsigned int ram_size = 1024 * 1024 * 2;		// 2MB. (64-bit wide).
+uint64_t *ram_ptr = (uint64_t *)malloc(ram_size);
 
-unsigned int exp_size = 1024 * 512 * 4;		// 2MB. (32-bit wide).
-uint32_t *exp_ptr = (uint32_t *)malloc(exp_size);
+unsigned int rom_size = 1024 * 128;			// 128KB. (8-bit wide).
+uint8_t *bios_ptr = (uint8_t *)malloc(rom_size);
+
+unsigned int cart_size = 1024 * 1024 * 2;		// 2MB. (32-bit wide).
+uint32_t *cart_ptr = (uint32_t *)malloc(cart_size);
 
 unsigned int sp_ram_size = 256 * 8 * 2;		// 4KB. (16-bit wide).
 uint16_t *sp_ram_ptr = (uint16_t *)malloc(sp_ram_size);
@@ -246,9 +254,6 @@ uint16_t *fb0_ptr = (uint16_t *)malloc(fb0_size);
 
 unsigned int fb1_size = 1024 * 128 * 2;		// 256KB. (16-bit wide).
 uint16_t *fb1_ptr = (uint16_t *)malloc(fb1_size);
-
-unsigned int ram_size = 1024 * 512 * 4;		// 2MB. (32-bit wide).
-uint32_t *ram_ptr = (uint32_t *) malloc(ram_size);
 
 unsigned int vram_size = 1024 * 1024 * 4;	// 4MB. (32-bit wide).
 uint32_t *vram_ptr = (uint32_t *) malloc(vram_size);
@@ -680,7 +685,7 @@ int verilate() {
 				//if (top->jaguar__DOT__sp_we) sp_ram_ptr[top->jaguar__DOT__sp_addr] = top->jaguar__DOT__sp_din;
 
 				// NOTE: Might need to byte-swap each 4-byte chunk!
-				if (top->jaguar__DOT__gaddr < rom_size)  top->jaguar__DOT__gdata = rom_ptr[top->jaguar__DOT__gaddr];
+				if (top->jaguar__DOT__gaddr < rom_size)  top->jaguar__DOT__gdata = bios_ptr[top->jaguar__DOT__gaddr];
 
 //			if (prev_hsync && !top->VGA_HS) {
 //				//printf("Line Count: %d\n", line_count);
@@ -767,7 +772,7 @@ int verilate()
 		char ram_ready_count = 0;
 
 		while (!Verilated::gotFinish()) {
-			top->dram_oe = !((top->dram_oe_n>>3)&1) || !((top->dram_oe_n>>2)&1) || !((top->dram_oe_n>>1)&1) || !((top->dram_oe_n>>0)&1);
+			top->dram_oe = (!top->dram_cas_n) ? ~(top->dram_oe_n&0xF) : 0;
 			//top->cart_oe = ~top->cart_oe_n;
 
 			top->xwaitl = 1;
@@ -775,105 +780,65 @@ int verilate()
 			top->ntsc = 1;
 			top->ram_rdy = 1;
 
-			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__go = 1;
-			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__got = 1;
-			top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__go = 1;
+			//if (top->jaguar__DOT__fx68k_inst__DOT__irdDecode__DOT__ird) {
+				//printf("fx68k IR: 0x%04X\n", top->jaguar__DOT__fx68k_inst__DOT__Ir);
+			//}
 
-			//top->os_rom_oe = (!top->os_rom_oe_n) && (!top->os_rom_ce_n);
-			top->os_rom_q = rom_ptr[top->abus_out];
+			//top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__go = 1;
+			//top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__dsp_ctrl_inst__DOT__got = 1;
+			//top->jaguar__DOT__jerry_inst__DOT__dsp_inst__DOT__go = 1;
 
-			if (main_time < 10) {
+			top->jaguar__DOT__os_rom_oe = (!top->jaguar__DOT__os_rom_oe_n) && (!top->jaguar__DOT__os_rom_ce_n);
+			if (top->jaguar__DOT__os_rom_oe) {
+				top->os_rom_q = bios_ptr[ (top->abus_out)&0x1FFFF ];
+				//printf("BIOS read! abus_out:0x%06X  data:0x%02X\n",top->abus_out, top->os_rom_q);
+			}
+			//os_rom_oe_old = top->jaguar__DOT__os_rom_oe;
+
+			if (top->cart_ce_n==0) {
+				top->cart_q = cart_ptr[ (top->abus_out&0x7FFFFF)>>2 ];
+				printf("cart_ce_n asserted! abus_out:0x%06X  cart_word_addr:0x%08X  cart_q:0x%08X\n", top->abus_out, (top->abus_out&0x7FFFFF)>>2, top->cart_q);
+			}
+
+			uint64_t ramdata;
+			if (top->dram_cas_n==0 && dram_cas_n_old) {
+				if (top->dram_oe_n != 0xF) {
+					top->dram_q = ram_ptr[top->abus_out >> 3];
+					printf("SDRAM READ  BYTE_ADDR=%08x  DIN=%016lx\n",top->abus_out,top->dram_q);
+				}
+
+				if ( ((top->dram_uw_n << 4) | (top->dram_lw_n & 0xF)) != 0xFF ) {
+					ramdata = ram_ptr[top->abus_out >> 3];	// Read the existing data from our RAM.
+					char BE7 = !((top->dram_uw_n>>0)&1);	// <- Note the slightly strange ordering here.
+					char BE6 = !((top->dram_lw_n>>0)&1);
+					char BE5 = !((top->dram_uw_n>>1)&1);
+					char BE4 = !((top->dram_lw_n>>1)&1);
+					char BE3 = !((top->dram_uw_n>>2)&1);
+					char BE2 = !((top->dram_lw_n>>2)&1);
+					char BE1 = !((top->dram_uw_n>>3)&1);
+					char BE0 = !((top->dram_lw_n>>3)&1);
+					if (BE7) ramdata = (ramdata & 0x00FFFFFFFFFFFFFF) | (top->dram_d & 0xFF00000000000000);
+					if (BE6) ramdata = (ramdata & 0xFF00FFFFFFFFFFFF) | (top->dram_d & 0x00FF000000000000);
+					if (BE5) ramdata = (ramdata & 0xFFFF00FFFFFFFFFF) | (top->dram_d & 0x0000FF0000000000);
+					if (BE4) ramdata = (ramdata & 0xFFFFFF00FFFFFFFF) | (top->dram_d & 0x000000FF00000000);
+					if (BE3) ramdata = (ramdata & 0xFFFFFFFF00FFFFFF) | (top->dram_d & 0x00000000FF000000);
+					if (BE2) ramdata = (ramdata & 0xFFFFFFFFFF00FFFF) | (top->dram_d & 0x0000000000FF0000);
+					if (BE1) ramdata = (ramdata & 0xFFFFFFFFFFFF00FF) | (top->dram_d & 0x000000000000FF00);
+					if (BE0) ramdata = (ramdata & 0xFFFFFFFFFFFFFF00) | (top->dram_d & 0x00000000000000FF);
+					ram_ptr[top->abus_out >> 3] = ramdata;	// Write the modifed value back to our RAM!
+					sprintf(my_string, "SDRAM WRITE  BYTE_ADDR: 0x%06X  DOUT: 0x%016llX  BE: b%d%d%d%d%d%d%d%d  NEWDATA: 0x%016llX\n", top->abus_out, top->dram_d , BE7&1,BE6&1,BE5&1,BE4&1,BE3&1,BE2&1,BE1&1,BE0&1,ramdata);
+					printf(my_string);
+					//MyAddLog(my_string);
+				}
+			}
+			dram_cas_n_old = top->dram_cas_n;
+
+			if (main_time == 0) {
 				top->xresetl = 0;		// Assert reset
 			}
-			if (main_time == 10) {
+			if (main_time == 100) {		// Reset MUST stay asserted for a minimum number of cycles on the FX68K core!
 				top->xresetl = 1;   	// Deassert reset
 			}
-
-			/*
-			if ((main_time & 1) == 1) {
-				top->sys_clk = 1;
-			}
-			if ((main_time & 1) == 0) {
-				top->sys_clk = 0;
-			*/
-				// Dump VGA output
-				// vga_clk   = top->OSC_CLK0;
-				/*if (top->OSC_CLK0)
-				vga_clk = vga_clk ^ 1;*/
-				//vga_vs = top->VGA_VS;
-				//vga_hs = top->VGA_HS;
-				//vga_r = top->VGA_R;
-				//vga_g = top->VGA_G;
-				//vga_b = top->VGA_B;
-				//vga->eval(hcycle / 2,
-					//vga_clk, vga_vs, vga_hs,
-					//vga_r, vga_g, vga_b);
-
-				// OS ROM
-				//bios_clk = sys_clk;
-				//bios_ce_n = top->os_rom_ce_n;
-				//bios_oe_n = top->os_rom_oe_n;
-				//bios_a = top->os_rom_a;
-
-				//bios->eval(hcycle / 2, bios_clk,
-					//bios_ce_n, bios_oe_n, bios_a,
-					//bios_q, bios_oe);
-
-				//top->os_rom_q = bios_q;
-				//top->os_rom_oe = bios_oe;
-
-				//top->os_rom_oe = (!top->os_rom_ce_n && !top->os_rom_oe_n) ? 1 : 0;
-				//top->os_rom_q = rom_ptr[ top->os_rom_a ];
-
-				//uint64_t ramdata;
-
-				//top->DDRAM_BUSY = 0;
-
-				//if ( (top->DDRAM_ADDR>>3) > ram_size) printf("DDRAM_ADDR outside of ram_ptr range!\n");		
-				/*
-				if (top->DDRAM_WE) {
-					ramdata = ram_ptr[top->DDRAM_ADDR];	// Read the existing data from our RAM.
-
-														// Check the BE bits, to mask which bytes get written to our RAM value (using the existing data as well).
-					bool BE7 = top->DDRAM_BE & 0x80;
-					bool BE6 = top->DDRAM_BE & 0x40;
-					bool BE5 = top->DDRAM_BE & 0x20;
-					bool BE4 = top->DDRAM_BE & 0x10;
-					bool BE3 = top->DDRAM_BE & 0x08;
-					bool BE2 = top->DDRAM_BE & 0x04;
-					bool BE1 = top->DDRAM_BE & 0x02;
-					bool BE0 = top->DDRAM_BE & 0x01;
-					if (BE7) ramdata = ramdata & 0x00FFFFFFFFFFFFFF | top->DDRAM_DIN & 0xFF00000000000000;
-					if (BE6) ramdata = ramdata & 0xFF00FFFFFFFFFFFF | top->DDRAM_DIN & 0x00FF000000000000;
-					if (BE5) ramdata = ramdata & 0xFFFF00FFFFFFFFFF | top->DDRAM_DIN & 0x0000FF0000000000;
-					if (BE4) ramdata = ramdata & 0xFFFFFF00FFFFFFFF | top->DDRAM_DIN & 0x000000FF00000000;
-					if (BE3) ramdata = ramdata & 0xFFFFFFFF00FFFFFF | top->DDRAM_DIN & 0x00000000FF000000;
-					if (BE2) ramdata = ramdata & 0xFFFFFFFFFF00FFFF | top->DDRAM_DIN & 0x0000000000FF0000;
-					if (BE1) ramdata = ramdata & 0xFFFFFFFFFFFF00FF | top->DDRAM_DIN & 0x000000000000FF00;
-					if (BE0) ramdata = ramdata & 0xFFFFFFFFFFFFFF00 | top->DDRAM_DIN & 0x00000000000000FF;
-
-					ram_ptr[top->DDRAM_ADDR] = ramdata;	// Write the modifed value back to our RAM!
-
-					if (cart_load_done == 1) printf("DDR WRITE  BCNT=%d  DDR_ADDR=%08x  BYTE_ADDR=%08x  DOUT=%016lx  BE=%d%d%d%d%d%d%d%d  NEWDATA=%016lx\n", top->DDRAM_BURSTCNT, top->DDRAM_ADDR, top->DDRAM_ADDR << 3, top->DDRAM_DIN, BE7, BE6, BE5, BE4, BE3, BE2, BE1, BE0, ramdata);
-				}
-
-				if (top->DDRAM_RD) {
-					printf("DDR READ   BCNT=%d  DDR_ADDR=%08x  BYTE_ADDR=%08x  DATA=%016lx\n", top->DDRAM_BURSTCNT, top->DDRAM_ADDR, top->DDRAM_ADDR << 3, ramdata);
-					ram_ready_count = 6;	// Simulate the DDR latency. Sort of.
-				}
-
-				//printf("cart_a: 0x%06X\n", top->cart_a);
-
-				if (ram_ready_count>0) {
-					top->DDRAM_DOUT_READY = 0;
-					ram_ready_count--;
-				}
-				else {
-					ramdata = ram_ptr[top->DDRAM_ADDR];
-					top->DDRAM_DOUT = ramdata;
-					top->DDRAM_DOUT_READY = 1;
-				}
-				*/
 
 #if VM_TRACE
 	// Dump signals into VCD file
@@ -882,10 +847,10 @@ int verilate()
 			//} // if ((main_time & 1) == 0)
 
 
-			top->sys_clk = 1;
+			top->sys_clk = !top->sys_clk;
 			top->eval();            // Evaluate model!
-			top->sys_clk = 0;
-			top->eval();            // Evaluate model!
+			//top->sys_clk = 0;
+			//top->eval();            // Evaluate model!
 			main_time++;            // Time passes...
 
 			return 1;
@@ -961,7 +926,7 @@ int main(int argc, char** argv, char** env) {
 
 #if VM_TRACE                       // If verilator was invoked with --trace
 	Verilated::traceEverOn(true);    // Verilator must compute traced signals
-	VL_PRINTF("Enabling waves...\n");
+	VL_PRINTF("Enabling VCD file output...\n");
 //	VerilatedVcdC* tfp = new VerilatedVcdC;
 	top->trace(tfp,99);            // Trace 99 levels of hierarchy
 	tfp->open("vlt_dump.vcd");      // Open the dump file
@@ -979,6 +944,8 @@ int main(int argc, char** argv, char** env) {
 	memset(vga_ptr,  0xAA, vga_size);
 
 	memset(ram_ptr, 0x00, ram_size);
+
+	ram_ptr[0] = 0x0000000000001;
 	
 	/*
 	// Can't get this to work without it segfaulting atm? OzOnE.
@@ -1012,6 +979,7 @@ int main(int argc, char** argv, char** env) {
 
 	FILE *romfile;
 	romfile = fopen("jagboot.rom", "r");
+	//romfile = fopen("jagboot_sr_patched.rom", "r");
 	if (romfile != NULL) { sprintf(my_string, "\nBIOS ROM file loaded OK.\n");  MyAddLog(my_string); }
 	else { sprintf(my_string, "\nBIOS ROM file not found!\n\n"); MyAddLog(my_string); return 0; }
 
@@ -1022,7 +990,21 @@ int main(int argc, char** argv, char** env) {
 	fseek(romfile, 0L, SEEK_END);
 	file_size = ftell(romfile);
 	fseek(romfile, 0L, SEEK_SET);
-	fread(rom_ptr, 1, rom_size, romfile);	// Read the whole ROM file into RAM.
+	fread(bios_ptr, 1, rom_size, romfile);	// Read the whole ROM file into RAM.
+
+
+	FILE *cartfile;
+	cartfile = fopen("cyber.rom","r");
+	if(cartfile != NULL) { sprintf(my_string,"\nCart ROM file loaded OK.\n");  MyAddLog(my_string); } else { sprintf(my_string,"\nCart ROM file not found!\n\n"); MyAddLog(my_string); return 0; }
+
+	if(cartfile != NULL) printf("\nCart ROM file loaded OK.\n");
+	else printf("\nCart ROM file not found!\n\n");
+
+	//unsigned int file_size;
+	fseek(cartfile,0L,SEEK_END);
+	file_size = ftell(cartfile);
+	fseek(cartfile,0L,SEEK_SET);
+	fread(cart_ptr, 1, cart_size, cartfile);	// Read the whole ROM file into RAM.
 	
 	/*
 	vgap = fopen("vga_out.raw","w");
@@ -1202,12 +1184,12 @@ int main(int argc, char** argv, char** env) {
 		ImGui::End();
 
 
-		ImGui::Begin("BIOS ROM Viewer");
+		ImGui::Begin("Cart ROM Viewer");
 		/*
 		ImGui::Checkbox("Follow Writes", &follow_writes);
 		if (follow_writes) write_address = top->sd_addr << 2;
 		*/
-		mem_edit_1.DrawContents(rom_ptr, rom_size, 0);
+		mem_edit_1.DrawContents(cart_ptr, rom_size, 0);
 		ImGui::End();
 
 		ImGui::Begin("Core Registers");
@@ -1217,20 +1199,34 @@ int main(int argc, char** argv, char** env) {
 		ImGui::Text("dbus:          0x%016X",top->jaguar__DOT__dbus);
 		ImGui::Separator();
 		ImGui::Text("fx68k_addr:    0x%06X",top->jaguar__DOT__fx68k_byte_addr);
+		ImGui::Text("fx68k_Ird:     0x%04X",top->jaguar__DOT__fx68k_inst__DOT__Ird);
 		ImGui::Text("fx68k_din:     0x%04X",top->jaguar__DOT__fx68k_din);
 		ImGui::Text("fx68k_dout:    0x%04X",top->jaguar__DOT__fx68k_dout);
 		ImGui::Text("fx68k_br_n:    %d",top->jaguar__DOT__fx68k_br_n);
 		ImGui::Text("fx68k_bg_n:    %d",top->jaguar__DOT__fx68k_bg_n);
 		ImGui::Text("fx68k_bgack_n: %d",top->jaguar__DOT__fx68k_bgack_n);
-		ImGui::Text("fx68k_pch:     0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcH);
-		ImGui::Text("fx68k_pcl:     0x%06X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcL);
+		ImGui::Text("fx68k_pch:     0x%04X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcH);
+		ImGui::Text("fx68k_pcl:     0x%04X",top->jaguar__DOT__fx68k_inst__DOT__excUnit__DOT__PcL);
+		ImGui::Text("fx68k_tState:  %d",top->jaguar__DOT__fx68k_inst__DOT__tState);
+		ImGui::Text("fx68k_enT1:    %d",top->jaguar__DOT__fx68k_inst__DOT__enT1);
+		ImGui::Text("fx68k_enT2:    %d",top->jaguar__DOT__fx68k_inst__DOT__enT2);
+		ImGui::Text("fx68k_enT3:    %d",top->jaguar__DOT__fx68k_inst__DOT__enT3);
+		ImGui::Text("fx68k_enT4:    %d",top->jaguar__DOT__fx68k_inst__DOT__enT4);
+		ImGui::Text("pswS (Sup):    %d",top->jaguar__DOT__fx68k_inst__DOT__pswS);
 		ImGui::Separator();
 		ImGui::Text("clkdiv:     %d", top->jaguar__DOT__clkdiv);
-		ImGui::Text("tlw:        %d",top->jaguar__DOT__tom_inst__DOT__tlw);
+		ImGui::Text("tlw:        %d", top->jaguar__DOT__tom_inst__DOT__tlw);
 		ImGui::Text("xpclk:      %d", top->jaguar__DOT__tom_inst__DOT__xpclk);
 		ImGui::Text("xvclk:      %d", top->jaguar__DOT__tom_inst__DOT__xvclk);
 		ImGui::Text("enPhi1:     %d", top->jaguar__DOT__fx68k_enPhi1);
 		ImGui::Text("enPhi2:     %d", top->jaguar__DOT__fx68k_enPhi2);
+		ImGui::Text("IPL0n:      %d", top->jaguar__DOT__fx68k_inst__DOT__IPL0n);
+		ImGui::Text("IPL1n:      %d", top->jaguar__DOT__fx68k_inst__DOT__IPL1n);
+		ImGui::Text("IPL2n:      %d", top->jaguar__DOT__fx68k_inst__DOT__IPL2n);
+		
+		ImGui::Text("iIpl:      %d", top->jaguar__DOT__fx68k_inst__DOT__iIpl);
+		
+
 		ImGui::Separator();
 		ImGui::Text("os_rom_q:   0x%02X", top->os_rom_q);
 		//ImGui::Text("os_rom_oe:  %d", top->os_rom_oe);
@@ -1238,13 +1234,15 @@ int main(int argc, char** argv, char** env) {
 		ImGui::Text("cart_q:     0x%08X", top->cart_q);
 		//ImGui::Text("cart_oe:    0x%01X", top->cart_oe);
 		ImGui::Separator();
-		ImGui::Text("dram_a:     0x%02X", top->dram_a);
+		ImGui::Text("dram_a:     0x%03X", top->dram_a);
 		ImGui::Text("startcas:   %d", top->startcas);
 		ImGui::Text("dram_cas_n: %d", top->dram_cas_n);
 		ImGui::Text("dram_oe_n:  b%d%d", (top->dram_oe_n>>1)&1, top->dram_oe_n&1);
 		ImGui::Text("dram_uw_n:  b%d%d%d%d", (top->dram_uw_n>>3)&1, (top->dram_uw_n>>2)&1, (top->dram_uw_n>>1)&1, top->dram_uw_n&1);
 		ImGui::Text("dram_lw_n:  b%d%d%d%d", (top->dram_lw_n>>3)&1, (top->dram_lw_n>>2)&1, (top->dram_lw_n>>1)&1, top->dram_lw_n&1);
 		ImGui::Text("dram_oe:    b%d%d%d%d", (top->dram_oe>>3)&1, (top->dram_oe>>2)&1, (top->dram_oe>>1)&1, top->dram_oe&1);
+		ImGui::Separator();
+		ImGui::Text("xmaska:     0x%02X",top->jaguar__DOT__xmaska);
 		ImGui::Separator();
 
 		if (main_time != old_main_time) {

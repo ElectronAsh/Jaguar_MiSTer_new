@@ -15,6 +15,35 @@
 // Define this to run a self contained compilation test build
 // `define FX68K_TEST
 
+// enums don't seem to work correctly in Verilator, so added these. ElectronAsh...
+//
+//enum int unsigned { T0 = 0, T1, T2, T3, T4} tState;
+parameter  T0 = 0;
+parameter  T1 = 1;
+parameter  T2 = 2;
+parameter  T3 = 3;
+parameter  T4 = 4;
+
+//enum int unsigned { DRESET = 0, DIDLE, D1, D_BR, D_BA, D_BRA, D3, D2} dmaPhase, next;
+parameter DRESET = 0;
+parameter DIDLE = 1;
+parameter D1 = 2;
+parameter D_BR = 3;
+parameter D_BA = 4;
+parameter D_BRA = 5;
+parameter D3 = 6;
+parameter D2 = 7;
+
+//enum int unsigned { SRESET = 0, SIDLE, S0, S2, S4, S6, SRMC_RES} busPhase, next;
+parameter SRESET = 0;
+parameter SIDLE = 1;
+parameter S0 = 2;
+parameter S2 = 3;
+parameter S4 = 4;
+parameter S6 = 5;
+parameter SRMC_RES = 6;
+
+
 localparam CF = 0, VF = 1, ZF = 2, NF = 3, XF = 4, SF = 13;
 
 localparam UADDR_WIDTH = 10;
@@ -161,12 +190,18 @@ module fx68k(
 	
 	wire wClk;
 	
+	reg [2:0] tState;
+	
 	// Internal sub clocks T1-T4
-	enum int unsigned { T0 = 0, T1, T2, T3, T4} tState;
-	wire enT1 = Clks.enPhi1 & (tState == T4) & ~wClk;
-	wire enT2 = Clks.enPhi2 & (tState == T1);
-	wire enT3 = Clks.enPhi1 & (tState == T2);
-	wire enT4 = Clks.enPhi2 & ((tState == T0) | (tState == T3));
+	//enum reg [3:0] { T0 = 0, T1, T2, T3, T4} tState;
+	//wire enT1 = Clks.enPhi1 & (tState == T4) & ~wClk;
+	//wire enT2 = Clks.enPhi2 & (tState == T1);
+	//wire enT3 = Clks.enPhi1 & (tState == T2);
+	//wire enT4 = Clks.enPhi2 & ((tState == T0) | (tState == T3));
+	wire enT1 = enPhi1 & (tState == T4) & ~wClk;
+	wire enT2 = enPhi2 & (tState == T1);
+	wire enT3 = enPhi1 & (tState == T2);
+	wire enT4 = enPhi2 & ((tState == T0) | (tState == T3));
 	
 	// T4 continues ticking during reset and group0 exception.
 	// We also need it to erase ucode output latched on T4.
@@ -542,7 +577,12 @@ module fx68k(
 	always_ff @( posedge Clks.clk) begin				
 		if( Clks.pwrUp) begin
 			Tpend <= 1'b0;
+`ifndef VERILATOR
 			{pswT, pswS, pswI } <= '0;
+`else
+			{pswT, 1'b0, pswI } <= '0;
+`endif
+			pswS <= '1;
 			irdToCcr_t4 <= '0;
 		end
 		
@@ -2160,7 +2200,8 @@ module busArbiter( input s_clks Clks,
 		output busAvail,
 		output logic BGn);
 		
-	enum int unsigned { DRESET = 0, DIDLE, D1, D_BR, D_BA, D_BRA, D3, D2} dmaPhase, next;
+	//enum int unsigned { DRESET = 0, DIDLE, D1, D_BR, D_BA, D_BRA, D3, D2} dmaPhase, next;
+	reg [2:0] dmaPhase, next;
 
 	always_comb begin
 		case(dmaPhase)
@@ -2279,7 +2320,8 @@ module busControl( input s_clks Clks, input enT1, input enT4,
 	// It's BERR and HALT and not address error, and not read-modify cycle.
 	wire busRetry = ~busAddrErr & 1'b0;
 	
-	enum int unsigned { SRESET = 0, SIDLE, S0, S2, S4, S6, SRMC_RES} busPhase, next;
+	//enum int unsigned { SRESET = 0, SIDLE, S0, S2, S4, S6, SRMC_RES} busPhase, next;
+	reg [2:0] busPhase, next;
 
 	always_ff @( posedge Clks.clk) begin
 		if( Clks.extReset)

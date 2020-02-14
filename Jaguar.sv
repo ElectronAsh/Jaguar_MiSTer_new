@@ -245,7 +245,8 @@ reg        loader_reset = 0;
 wire [7:0] loader_be = (loader_en && loader_addr[2:0]==0) ? 8'b11000000 :
 							  (loader_en && loader_addr[2:0]==2) ? 8'b00110000 :
 							  (loader_en && loader_addr[2:0]==4) ? 8'b00001100 :
-							  (loader_en && loader_addr[2:0]==6) ? 8'b00000011 : 8'b11111111;
+							  (loader_en && loader_addr[2:0]==6) ? 8'b00000011 :
+																				8'b11111111;
 
 reg [7:0] cnt = 0;
 reg [1:0] status_reg = 0;
@@ -326,15 +327,15 @@ jaguar jaguar_inst
 	
 	.sys_clk( clk_sys ) ,		// input  clk_sys
 	
-	.dram_a( dram_a ) ,			// output [0:9] dram_a
+	.dram_a( dram_a ) ,			// output [9:0] dram_a
 	.dram_ras_n( dram_ras_n ) ,// output  dram_ras_n
 	.dram_cas_n( dram_cas_n ) ,// output  dram_cas_n
-	.dram_oe_n( dram_oe_n ) ,	// output [0:3] dram_oe_n
-	.dram_uw_n( dram_uw_n ) ,	// output [0:3] dram_uw_n
-	.dram_lw_n( dram_lw_n ) ,	// output [0:3] dram_lw_n
-	.dram_d( dram_d ) ,			// output [0:63] dram_d
-	.dram_q( dram_q ) ,			// input [0:63] dram_q
-	.dram_oe( dram_oe ) ,		// input [0:3] dram_oe
+	.dram_oe_n( dram_oe_n ) ,	// output [3:0] dram_oe_n
+	.dram_uw_n( dram_uw_n ) ,	// output [3:0] dram_uw_n
+	.dram_lw_n( dram_lw_n ) ,	// output [3:0] dram_lw_n
+	.dram_d( dram_d ) ,			// output [63:0] dram_d
+	.dram_q( dram_q ) ,			// input [63:0] dram_q
+	.dram_oe( dram_oe ) ,		// input [3:0] dram_oe
 	
 	.fdram( fdram ) ,				// output  fdram
 	.ram_rdy( ram_rdy ) ,		// input  ram_rdy
@@ -641,35 +642,21 @@ assign cart_q = ({abus_out[2:0]}==0) ? {DDRAM_DOUT[63:56],DDRAM_DOUT[63:56],DDRA
 // ch1_be bits [3:2] are used to mask bytes ch1_din[31:24] and ch1_din[23:16].
 // ch1_be bits [1:0] are used to mask bytes ch1_din[15:08] and ch1_din[07:00].
 //
-wire [0:9] dram_a;
+wire [9:0] dram_a;
 wire dram_ras_n;
 wire dram_cas_n;
-wire [0:3] dram_oe_n;
-wire [0:3] dram_uw_n;
-wire [0:3] dram_lw_n;
-wire [0:63] dram_d;
+wire [3:0] dram_oe_n;
+wire [3:0] dram_uw_n;
+wire [3:0] dram_lw_n;
+wire [63:0] dram_d;
 
 // From the core into SDRAM.
-wire [63:0] ch1_din = {r_dram_d[63], r_dram_d[62], r_dram_d[61], r_dram_d[60], r_dram_d[59], r_dram_d[58], r_dram_d[57], r_dram_d[56], 
-							  r_dram_d[55], r_dram_d[54], r_dram_d[53], r_dram_d[52], r_dram_d[51], r_dram_d[50], r_dram_d[49], r_dram_d[48], 
-							  r_dram_d[47], r_dram_d[46], r_dram_d[45], r_dram_d[44], r_dram_d[43], r_dram_d[42], r_dram_d[41], r_dram_d[40], 
-							  r_dram_d[39], r_dram_d[38], r_dram_d[37], r_dram_d[36], r_dram_d[35], r_dram_d[34], r_dram_d[33], r_dram_d[32],
-							  r_dram_d[31], r_dram_d[30], r_dram_d[29], r_dram_d[28], r_dram_d[27], r_dram_d[26], r_dram_d[25], r_dram_d[24], 
-							  r_dram_d[23], r_dram_d[22], r_dram_d[21], r_dram_d[20], r_dram_d[19], r_dram_d[18], r_dram_d[17], r_dram_d[16], 
-							  r_dram_d[15], r_dram_d[14], r_dram_d[13], r_dram_d[12], r_dram_d[11], r_dram_d[10], r_dram_d[9],  r_dram_d[8], 
-							  r_dram_d[7],  r_dram_d[6],  r_dram_d[5],  r_dram_d[4],  r_dram_d[3],  r_dram_d[2],  r_dram_d[1],  r_dram_d[0]};
+wire [63:0] ch1_din = r_dram_d[63:0];
 						  
 // From SDRAM to the core.
-wire [0:63] dram_q = {ch1_dout[0],  ch1_dout[1],  ch1_dout[2],  ch1_dout[3],  ch1_dout[4],  ch1_dout[5],  ch1_dout[6],  ch1_dout[7],
-							 ch1_dout[8],  ch1_dout[9],  ch1_dout[10], ch1_dout[11], ch1_dout[12], ch1_dout[13], ch1_dout[14], ch1_dout[15],
-							 ch1_dout[16], ch1_dout[17], ch1_dout[18], ch1_dout[19], ch1_dout[20], ch1_dout[21], ch1_dout[22], ch1_dout[23],
-							 ch1_dout[24], ch1_dout[25], ch1_dout[26], ch1_dout[27], ch1_dout[28], ch1_dout[29], ch1_dout[30], ch1_dout[31],
-							 ch1_dout[32], ch1_dout[33], ch1_dout[34], ch1_dout[35], ch1_dout[36], ch1_dout[37], ch1_dout[38], ch1_dout[39],
-							 ch1_dout[40], ch1_dout[41], ch1_dout[42], ch1_dout[43], ch1_dout[44], ch1_dout[45], ch1_dout[46], ch1_dout[47],
-							 ch1_dout[48], ch1_dout[49], ch1_dout[50], ch1_dout[51], ch1_dout[52], ch1_dout[53], ch1_dout[54], ch1_dout[55],
-							 ch1_dout[56], ch1_dout[57], ch1_dout[58], ch1_dout[59], ch1_dout[60], ch1_dout[61], ch1_dout[62], ch1_dout[63]};
+wire [63:0] dram_q = ch1_dout[63:0];
 
-wire [0:3] dram_oe = (~dram_cas_n) ? ~dram_oe_n : 4'b0000;
+wire [3:0] dram_oe = (~dram_cas_n) ? ~dram_oe_n[3:0] : 4'b0000;
 
 
 sdram sdram
@@ -759,7 +746,7 @@ wire [07:00] ch1_be = ~{dram_uw_n[3], dram_lw_n[3],
 reg ch1_rd_req;
 reg ch1_wr_req;
 reg [07:00] ch1_be;
-reg [00:63] r_dram_d;
+reg [63:00] r_dram_d;
 
 //wire ram_rdy = mem_cyc == `RAM_END;
 wire ram_rdy = (mem_cyc == `RAM_END) || ch1_ready;	// Latency kludge.
