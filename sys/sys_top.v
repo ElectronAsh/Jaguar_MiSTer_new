@@ -19,6 +19,8 @@
 //
 //============================================================================
 
+`define USB_DEBUG
+
 module sys_top
 (
 	/////////// CLOCK //////////
@@ -82,13 +84,13 @@ module sys_top
 	output		  AUDIO_SPDIF,
 
 	//////////// SDIO ///////////
-	inout   [3:0] SDIO_DAT,
-	inout         SDIO_CMD,
-	output        SDIO_CLK,
+	inout   [3:0] SDIO_DAT,			// FT232H ADBUS[3:0]
+	inout         SDIO_CMD,			// FT232H ADBUS[4]
+	output        SDIO_CLK,			// FT232H WR_N.
 
 	//////////// I/O ///////////
-	output        LED_USER,
-	output        LED_HDD,
+	output        LED_USER,			// FT232H RD_N.
+	output        LED_HDD,			// FT232H OE_N.
 	output        LED_POWER,
 	input         BTN_USER,
 	input         BTN_OSD,
@@ -121,7 +123,7 @@ module sys_top
 	output  [7:0] LED,
 
 	///////// USER IO ///////////
-	inout   [6:0] USER_IO
+	inout   [6:0] USER_IO			// FT232H {CLK, RXF_N, TXE_N, ADBUS[7:4]}.
 );
 
 //////////////////////  Secondary SD  ///////////////////////////////////
@@ -129,7 +131,12 @@ module sys_top
 wire sd_miso;
 wire SD_CS, SD_CLK, SD_MOSI, SD_MISO;
 
-`ifndef DUAL_SDRAM
+`ifdef USB_DEBUG
+	//assign SDIO_DAT = 4'bzzzz;
+	//assign SDIO_CLK = 1'bz;
+	//assign SDIO_CMD = 1'bz;
+	assign USER_IO = 7'bzzzzzzz;
+`else ifndef DUAL_SDRAM
 	assign SDIO_DAT[2:1]= 2'bZZ;
 	assign SDIO_DAT[3]  = SW[3] ? 1'bZ  : SD_CS;
 	assign SDIO_CLK     = SW[3] ? 1'bZ  : SD_CLK;
@@ -155,7 +162,21 @@ wire led_d =  led_disk[1]  ? ~led_disk[0]  : ~(led_disk[0] | gp_out[29]);
 wire led_u = ~led_user;
 wire led_locked;
 
-`ifndef DUAL_SDRAM
+`ifdef USB_DEBUG
+fast_talker fast_talker_inst
+(
+	.RESET_N( ¬reset_req ) ,// input  RESET_N
+	.FT_CLK( USER_IO[6] ) ,	// input  FT_CLK
+	.ADBUS( {USER_IO[3:0] ,SDIO_DAT[3:0]} ) ,	// inout [7:0] ADBUS
+	.RXF_N( USER_IO[5] ) ,	// input  RXF_N
+	.RD_N( LED_USER ) ,		// output  RD_N
+	.OE_N( LED_HDD ) ,		// output  OE_N
+	.TXE_N( USER_IO[4] ) ,	// input  TXE_N
+	.WR_N( SDIO_CLK ) ,		// output  WR_N
+//	.SIWU_N( SIWU_N )			// output  SIWU_N
+);
+	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
+`else ifndef DUAL_SDRAM
 	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
 	assign LED_HDD   = (SW[3] | led_d) ? 1'bZ : 1'b0;
 	assign LED_USER  = (SW[3] | led_u) ? 1'bZ : 1'b0;
