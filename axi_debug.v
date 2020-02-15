@@ -59,6 +59,7 @@ else begin
 	case (axi_state)
 	0: begin
 		bridge_m0_waitrequest <= 1'b0;	// Ready to accept AXI read/write.
+		
 		if (bridge_m0_read) begin
 			bridge_m0_waitrequest <= 1'b1;
 			axi_addr <= bridge_m0_address;
@@ -66,8 +67,8 @@ else begin
 		end
 		
 		if (bridge_m0_write) begin
-			axi_cmd <= bridge_m0_writedata;
 			bridge_m0_waitrequest <= 1'b1;
+			axi_cmd <= bridge_m0_writedata;
 			axi_state <= 4'd5;
 		end
 	end
@@ -90,6 +91,7 @@ else begin
 	
 	4: begin
 		bridge_m0_readdatavalid <= 1'b1;
+		bridge_m0_waitrequest <= 1'b0;
 		axi_state <= 4'd0;
 	end
 	
@@ -97,21 +99,24 @@ else begin
 	5: begin
 		case (axi_cmd[31:24])
 		8'h00: begin
-			if (!fx68k_as_n_dbg_1 && fx68k_as_n_dbg) begin	// Wait for the CPU cycle to complete.
-				cpu_clken_dbg <= 1'b0;			// Stop the CPU clock.
+			if (!fx68k_as_n_dbg_1 && fx68k_as_n_dbg) begin	// Wait for the current CPU cycle to complete.
+				cpu_clken_dbg <= 1'b0;		// Stop the CPU clock.
+				bridge_m0_waitrequest <= 1'b0;
 				axi_state <= 4'd0;
 			end
 		end
 		
 		8'h01: begin
 			cpu_clken_dbg <= 1'b1;			// Start the CPU clock.
+			bridge_m0_waitrequest <= 1'b0;
 			axi_state <= 4'd0;
 		end
 
 		8'h02: begin							// Single-step the CPU.
 			cpu_clken_dbg <= 1'b1;			
 			if (!fx68k_as_n_dbg_1 && fx68k_as_n_dbg) begin	// Wait for the CPU cycle to complete.
-				cpu_clken_dbg <= 1'b0;			// Stop the CPU clock.
+				cpu_clken_dbg <= 1'b0;		// Stop the CPU clock.
+				bridge_m0_waitrequest <= 1'b0;
 				axi_state <= 4'd0;
 			end
 		end
