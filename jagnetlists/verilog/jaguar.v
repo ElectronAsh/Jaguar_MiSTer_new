@@ -66,8 +66,20 @@ module jaguar
 	
 	input turbo,
 	
-	input ntsc
+	input ntsc,
+	
+	input cpu_clken_dbg,
+	output fx68k_as_n_dbg,
+	output [23:0] fx68k_addr_dbg,
+	output [15:0] fx68k_din_dbg,
+	output [15:0] fx68k_dout_dbg
 );
+
+assign fx68k_addr_dbg = fx68k_byte_addr;
+assign fx68k_as_n_dbg = fx68k_as_n;
+assign fx68k_din_dbg = fx68k_din;
+assign fx68k_dout_dbg = fx68k_dout;
+
 
 wire [1:0] cart_oe_n;
 wire [1:0] cart_oe;
@@ -139,8 +151,8 @@ always @(posedge sys_clk) begin
 	//if ((clkdiv==3'd0) || (clkdiv==3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
 	//if ((clkdiv==3'd1) || (clkdiv==3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
 	
-	if ((clkdiv==4'd0) || (clkdiv==4'd5 && turbo)) fx68k_enPhi1 <= 1'b1;
-	if ((clkdiv==4'd1) || (clkdiv==4'd6 && turbo)) fx68k_enPhi2 <= 1'b1;
+	if ( clkdiv==4'd0 || (clkdiv==4'd5 && turbo) ) fx68k_enPhi1 <= 1'b1;
+	if ( clkdiv==4'd1 || (clkdiv==4'd6 && turbo) ) fx68k_enPhi2 <= 1'b1;
 	
 	//if (clkdiv==3'd0) pix_ce <= 1'b1;
 	//else pix_ce <= 1'b0;
@@ -1467,7 +1479,7 @@ j_jerry jerry_inst
 
 wire [15:0] dspwd;
 
-(*keep*) wire fx68k_clk = sys_clk;
+(*keep*) wire fx68k_clk = sys_clk & cpu_clken_dbg;
 (*keep*) wire fx68k_rst = !xresetl;
 
 (*keep*) wire fx68k_rw;

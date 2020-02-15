@@ -19,7 +19,7 @@
 //
 //============================================================================
 
-`define USB_DEBUG
+//`define USB_DEBUG
 
 module sys_top
 (
@@ -136,7 +136,8 @@ wire SD_CS, SD_CLK, SD_MOSI, SD_MISO;
 	//assign SDIO_CLK = 1'bz;
 	//assign SDIO_CMD = 1'bz;
 	assign USER_IO = 7'bzzzzzzz;
-`else ifndef DUAL_SDRAM
+`else 
+`ifndef DUAL_SDRAM
 	assign SDIO_DAT[2:1]= 2'bZZ;
 	assign SDIO_DAT[3]  = SW[3] ? 1'bZ  : SD_CS;
 	assign SDIO_CLK     = SW[3] ? 1'bZ  : SD_CLK;
@@ -146,6 +147,7 @@ wire SD_CS, SD_CLK, SD_MOSI, SD_MISO;
 `else
 	assign sd_miso      = 1'b1;
 	assign SD_SPI_CS    = mcp_sdcd ? 1'bZ : SD_CS;
+`endif
 `endif
 
 assign SD_SPI_CLK  = mcp_sdcd ? 1'bZ    : SD_CLK;
@@ -162,7 +164,23 @@ wire led_d =  led_disk[1]  ? ~led_disk[0]  : ~(led_disk[0] | gp_out[29]);
 wire led_u = ~led_user;
 wire led_locked;
 
+
 `ifdef USB_DEBUG
+// LED_USER   = FT232H RD_N  ACBUS[2].
+// LED_HDD    = FT232H OE_N  ACBUS[6].
+//
+// SDIO_CLK   = FT232H WR_N  ACBUS[3].
+//
+// SDIO_DAT   = FT232H DATA  ADBUS[3:0]. 
+//
+// USER_IO[0] = FT232H DATA  ADBUS[4] = FPGA AG11 = Arduino IO15 = JP2 pin 1  = USBIO D+	 = "RX"
+// USER_IO[1] = FT232H DATA  ADBUS[5] = FPGA AH9  = Arduino IO14 = JP2 pin 2  = USBIO D+	 = "TX"
+// USER_IO[2] = FT232H DATA  ADBUS[6] = FPGA AH12 = Arduino IO13 = JP2 pin 5  = USBIO TX-	 = "RTS"
+// USER_IO[3] = FT232H DATA  ADBUS[7] = FPGA AH11 = Arduino IO12 = JP2 pin 6  = USBIO GND2 = "CTS"
+// USER_IO[4] = FT232H TXE_N ACBUS[1] = FPGA AG16 = Arduino IO11 = JP2 pin 7  = USBIO RX+	 = "DTR"
+// USER_IO[5] = FT232H RXF_N ACBUS[0] = FPGA AF15 = Arduino IO10 = JP2 pin 8  = USBIO RX-	 = "DSR"
+// USER_IO[6] = FT232H CLOCK ACBUS[5] = FPGA AF17 = Arduino IO18 = JP2 pin 10 = USBIO GND	 = "IO6" (newer IO boards)
+//
 fast_talker fast_talker_inst
 (
 	.RESET_N( !reset_req ) ,// input  RESET_N
@@ -188,10 +206,12 @@ fast_talker fast_talker_inst
 	wire [15:0] USB_DO;
 	wire [15:0] USB_DI = {VGA_HS, VGA_VS, VGA_R, VGA_G, VGA_B};
 	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
-`else ifndef DUAL_SDRAM
+`else 
+`ifndef DUAL_SDRAM
 	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
 	assign LED_HDD   = (SW[3] | led_d) ? 1'bZ : 1'b0;
 	assign LED_USER  = (SW[3] | led_u) ? 1'bZ : 1'b0;
+`endif
 `endif
 
 //LEDs on main board
@@ -529,8 +549,34 @@ sysmem_lite sysmem
 	.vbuf_write(vbuf_write),
 	.vbuf_readdata(vbuf_readdata),
 	.vbuf_readdatavalid(vbuf_readdatavalid),
-	.vbuf_read(vbuf_read)
+	.vbuf_read(vbuf_read),
+	
+	.bridge_m0_waitrequest( bridge_m0_waitrequest ),
+	.bridge_m0_readdata( bridge_m0_readdata ),
+	.bridge_m0_readdatavalid( bridge_m0_readdatavalid ),
+	.bridge_m0_burstcount( bridge_m0_burstcount ),
+	.bridge_m0_writedata( bridge_m0_writedata ),
+	.bridge_m0_address( bridge_m0_address ),
+	.bridge_m0_write( bridge_m0_write ),
+	.bridge_m0_read( bridge_m0_read ),
+	.bridge_m0_byteenable( bridge_m0_byteenable ),
+	.bridge_m0_clk( bridge_m0_clk )
 );
+
+(*keep*) wire         bridge_m0_clk;
+
+(*keep*) wire         bridge_m0_waitrequest;
+
+(*keep*) wire [19:0]  bridge_m0_address;
+
+(*keep*) wire         bridge_m0_write;
+(*keep*) wire [31:0]  bridge_m0_writedata;
+(*keep*) wire         bridge_m0_byteenable;
+(*keep*) wire [6:0]   bridge_m0_burstcount;
+
+(*keep*) wire [31:0]  bridge_m0_readdata;
+(*keep*) wire         bridge_m0_readdatavalid;
+(*keep*) wire         bridge_m0_read;
 
 wire  [27:0] vbuf_address;
 wire   [7:0] vbuf_burstcount;
@@ -1281,7 +1327,18 @@ emu emu
 	*/
 
 	.USER_OUT(user_out),
-	.USER_IN(user_in)
+	.USER_IN(user_in),
+	
+	.bridge_m0_waitrequest( bridge_m0_waitrequest ),
+	.bridge_m0_readdata( bridge_m0_readdata ),
+	.bridge_m0_readdatavalid( bridge_m0_readdatavalid ),
+	.bridge_m0_burstcount( bridge_m0_burstcount ),
+	.bridge_m0_writedata( bridge_m0_writedata ),
+	.bridge_m0_address( bridge_m0_address ),
+	.bridge_m0_write( bridge_m0_write ),
+	.bridge_m0_read( bridge_m0_read ),
+	.bridge_m0_byteenable( bridge_m0_byteenable ),
+	.bridge_m0_clk( bridge_m0_clk )
 );
 
 endmodule

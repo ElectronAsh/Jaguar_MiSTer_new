@@ -125,7 +125,48 @@ module emu
 	output        SDRAM_nWE,
 	
 	input	  [6:0] USER_IN,
-	output  [6:0] USER_OUT
+	output  [6:0] USER_OUT,
+
+	output  wire         bridge_m0_waitrequest,
+	output  wire [31:0]  bridge_m0_readdata,
+	output  reg          bridge_m0_readdatavalid,
+	input   wire [6:0]   bridge_m0_burstcount,
+	input   wire [31:0]  bridge_m0_writedata,
+	input   wire [19:0]  bridge_m0_address,
+	input   wire         bridge_m0_write,
+	input   wire         bridge_m0_read,
+	input   wire         bridge_m0_byteenable,
+	output  wire         bridge_m0_clk
+);
+
+axi_debug axi_debug_inst
+(
+	.reset( RESET ) ,		// input  reset
+	.clk_sys( clk_sys ) ,	// input  clk_sys
+	
+	.bridge_m0_waitrequest( bridge_m0_waitrequest ) ,		// output  bridge_m0_waitrequest
+	.bridge_m0_readdata( bridge_m0_readdata ) ,				// output [31:0] bridge_m0_readdata
+	.bridge_m0_readdatavalid( bridge_m0_readdatavalid ) ,	// output  bridge_m0_readdatavalid
+	.bridge_m0_burstcount( bridge_m0_burstcount ) ,	// input [6:0] bridge_m0_burstcount
+	.bridge_m0_writedata( bridge_m0_writedata ) ,	// input [31:0] bridge_m0_writedata
+	.bridge_m0_address( bridge_m0_address ) ,			// input [19:0] bridge_m0_address
+	.bridge_m0_write( bridge_m0_write ) ,				// input  bridge_m0_write
+	.bridge_m0_read( bridge_m0_read ) ,					// input  bridge_m0_read
+	.bridge_m0_byteenable( bridge_m0_byteenable ) ,	// input  bridge_m0_byteenable
+	.bridge_m0_clk( bridge_m0_clk ) ,					// output  bridge_m0_clk
+	
+	.cpu_clken_dbg( cpu_clken_dbg ) ,			// output  cpu_clken
+	
+	.fx68k_as_n_dbg( fx68k_as_n_dbg ) ,			// input  fx68k_as_n
+	
+	.reg0( {8'h00, fx68k_addr_dbg} ) ,		// input [31:0] reg0
+	.reg1( {16'h0000, fx68k_din_dbg} ) ,	// input [31:0] reg1
+	.reg2( {16'h0000, fx68k_dout_dbg} ) ,	// input [31:0] reg2
+	.reg3( 32'h33333333 ) ,						// input [31:0] reg3
+	.reg4( 32'h44444444 ) ,						// input [31:0] reg4
+	.reg5( 32'h55555555 ) ,						// input [31:0] reg5
+	.reg6( 32'h66666666 ) ,						// input [31:0] reg6
+	.reg7( 32'h77777777 ) 						// input [31:0] reg7
 );
 
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
@@ -380,8 +421,23 @@ jaguar jaguar_inst
 	
 	.turbo( status[3] ) ,
 	
-	.ntsc( status[4] )
+	.ntsc( status[4] ) ,
+	
+	.cpu_clken_dbg( cpu_clken_dbg ) ,
+	
+	.fx68k_addr_dbg( fx68k_addr_dbg ) ,
+	
+	.fx68k_as_n_dbg( fx68k_as_n_dbg ) ,
+	
+	.fx68k_din_dbg( fx68k_din_dbg ) ,
+	.fx68k_dout_dbg( fx68k_dout_dbg )
 );
+
+wire cpu_clken_dbg;
+wire fx68k_as_n_dbg;
+wire [23:0] fx68k_addr_dbg;
+wire [15:0] fx68k_din_dbg;
+wire [15:0] fx68k_dout_dbg;
 
 wire pix_clk;
 
