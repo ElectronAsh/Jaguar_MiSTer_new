@@ -89,8 +89,8 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_aud_l;
 //assign aud_16_r = r_aud_r;
 
-assign aud_16_l = w_aud_l;
-assign aud_16_r = w_aud_r;
+assign aud_16_l[15:0] = w_aud_l[15:0];
+assign aud_16_r[15:0] = w_aud_r[15:0];
 
 
 //reg [2:0] clkdiv;
@@ -577,7 +577,7 @@ assign j_xd_in[31:16] = 16'b11111111_11111111;	// Data bus bits [31:16] on Jerry
 //assign xfc_in = 3'b101;
 
 // FX68K directly supports vectored interrupts. ElectronAsh.
-assign xfc_in[2:0] = (xba_in) ? fx68k_fc[2:0] : 3'b101;
+assign xfc_in[2:0] = fx68k_fc[2:0];
 
 // Wire-ORed with pullup (?)
 assign xba_in = xba_oe ? xba_out : 1'b1;		// Bus Acknoledge.

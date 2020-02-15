@@ -254,8 +254,8 @@ module j_jerry
 	output aen,
 	output den,
 	output ainen,
-	output [0:15] snd_l,
-	output [0:15] snd_r,
+	output [15:0] snd_l,
+	output [15:0] snd_r,
 	output snd_l_en,
 	output snd_r_en,
 	
@@ -3099,8 +3099,8 @@ j_i2s i2s_inst
 	.dr_15_out /* BUS */ (ts_local_pe_182_a1_out),
 	.dr_15_oe /* BUS */ (ts_local_pe_182_a1_oe),
 	.dr_15_in /* BUS */ (ts_local_pe_182_a1_in),
-	.snd_l /* OUT */ ({snd_l[0],snd_l[1],snd_l[2],snd_l[3],snd_l[4],snd_l[5],snd_l[6],snd_l[7],snd_l[8],snd_l[9],snd_l[10],snd_l[11],snd_l[12],snd_l[13],snd_l[14],snd_l[15]}),
-	.snd_r /* OUT */ ({snd_r[0],snd_r[1],snd_r[2],snd_r[3],snd_r[4],snd_r[5],snd_r[6],snd_r[7],snd_r[8],snd_r[9],snd_r[10],snd_r[11],snd_r[12],snd_r[13],snd_r[14],snd_r[15]}),
+	.snd_l /* OUT */ (snd_l),
+	.snd_r /* OUT */ (snd_r),
 	.snd_l_en /* OUT */ (snd_l_en),
 	.snd_r_en /* OUT */ (snd_r_en),
 	.sys_clk(sys_clk) // Generated

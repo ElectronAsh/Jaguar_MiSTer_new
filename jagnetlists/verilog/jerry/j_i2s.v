@@ -84,8 +84,8 @@ module j_i2s
 	output dr_15_out,
 	output dr_15_oe,
 	input dr_15_in,
-	output [0:15] snd_l,
-	output [0:15] snd_r,
+	output [15:0] snd_l,
+	output [15:0] snd_r,
 	output snd_l_en,
 	output snd_r_en,
 	input sys_clk // Generated
