@@ -165,16 +165,28 @@ wire led_locked;
 `ifdef USB_DEBUG
 fast_talker fast_talker_inst
 (
-	.RESET_N( ¬reset_req ) ,// input  RESET_N
-	.FT_CLK( USER_IO[6] ) ,	// input  FT_CLK
+	.RESET_N( !reset_req ) ,// input  RESET_N
 	.ADBUS( {USER_IO[3:0] ,SDIO_DAT[3:0]} ) ,	// inout [7:0] ADBUS
-	.RXF_N( USER_IO[5] ) ,	// input  RXF_N
-	.RD_N( LED_USER ) ,		// output  RD_N
-	.OE_N( LED_HDD ) ,		// output  OE_N
-	.TXE_N( USER_IO[4] ) ,	// input  TXE_N
-	.WR_N( SDIO_CLK ) ,		// output  WR_N
-//	.SIWU_N( SIWU_N )			// output  SIWU_N
+	.RXF_N( USER_IO[5] ) ,	// input   RXF_N. ACBUS[0].
+	.TXE_N( USER_IO[4] ) ,	// input   TXE_N. ACBUS[1].
+	.RD_N( LED_USER ) ,		// output   RD_N. ACBUS[2].
+	.WR_N( SDIO_CLK ) ,		// output   WR_N. ACBUS[3].
+//	.SIWU_N( SIWU_N )			// output SIWU_N. ACBUS[4]. - MUST tie to 3V3 on the FT232H board!
+	.FT_CLK( USER_IO[6] ) ,	// input  FT_CLK. ACBUS[5].
+	.OE_N( LED_HDD ) ,		// output   OE_N. ACBUS[6].
+	.USB_READ_PULSE(USB_READ_PULSE) ,	// output  USB_READ_PULSE
+	.USB_WRITE_PULSE(USB_WRITE_PULSE) ,	// output  USB_WRITE_PULSE
+	.USB_ADDR(USB_ADDR) ,	// output [31:0] USB_ADDR
+	.USB_BYTE_COUNT(USB_BYTE_COUNT) ,	// output [15:0] USB_BYTE_COUNT
+	.USB_DO(USB_DO) ,			// output [15:0] USB_DO
+	.USB_DI(USB_DI)			// input [15:0] USB_DI
 );
+	wire USB_READ_PULSE;
+	wire USB_WRITE_PULSE;
+	wire [31:0] USB_ADDR;
+	wire [15:0] USB_BYTE_COUNT;
+	wire [15:0] USB_DO;
+	wire [15:0] USB_DI = {VGA_HS, VGA_VS, VGA_R, VGA_G, VGA_B};
 	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
 `else ifndef DUAL_SDRAM
 	assign LED_POWER = (SW[3] | led_p) ? 1'bZ : 1'b0;
