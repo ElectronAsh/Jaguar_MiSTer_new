@@ -62,6 +62,93 @@ begin
 	end
 end
 
+	altsyncram	reg_dbga (
+				.address_a (aa),
+				.clock0 (sys_clk),
+				.data_a (da),
+				.wren_a (wren_a),
+				.q_a (rega_dbga_q),
+				.aclr0 (1'b0),
+				.aclr1 (1'b0),
+				.address_b (1'b1),
+				.addressstall_a (1'b0),
+				.addressstall_b (1'b0),
+				.byteena_a (1'b1),
+				.byteena_b (1'b1),
+				.clock1 (1'b1),
+				.clocken0 (1'b1),
+				.clocken1 (1'b1),
+				.clocken2 (1'b1),
+				.clocken3 (1'b1),
+				.data_b (1'b1),
+				.eccstatus (),
+				.q_b (),
+				.rden_a (1'b1),
+				.rden_b (1'b1),
+				.wren_b (1'b0));
+	defparam
+		reg_dbga.clock_enable_input_a = "BYPASS",
+		reg_dbga.clock_enable_output_a = "BYPASS",
+		reg_dbga.intended_device_family = "Cyclone V",
+		reg_dbga.lpm_hint = "ENABLE_RUNTIME_MOD=YES,INSTANCE_NAME=REGA",
+		reg_dbga.lpm_type = "altsyncram",
+		reg_dbga.numwords_a = 64,
+		reg_dbga.operation_mode = "SINGLE_PORT",
+		reg_dbga.outdata_aclr_a = "NONE",
+		reg_dbga.outdata_reg_a = "CLOCK0",
+		reg_dbga.power_up_uninitialized = "FALSE",
+		reg_dbga.read_during_write_mode_port_a = "NEW_DATA_NO_NBE_READ",
+		reg_dbga.widthad_a = 6,
+		reg_dbga.width_a = 32,
+		reg_dbga.width_byteena_a = 1;
+
+(*keep*) wire [31:0] rega_dbga_q;
+		
+		
+	altsyncram	reg_dbgb (
+				.address_a (ab),
+				.clock0 (sys_clk),
+				.data_a (db),
+				.wren_a (wren_b),
+				.q_a (rega_dbgb_q),
+				.aclr0 (1'b0),
+				.aclr1 (1'b0),
+				.address_b (1'b1),
+				.addressstall_a (1'b0),
+				.addressstall_b (1'b0),
+				.byteena_a (1'b1),
+				.byteena_b (1'b1),
+				.clock1 (1'b1),
+				.clocken0 (1'b1),
+				.clocken1 (1'b1),
+				.clocken2 (1'b1),
+				.clocken3 (1'b1),
+				.data_b (1'b1),
+				.eccstatus (),
+				.q_b (),
+				.rden_a (1'b1),
+				.rden_b (1'b1),
+				.wren_b (1'b0));
+	defparam
+		reg_dbgb.clock_enable_input_a = "BYPASS",
+		reg_dbgb.clock_enable_output_a = "BYPASS",
+		reg_dbgb.intended_device_family = "Cyclone V",
+		reg_dbgb.lpm_hint = "ENABLE_RUNTIME_MOD=YES,INSTANCE_NAME=REGB",
+		reg_dbgb.lpm_type = "altsyncram",
+		reg_dbgb.numwords_a = 64,
+		reg_dbgb.operation_mode = "SINGLE_PORT",
+		reg_dbgb.outdata_aclr_a = "NONE",
+		reg_dbgb.outdata_reg_a = "CLOCK0",
+		reg_dbgb.power_up_uninitialized = "FALSE",
+		reg_dbgb.read_during_write_mode_port_a = "NEW_DATA_NO_NBE_READ",
+		reg_dbgb.widthad_a = 6,
+		reg_dbgb.width_a = 32,
+		reg_dbgb.width_byteena_a = 1;
+
+(*keep*) wire [31:0] rega_dbgb_q;
+
+
+
 	altsyncram	altsyncram_component (
 				.wren_a (wren_a),
 				.clock0 (sys_clk),

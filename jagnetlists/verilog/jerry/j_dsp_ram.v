@@ -401,6 +401,28 @@ j_gpuram program_index_1_inst
 	.sys_clk(sys_clk) // Generated
 );
 
+
+`ifndef VERILATOR
+dsp_dbg_ram0	dsp_dbg_ram0_inst (
+	.address ( {rama[9],rama[8],rama[7],rama[6],rama[5],rama[4],rama[3],rama[2],rama[1],rama[0]} ),
+	.clock ( sys_clk ),
+	.data ( {ts_pe_38_a1_in,ts_pe_37_a1_in,ts_pe_36_a1_in,ts_pe_35_a1_in,ts_pe_34_a1_in,ts_pe_33_a1_in,ts_pe_32_a1_in,ts_pe_31_a1_in,ts_pe_30_a1_in,ts_pe_29_a1_in,ts_pe_28_a1_in,ts_pe_27_a1_in,ts_pe_26_a1_in,ts_pe_25_a1_in,ts_pe_24_a1_in,ts_pe_23_a1_in,ts_pe_22_a1_in,ts_pe_21_a1_in,ts_pe_20_a1_in,ts_pe_19_a1_in,ts_pe_18_a1_in,ts_pe_17_a1_in,ts_pe_16_a1_in,ts_pe_15_a1_in,ts_pe_14_a1_in,ts_pe_13_a1_in,ts_pe_12_a1_in,ts_pe_11_a1_in,ts_pe_10_a1_in,ts_pe_9_a1_in,ts_pe_8_a1_in,ts_pe_7_a1_in} ),
+	.wren ( !ramwe_0 ),
+	.q ( dsp_dbg_ram0_dout )
+);
+(*keep*) wire [31:0] dsp_dbg_ram0_dout;
+
+
+dsp_dbg_ram1	dsp_dbg_ram1_inst (
+	.address ( {rama[9],rama[8],rama[7],rama[6],rama[5],rama[4],rama[3],rama[2],rama[1],rama[0]} ),
+	.clock ( sys_clk ),
+	.data ( {ts_pe_38_a1_in,ts_pe_37_a1_in,ts_pe_36_a1_in,ts_pe_35_a1_in,ts_pe_34_a1_in,ts_pe_33_a1_in,ts_pe_32_a1_in,ts_pe_31_a1_in,ts_pe_30_a1_in,ts_pe_29_a1_in,ts_pe_28_a1_in,ts_pe_27_a1_in,ts_pe_26_a1_in,ts_pe_25_a1_in,ts_pe_24_a1_in,ts_pe_23_a1_in,ts_pe_22_a1_in,ts_pe_21_a1_in,ts_pe_20_a1_in,ts_pe_19_a1_in,ts_pe_18_a1_in,ts_pe_17_a1_in,ts_pe_16_a1_in,ts_pe_15_a1_in,ts_pe_14_a1_in,ts_pe_13_a1_in,ts_pe_12_a1_in,ts_pe_11_a1_in,ts_pe_10_a1_in,ts_pe_9_a1_in,ts_pe_8_a1_in,ts_pe_7_a1_in} ),
+	.wren ( !ramwe_1 ),
+	.q ( dsp_dbg_ram1_dout )
+);
+(*keep*) wire [31:0] dsp_dbg_ram1_dout;
+`endif
+
 // DSP_RAM.NET (40) - sinerom : sinerom
 j_sinerom sinerom_inst
 (

@@ -159,7 +159,7 @@ axi_debug axi_debug_inst
 	
 	.fx68k_as_n_dbg( fx68k_as_n_dbg ) ,			// input  fx68k_as_n
 	
-	.reg0( {8'h00, fx68k_addr_dbg} ) ,		// input [31:0] reg0
+	.reg0( {16'h0000, fx68k_addr_dbg} ) ,	// input [31:0] reg0
 	.reg1( {16'h0000, fx68k_din_dbg} ) ,	// input [31:0] reg1
 	.reg2( {16'h0000, fx68k_dout_dbg} ) ,	// input [31:0] reg2
 	.reg3( 32'h33333333 ) ,						// input [31:0] reg3
@@ -222,7 +222,7 @@ localparam CONF_STR = {
 	"-;",
 	"R0,Reset;",
 	"J1,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
-	"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
+	//"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
 	"-;",
 	"-;",
 	"V,v1.51.",`BUILD_DATE

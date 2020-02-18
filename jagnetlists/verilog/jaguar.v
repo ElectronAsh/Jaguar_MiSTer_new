@@ -552,7 +552,8 @@ assign dbus[47:32] = (den[2]) ? xd_out[47:32] :		// Tom.
 							(dram_oe[2]) ? dram_q[47:32] :// DRAM.
 													16'hzzzz;
 
-
+// Note: The den[2] / oe_n[2]  signals is used twice.
+// This is true for the Jag schematic too.
 assign dbus[63:48] = (den[2]) ? xd_out[63:48] :		// Tom.
 							(dram_oe[3]) ? dram_q[63:48] :// DRAM.
 													16'hzzzz;
@@ -635,26 +636,26 @@ jag_controller_mux controller_mux_1
 	.col_n( u374_reg[3:0] ) ,	// input [4:1] col_n
 	.row_n( joy1_row_n ) ,		// output [6:1] row_n
 	
-	.but_pause	( joystick_0[8] ) ,
+	.but_right	( joystick_0[0] ) ,
+	.but_left	( joystick_0[1] ) ,
+	.but_down	( joystick_0[2] ) ,
+	.but_up		( joystick_0[3] ) ,
 	.but_a		( joystick_0[4] ) ,
 	.but_b		( joystick_0[5] ) ,
 	.but_c		( joystick_0[6] ) ,
 	.but_option	( joystick_0[7] ) ,
-	.but_right	( joystick_0[0] ) ,
+	.but_pause	( joystick_0[8] ) ,
 	.but_1		( joystick_0[9] ) ,
 	.but_2		( joystick_0[10] ) ,
 	.but_3		( joystick_0[11] ) ,
-	.but_left	( joystick_0[1] ) ,
 	.but_4		( joystick_0[12] ) ,
 	.but_5		( joystick_0[13] ) ,
 	.but_6		( joystick_0[14] ) ,
-	.but_down	( joystick_0[2] ) ,
 	.but_7		( joystick_0[15] ) ,
 	.but_8		( joystick_0[16] ) ,
 	.but_9		( joystick_0[17] ) ,
-	.but_up		( joystick_0[3] ) ,
-	.but_star	( joystick_0[19] ) ,
 	.but_0		( joystick_0[18] ) ,
+	.but_star	( joystick_0[19] ) ,
 	.but_hash	( joystick_0[20] )
 );
 wire [6:1] joy1_row_n;
@@ -665,26 +666,26 @@ jag_controller_mux controller_mux_2
 	.col_n( u374_reg[7:4] ) ,	// input [4:1] col_n
 	.row_n( joy2_row_n ) ,		// output [6:1] row_n
 	
-	.but_pause	( joystick_1[8] ) ,
+	.but_right	( joystick_1[0] ) ,
+	.but_left	( joystick_1[1] ) ,
+	.but_down	( joystick_1[2] ) ,
+	.but_up		( joystick_1[3] ) ,
 	.but_a		( joystick_1[4] ) ,
 	.but_b		( joystick_1[5] ) ,
 	.but_c		( joystick_1[6] ) ,
 	.but_option	( joystick_1[7] ) ,
-	.but_right	( joystick_1[0] ) ,
+	.but_pause	( joystick_1[8] ) ,
 	.but_1		( joystick_1[9] ) ,
 	.but_2		( joystick_1[10] ) ,
 	.but_3		( joystick_1[11] ) ,
-	.but_left	( joystick_1[1] ) ,
 	.but_4		( joystick_1[12] ) ,
 	.but_5		( joystick_1[13] ) ,
 	.but_6		( joystick_1[14] ) ,
-	.but_down	( joystick_1[2] ) ,
 	.but_7		( joystick_1[15] ) ,
 	.but_8		( joystick_1[16] ) ,
 	.but_9		( joystick_1[17] ) ,
-	.but_up		( joystick_1[3] ) ,
-	.but_star	( joystick_1[19] ) ,
 	.but_0		( joystick_1[18] ) ,
+	.but_star	( joystick_1[19] ) ,
 	.but_hash	( joystick_1[20] )
 );
 wire [6:1] joy2_row_n;
@@ -1573,7 +1574,7 @@ assign dram_ras_n = xrasl[0];
 assign dram_cas_n = xcasl[0];
 assign dram_uw_n[3:0] = {xwel[7], xwel[5], xwel[3], xwel[1]};
 assign dram_lw_n[3:0] = {xwel[6], xwel[4], xwel[2], xwel[0]};
-assign dram_oe_n[3:0] = {xoel[2], xoel[2], xoel[1], xoel[0]}; // /!\
+assign dram_oe_n[3:0] = {xoel[2], xoel[2], xoel[1], xoel[0]}; // Note: OEL bit 2 is hooked up twice. This is true for the Jag schematic as well.
 assign dram_d[63:0] = dbus[63:0]; // xd_in;
 
 

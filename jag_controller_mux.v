@@ -3,26 +3,26 @@ module jag_controller_mux (
 	
 	output wire [6:1] row_n,
 	
-	input but_pause,
+	input but_right,
+	input but_left,
+	input but_down,
+	input but_up,
 	input but_a,
 	input but_b,
 	input but_c,
 	input but_option,
-	input but_right,
+	input but_pause,
 	input but_1,
 	input but_2,
 	input but_3,
-	input but_left,
 	input but_4,
 	input but_5,
 	input but_6,
-	input but_down,
 	input but_7,
 	input but_8,
 	input but_9,
-	input but_up,
-	input but_star,
 	input but_0,
+	input but_star,
 	input but_hash
 );
 
