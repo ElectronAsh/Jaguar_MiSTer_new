@@ -403,6 +403,7 @@ j_gpuram program_index_1_inst
 
 
 `ifndef VERILATOR
+/*
 dsp_dbg_ram0	dsp_dbg_ram0_inst (
 	.address ( {rama[9],rama[8],rama[7],rama[6],rama[5],rama[4],rama[3],rama[2],rama[1],rama[0]} ),
 	.clock ( sys_clk ),
@@ -421,6 +422,7 @@ dsp_dbg_ram1	dsp_dbg_ram1_inst (
 	.q ( dsp_dbg_ram1_dout )
 );
 (*keep*) wire [31:0] dsp_dbg_ram1_dout;
+*/
 `endif
 
 // DSP_RAM.NET (40) - sinerom : sinerom

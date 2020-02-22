@@ -24,6 +24,8 @@
 //
 //============================================================================
 
+//`define AXI_DEBUG
+
 module emu
 (
 	//Master input clock
@@ -139,6 +141,7 @@ module emu
 	output  wire         bridge_m0_clk
 );
 
+`ifdef AXI_DEBUG
 axi_debug axi_debug_inst
 (
 	.reset( RESET ) ,		// input  reset
@@ -168,6 +171,12 @@ axi_debug axi_debug_inst
 	.reg6( 32'h66666666 ) ,						// input [31:0] reg6
 	.reg7( 32'h77777777 ) 						// input [31:0] reg7
 );
+`else
+assign cpu_clken_dbg = 1'b1;
+assign bridge_m0_waitrequest = 1'b0;
+assign bridge_m0_readdatavalid = bridge_m0_read;
+`endif
+
 
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
@@ -178,19 +187,19 @@ assign LED_DISK  = 0;
 assign LED_POWER = 0;
 
 
-wire clk_132m;
+wire clk_106m;
 
 wire pll_locked;
 pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
-	.outclk_0(clk_132m),
+	.outclk_0(clk_106m),
 	.locked(pll_locked)
 );
 
 
-(*keep*)wire clk_sys = clk_132m;
+(*keep*)wire clk_sys = clk_106m;
 
 
 wire [1:0] scale = status[3:2];
@@ -222,7 +231,7 @@ localparam CONF_STR = {
 	"-;",
 	"R0,Reset;",
 	"J1,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
-	//"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
+	"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
 	"-;",
 	"-;",
 	"V,v1.51.",`BUILD_DATE

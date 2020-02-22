@@ -124,35 +124,27 @@ always @(posedge sys_clk) begin
 	xpclk <= 1'b0;
 	xvclk <= 1'b0;
 	  tlw <= 1'b0;
-
-	//clkdiv <= clkdiv + 3'd1;
-	//if (clkdiv==3'd5) begin
-		//clkdiv <= 3'b000;
-	//end
 	
 	clkdiv <= clkdiv + 4'd1;
-	if (clkdiv==4'd9) begin
+	if (clkdiv==4'd7) begin
 		clkdiv <= 4'd0;
 	end
 
-	//if ((clkdiv==3'd0) || (clkdiv==3'd3)) begin
-	if ((clkdiv==4'd0) || (clkdiv==4'd5)) begin
+	if ((clkdiv==4'd0) || (clkdiv==4'd4)) begin
+		tlw <= 1'b1;
+	end
+
+	if ((clkdiv==4'd1) || (clkdiv==4'd5)) begin
 		xpclk <= 1'b1;
 		xvclk <= 1'b1;
 	end
-	
-	if ((clkdiv==4'd4) || (clkdiv==4'd9)) begin
-		tlw <= 1'b1;
-	end
+
 	
 	fx68k_enPhi1 <= 1'b0;
 	fx68k_enPhi2 <= 1'b0;
 	
-	//if ((clkdiv==3'd0) || (clkdiv==3'd2 && turbo)) fx68k_enPhi1 <= 1'b1;
-	//if ((clkdiv==3'd1) || (clkdiv==3'd3 && turbo)) fx68k_enPhi2 <= 1'b1;
-	
-	if ( clkdiv==4'd0 || (clkdiv==4'd5 && turbo) ) fx68k_enPhi1 <= 1'b1;
-	if ( clkdiv==4'd1 || (clkdiv==4'd6 && turbo) ) fx68k_enPhi2 <= 1'b1;
+	if ( clkdiv==4'd0 || (clkdiv==4'd4 && turbo) ) fx68k_enPhi1 <= 1'b1;
+	if ( clkdiv==4'd1 || (clkdiv==4'd5 && turbo) ) fx68k_enPhi2 <= 1'b1;
 	
 	//if (clkdiv==3'd0) pix_ce <= 1'b1;
 	//else pix_ce <= 1'b0;
@@ -727,15 +719,15 @@ assign b[0]    = joy1_row_n[1];	// Port 1, pin 6.  BO/LPO. Mouse Right Button.
 //
 // http://mdgames.de/jag_end.htm
 
-//assign joy[12] = joy2_row_n[6];	// Port 2, pin 14.
-//assign joy[13] = joy2_row_n[5];	// Port 2, pin 13.
-//assign joy[14] = joy2_row_n[4];	// Port 2, pin 12.
-//assign joy[15] = joy2_row_n[3];	// Port 2, pin 11.
-//assign b[3] 	= joy2_row_n[2];	// Port 2, pin 10. B3.
-//assign b[2] 	= joy2_row_n[1];	// Port 2, pin 6.  B2/LP1.
+assign joy[12] = joy2_row_n[6];	// Port 2, pin 14.
+assign joy[13] = joy2_row_n[5];	// Port 2, pin 13.
+assign joy[14] = joy2_row_n[4];	// Port 2, pin 12.
+assign joy[15] = joy2_row_n[3];	// Port 2, pin 11.
+assign b[3] 	= joy2_row_n[2];	// Port 2, pin 10. B3.
+assign b[2] 	= joy2_row_n[1];	// Port 2, pin 6.  B2/LP1.
 
-assign joy[15:12] = 4'b1111;
-assign b[3:2] = 2'b11;
+//assign joy[15:12] = 4'b1111;
+//assign b[3:2] = 2'b11;
 
 assign b[4] = ntsc;	// 0=PAL, 1=NTSC
 assign b[5] = 1'b1;	// 256 (number of columns of the DRAM)
