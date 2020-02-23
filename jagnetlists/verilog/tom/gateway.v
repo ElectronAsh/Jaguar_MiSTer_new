@@ -4,7 +4,10 @@
 module gateway
 (
 	output [0:23] address_out,
-	output [0:23] address_oe,
+	
+	//output [0:23] address_oe,
+	output address_oe,	// ElectronAsh.
+	
 	input [0:23] address_in,
 	output wdata_0_out,
 	output wdata_0_oe,
@@ -1412,53 +1415,60 @@ assign out_addr[23] = (progown) ? cpu_addr[23] : dat_addr[23];
 
 // GATEWAY.NET (193) - address : tsm
 assign address_out[0] = out_addr[0];
-assign address_oe[0] = tri_en;
 assign address_out[1] = out_addr[1];
-assign address_oe[1] = tri_en;
 assign address_out[2] = out_addr[2];
-assign address_oe[2] = tri_en;
 assign address_out[3] = out_addr[3];
-assign address_oe[3] = tri_en;
 assign address_out[4] = out_addr[4];
-assign address_oe[4] = tri_en;
 assign address_out[5] = out_addr[5];
-assign address_oe[5] = tri_en;
 assign address_out[6] = out_addr[6];
-assign address_oe[6] = tri_en;
 assign address_out[7] = out_addr[7];
-assign address_oe[7] = tri_en;
 assign address_out[8] = out_addr[8];
-assign address_oe[8] = tri_en;
 assign address_out[9] = out_addr[9];
-assign address_oe[9] = tri_en;
 assign address_out[10] = out_addr[10];
-assign address_oe[10] = tri_en;
 assign address_out[11] = out_addr[11];
-assign address_oe[11] = tri_en;
 assign address_out[12] = out_addr[12];
-assign address_oe[12] = tri_en;
 assign address_out[13] = out_addr[13];
-assign address_oe[13] = tri_en;
 assign address_out[14] = out_addr[14];
-assign address_oe[14] = tri_en;
 assign address_out[15] = out_addr[15];
-assign address_oe[15] = tri_en;
 assign address_out[16] = out_addr[16];
-assign address_oe[16] = tri_en;
 assign address_out[17] = out_addr[17];
-assign address_oe[17] = tri_en;
 assign address_out[18] = out_addr[18];
-assign address_oe[18] = tri_en;
 assign address_out[19] = out_addr[19];
-assign address_oe[19] = tri_en;
 assign address_out[20] = out_addr[20];
-assign address_oe[20] = tri_en;
 assign address_out[21] = out_addr[21];
-assign address_oe[21] = tri_en;
 assign address_out[22] = out_addr[22];
-assign address_oe[22] = tri_en;
 assign address_out[23] = out_addr[23];
+
+
+/*
+assign address_oe[0] = tri_en;
+assign address_oe[1] = tri_en;
+assign address_oe[2] = tri_en;
+assign address_oe[3] = tri_en;
+assign address_oe[4] = tri_en;
+assign address_oe[5] = tri_en;
+assign address_oe[6] = tri_en;
+assign address_oe[7] = tri_en;
+assign address_oe[8] = tri_en;
+assign address_oe[9] = tri_en;
+assign address_oe[10] = tri_en;
+assign address_oe[11] = tri_en;
+assign address_oe[12] = tri_en;
+assign address_oe[13] = tri_en;
+assign address_oe[14] = tri_en;
+assign address_oe[15] = tri_en;
+assign address_oe[16] = tri_en;
+assign address_oe[17] = tri_en;
+assign address_oe[18] = tri_en;
+assign address_oe[19] = tri_en;
+assign address_oe[20] = tri_en;
+assign address_oe[21] = tri_en;
+assign address_oe[22] = tri_en;
 assign address_oe[23] = tri_en;
+*/
+
+assign address_oe = tri_en;	// ElectronAsh.
+
 
 // GATEWAY.NET (197) - mreq : tsm
 assign mreq_out = active;

@@ -1,7 +1,7 @@
 module jag_controller_mux (
-	input [4:1] col_n,
+	input [3:0] col_n,
 	
-	output wire [6:1] row_n,
+	output wire [5:0] row_n,
 	
 	input but_right,
 	input but_left,
@@ -26,11 +26,11 @@ module jag_controller_mux (
 	input but_hash
 );
 
-assign row_n[6:1] = (!col_n[1]) ? ~{but_hash, but_9, but_6, but_3, but_option, 1'b0} :
+assign row_n[5:0] = (!col_n[3]) ? ~{but_hash, but_9, but_6, but_3, but_option, 1'b0} :
 						  (!col_n[2]) ? ~{but_0, but_8, but_5, but_2, but_c, 1'b0} :
-						  (!col_n[3]) ? ~{but_star, but_7, but_4, but_1, but_b, 1'b0} :
-						  (!col_n[4]) ? ~{but_up, but_down, but_left, but_right, but_a, but_pause} :
-																							4'b1111;
+						  (!col_n[1]) ? ~{but_star, but_7, but_4, but_1, but_b, 1'b0} :
+						  (!col_n[0]) ? ~{but_up, but_down, but_left, but_right, but_a, but_pause} :
+																							~6'b000000;
 
 
 endmodule

@@ -211,9 +211,8 @@ assign VIDEO_ARY = status[1] ? 8'd9  : 8'd3;
 //             Uppercase O                    Lowercase o
 // 0         1         2         3          4         5         6   
 // 01234567890123456789012345678901 23456789012345678901234567890123
-// 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
+// 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789abcdefghijklmnopqrstuv
 // XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX XXXXX 
-
 
 // 	"O24,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 
@@ -232,8 +231,7 @@ localparam CONF_STR = {
 	"R0,Reset;",
 	"J1,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
 	"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
-	"-;",
-	"-;",
+	"O56,Mouse,Disabled,JoyPort1,JoyPort2;",
 	"V,v1.51.",`BUILD_DATE
 };
 
@@ -250,6 +248,7 @@ wire  [7:0] ioctl_index;
 reg         ioctl_wait;
 wire        forced_scandoubler;
 wire [10:0] ps2_key;
+wire [24:0] ps2_mouse;
 wire [21:0] gamma_bus;
 
 hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(1)) hps_io
@@ -275,6 +274,8 @@ hps_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(1000), .WIDE(1)) hps_io
 	.ioctl_wait(ioctl_wait),
 
 	.ps2_key(ps2_key),
+	
+	.ps2_mouse(ps2_mouse),
 	
 	.gamma_bus(gamma_bus)
 );
@@ -439,7 +440,12 @@ jaguar jaguar_inst
 	.fx68k_as_n_dbg( fx68k_as_n_dbg ) ,
 	
 	.fx68k_din_dbg( fx68k_din_dbg ) ,
-	.fx68k_dout_dbg( fx68k_dout_dbg )
+	.fx68k_dout_dbg( fx68k_dout_dbg ) ,
+	
+	.ps2_mouse( ps2_mouse ) ,
+	
+	.mouse_ena_1( status[6:5]==1 ) ,
+	.mouse_ena_2( status[6:5]==2 )
 );
 
 wire cpu_clken_dbg;

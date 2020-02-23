@@ -4,7 +4,10 @@
 module mcontrol
 (
 	output [0:23] blit_addr_out,
-	output [0:23] blit_addr_oe,
+	
+	//output [0:23] blit_addr_oe,
+	output blit_addr_oe,	// ElectronAsh.
+	
 	input [0:23] blit_addr_in,
 	output justify_out,
 	output justify_oe,
@@ -248,53 +251,59 @@ fdsync24 blita_inst
 
 // MCONTROL.NET (131) - blit_addr : tsm
 assign blit_addr_out[0] = blita[0];
-assign blit_addr_oe[0] = busen;
 assign blit_addr_out[1] = blita[1];
-assign blit_addr_oe[1] = busen;
 assign blit_addr_out[2] = blita[2];
-assign blit_addr_oe[2] = busen;
 assign blit_addr_out[3] = blita[3];
-assign blit_addr_oe[3] = busen;
 assign blit_addr_out[4] = blita[4];
-assign blit_addr_oe[4] = busen;
 assign blit_addr_out[5] = blita[5];
-assign blit_addr_oe[5] = busen;
 assign blit_addr_out[6] = blita[6];
-assign blit_addr_oe[6] = busen;
 assign blit_addr_out[7] = blita[7];
-assign blit_addr_oe[7] = busen;
 assign blit_addr_out[8] = blita[8];
-assign blit_addr_oe[8] = busen;
 assign blit_addr_out[9] = blita[9];
-assign blit_addr_oe[9] = busen;
 assign blit_addr_out[10] = blita[10];
-assign blit_addr_oe[10] = busen;
 assign blit_addr_out[11] = blita[11];
-assign blit_addr_oe[11] = busen;
 assign blit_addr_out[12] = blita[12];
-assign blit_addr_oe[12] = busen;
 assign blit_addr_out[13] = blita[13];
-assign blit_addr_oe[13] = busen;
 assign blit_addr_out[14] = blita[14];
-assign blit_addr_oe[14] = busen;
 assign blit_addr_out[15] = blita[15];
-assign blit_addr_oe[15] = busen;
 assign blit_addr_out[16] = blita[16];
-assign blit_addr_oe[16] = busen;
 assign blit_addr_out[17] = blita[17];
-assign blit_addr_oe[17] = busen;
 assign blit_addr_out[18] = blita[18];
-assign blit_addr_oe[18] = busen;
 assign blit_addr_out[19] = blita[19];
-assign blit_addr_oe[19] = busen;
 assign blit_addr_out[20] = blita[20];
-assign blit_addr_oe[20] = busen;
 assign blit_addr_out[21] = blita[21];
-assign blit_addr_oe[21] = busen;
 assign blit_addr_out[22] = blita[22];
-assign blit_addr_oe[22] = busen;
 assign blit_addr_out[23] = blita[23];
+
+/*
+assign blit_addr_oe[0] = busen;
+assign blit_addr_oe[1] = busen;
+assign blit_addr_oe[2] = busen;
+assign blit_addr_oe[3] = busen;
+assign blit_addr_oe[4] = busen;
+assign blit_addr_oe[5] = busen;
+assign blit_addr_oe[6] = busen;
+assign blit_addr_oe[7] = busen;
+assign blit_addr_oe[8] = busen;
+assign blit_addr_oe[9] = busen;
+assign blit_addr_oe[10] = busen;
+assign blit_addr_oe[11] = busen;
+assign blit_addr_oe[12] = busen;
+assign blit_addr_oe[13] = busen;
+assign blit_addr_oe[14] = busen;
+assign blit_addr_oe[15] = busen;
+assign blit_addr_oe[16] = busen;
+assign blit_addr_oe[17] = busen;
+assign blit_addr_oe[18] = busen;
+assign blit_addr_oe[19] = busen;
+assign blit_addr_oe[20] = busen;
+assign blit_addr_oe[21] = busen;
+assign blit_addr_oe[22] = busen;
 assign blit_addr_oe[23] = busen;
+*/
+
+// ElectronAsh.
+assign blit_addr_oe = busen;
 
 // MCONTROL.NET (137) - waitackset : nd2
 assign waset_n = ~(ractive & blitack_obuf);

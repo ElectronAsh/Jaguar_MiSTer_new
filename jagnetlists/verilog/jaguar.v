@@ -62,6 +62,11 @@ module jaguar
 	input [31:0] joystick_0,
 	input [31:0] joystick_1,
 	
+	input [24:0] ps2_mouse,
+	
+	input mouse_ena_1,
+	input mouse_ena_2,
+	
 	output startcas,
 	
 	input turbo,
@@ -98,18 +103,18 @@ wire rst = ~xresetl;
 //assign aud_16_l = r_acc_l[22:7];
 //assign aud_16_r = r_acc_r[22:7];
 
-//assign aud_16_l = r_aud_l;
-//assign aud_16_r = r_aud_r;
+assign aud_16_l = r_aud_l;
+assign aud_16_r = r_aud_r;
 
-assign aud_16_l[15:0] = w_aud_l[15:0];
-assign aud_16_r[15:0] = w_aud_r[15:0];
+//assign aud_16_l[15:0] = w_aud_l[15:0];
+//assign aud_16_r[15:0] = w_aud_r[15:0];
 
 
 //reg [2:0] clkdiv;
 reg [3:0] clkdiv;
-reg xpclk;			// Processor (Tom & Jerry) Clock.
-reg xvclk;			// Video Clock.
-reg tlw;				// Transparent Latch Write?
+(*noprune*) reg xpclk;			// Processor (Tom & Jerry) Clock.
+(*noprune*) reg xvclk;			// Video Clock.
+(*noprune*) reg tlw;				// Transparent Latch Write?
 
 reg fx68k_enPhi1;
 reg fx68k_enPhi2;
@@ -544,7 +549,7 @@ assign dbus[47:32] = (den[2]) ? xd_out[47:32] :		// Tom.
 							(dram_oe[2]) ? dram_q[47:32] :// DRAM.
 													16'hzzzz;
 
-// Note: The den[2] / oe_n[2]  signals is used twice.
+// Note: The den[2]  signal is used twice.
 // This is true for the Jag schematic too.
 assign dbus[63:48] = (den[2]) ? xd_out[63:48] :		// Tom.
 							(dram_oe[3]) ? dram_q[63:48] :// DRAM.
@@ -622,11 +627,36 @@ assign j_xsck_in = j_xsck_oe ? j_xsck_out : 1'b1;
 assign j_xws_in = j_xws_oe ? j_xws_out : 1'b1;
 assign j_xvclk_in = j_xvclk_oe ? j_xvclk_out : 1'b1;
 
+ps2_mouse mouse
+(
+	.reset(~xresetl),
+
+	.clk(sys_clk),
+	.ce(xpclk),
+
+	.ps2_mouse(ps2_mouse),		// 25-bit bus, from hps_io.
+
+	.x1(mouseX1),
+	.y1(mouseY1),
+	.x2(mouseX2),
+	.y2(mouseY2),
+	.button_l(mouseButton_l),	// Active-LOW output!
+	.button_r(mouseButton_r),	// Active-LOW output!
+	.button_m(mouseButton_m)	// Active-LOW output!
+);
+
+wire mouseX1;
+wire mouseY1;
+wire mouseX2;
+wire mouseY2;
+wire mouseButton_l;
+wire mouseButton_r;
+wire mouseButton_m;
 
 jag_controller_mux controller_mux_1
 (
-	.col_n( u374_reg[3:0] ) ,	// input [4:1] col_n
-	.row_n( joy1_row_n ) ,		// output [6:1] row_n
+	.col_n( u374_reg[3:0] ) ,	// input [3:0] col_n
+	.row_n( joy1_row_n ) ,		// output [5:0] row_n
 	
 	.but_right	( joystick_0[0] ) ,
 	.but_left	( joystick_0[1] ) ,
@@ -650,13 +680,13 @@ jag_controller_mux controller_mux_1
 	.but_star	( joystick_0[19] ) ,
 	.but_hash	( joystick_0[20] )
 );
-wire [6:1] joy1_row_n;
+wire [5:0] joy1_row_n;
 
 
 jag_controller_mux controller_mux_2
 (
-	.col_n( u374_reg[7:4] ) ,	// input [4:1] col_n
-	.row_n( joy2_row_n ) ,		// output [6:1] row_n
+	.col_n( u374_reg[7:4] ) ,	// input [3:0] col_n
+	.row_n( joy2_row_n ) ,		// output [5:0] row_n
 	
 	.but_right	( joystick_1[0] ) ,
 	.but_left	( joystick_1[1] ) ,
@@ -680,7 +710,7 @@ jag_controller_mux controller_mux_2
 	.but_star	( joystick_1[19] ) ,
 	.but_hash	( joystick_1[20] )
 );
-wire [6:1] joy2_row_n;
+wire [5:0] joy2_row_n;
 
 // JOYSTICK INTERFACE
 //
@@ -688,43 +718,45 @@ wire [6:1] joy2_row_n;
 // density 'D' socket. The pinouts are as follows:
 // 
 // PIN	J5			J6
-// 1		JOY3		JOY4
-// 2		JOY2		JOY5
-// 3		JOY1		JOY6
-// 4		JOY0		JOY7
+// 1		JOY3		JOY4		/COL0 out
+// 2		JOY2		JOY5		/COL1 out
+// 3		JOY1		JOY6		/COL2 out
+// 4		JOY0		JOY7		/COL3 out
 // 5		PAD0X		PAD1X
-// 6		BO/LP0	B2/LP1
+// 6		BO/LP0	B2/LP1	/ROW0 in
 // 7		+5V  		+5V
 // 8		NC			NC
 // 9		GND		GND
 // 10		B1			B3
-// 11		J0Y11		J0Y15
-// 12		JOY10		JOY14
-// 13		JOY9		JOY13
-// 14		JOY8		JOY12
+// 11		J0Y11		J0Y15		/ROW1 in
+// 12		JOY10		JOY14		/ROW2 in
+// 13		JOY9		JOY13		/ROW3 in
+// 14		JOY8		JOY12		/ROW4 in
 // 15		PAD0Y		PAD1Y
 //
 assign joy[0] = ee_do;
 
 assign joy[7:1]   = 7'b1111111;	// Port 1, pins 4:2. / Port 2, pins 4:1.
 
-assign joy[8]  = joy1_row_n[6];	// Port 1, pin 14. Mouse XB.
-assign joy[9]  = joy1_row_n[5];	// Port 1, pin 13. Mouse XA.
-assign joy[10] = joy1_row_n[4];	// Port 1, pin 12. Mouse YA / Rotary Encoder XA.
-assign joy[11] = joy1_row_n[3];	// Port 1, pin 11. Mouse YB / Rotary Encoder XB.
-assign b[1]    = joy1_row_n[2];	// Port 1, pin 10. B1. Mouse Left Button / Rotary Encoder button.
-assign b[0]    = joy1_row_n[1];	// Port 1, pin 6.  BO/LPO. Mouse Right Button.
+assign joy[8]  = (!mouse_ena_1) ? joy1_row_n[5] : mouseX2;			// Port 1, pin 14. Mouse XB.
+assign joy[9]  = (!mouse_ena_1) ? joy1_row_n[4] : mouseX1;			// Port 1, pin 13. Mouse XA.
+assign joy[10] = (!mouse_ena_1) ? joy1_row_n[3] : mouseY1;			// Port 1, pin 12. Mouse YA / Rotary Encoder XA.
+assign joy[11] = (!mouse_ena_1) ? joy1_row_n[2] : mouseY2;			// Port 1, pin 11. Mouse YB / Rotary Encoder XB.
+assign b[1]    = (!mouse_ena_1) ? joy1_row_n[1] : mouseButton_l;	// Port 1, pin 10. B1. Mouse Left Button / Rotary Encoder button.
+assign b[0]    = (!mouse_ena_1) ? joy1_row_n[0] : mouseButton_r;	// Port 1, pin 6.  BO/Light Pen 0. Mouse Right Button.
 
-// Mouse / Rotary Encoder hookup info, and test programs...
+// Standard Jag controller mapping...
+// http://arcarc.xmission.com/Web%20Archives/Deathskull%20%28May-2006%29/games/tech/jagcont.html
 //
+// Mouse / Rotary Encoder hookup info, and test programs...
 // http://mdgames.de/jag_end.htm
-
-assign joy[12] = joy2_row_n[6];	// Port 2, pin 14.
-assign joy[13] = joy2_row_n[5];	// Port 2, pin 13.
-assign joy[14] = joy2_row_n[4];	// Port 2, pin 12.
-assign joy[15] = joy2_row_n[3];	// Port 2, pin 11.
-assign b[3] 	= joy2_row_n[2];	// Port 2, pin 10. B3.
-assign b[2] 	= joy2_row_n[1];	// Port 2, pin 6.  B2/LP1.
+//
+assign joy[12] = (!mouse_ena_2) ? joy2_row_n[5] : mouseX2;			// Port 2, pin 14.
+assign joy[13] = (!mouse_ena_2) ? joy2_row_n[4] : mouseX1;			// Port 2, pin 13.
+assign joy[14] = (!mouse_ena_2) ? joy2_row_n[3] : mouseY1;			// Port 2, pin 12.
+assign joy[15] = (!mouse_ena_2) ? joy2_row_n[2] : mouseY2;			// Port 2, pin 11.
+assign b[3] 	= (!mouse_ena_2) ? joy2_row_n[1] : mouseButton_l;	// Port 2, pin 10. B3.
+assign b[2] 	= (!mouse_ena_2) ? joy2_row_n[0] : mouseButton_r;	// Port 2, pin 6.  B2/Light Pen 1.
 
 //assign joy[15:12] = 4'b1111;
 //assign b[3:2] = 2'b11;
@@ -1640,12 +1672,12 @@ begin
     r_aud_l <= 16'd0;
     r_aud_r <= 16'd0;
   end else begin
-		if (snd_l_en) r_aud_l <= w_aud_l;	// TESTING. ElectronAsh.
-		if (snd_r_en) r_aud_r <= w_aud_r;
+		//if (snd_l_en) r_aud_l <= w_aud_l;	// TESTING. ElectronAsh.
+		//if (snd_r_en) r_aud_r <= w_aud_r;
   
 		if (snd_clk) begin
-			//r_aud_l <= w_aud_l;
-			//r_aud_r <= w_aud_r;
+			r_aud_l <= w_aud_l;
+			r_aud_r <= w_aud_r;
 			
 			/*if (w_aud_l[15]) begin
 				r_aud_l <= {1'b0, ~w_aud_l[14:0]};

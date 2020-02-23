@@ -5,15 +5,9 @@ create_clock -period "50.0 MHz" [get_ports FPGA_CLK3_50]
 create_clock -period "100.0 MHz" [get_pins -compatibility_mode *|h2f_user0_clk] 
 create_clock -period "100.0 MHz" [get_pins -compatibility_mode spi|sclk_out] -name spi_sck
 
-create_clock -period "28.0 MHz" [get_pins emu:emu|jaguar:jaguar_inst|xpclk]
-create_clock -period "28.0 MHz" [get_pins emu:emu|jaguar:jaguar_inst|xvclk]
-create_clock -period "28.0 MHz" [get_pins emu:emu|jaguar:jaguar_inst|tlw]
-create_clock -period "28.0 MHz" [get_pins xpclk]
-create_clock -period "28.0 MHz" [get_pins xvclk]
-create_clock -period "28.0 MHz" [get_pins tlw]
-
-
-
+#create_clock -period "28.0 MHz" [get_registers {emu:emu|jaguar:jaguar_inst|xpclk}]
+#create_clock -period "28.0 MHz" [get_registers {emu:emu|jaguar:jaguar_inst|xvclk}]
+#create_clock -period "28.0 MHz" [get_registers {emu:emu|jaguar:jaguar_inst|tlw}]
 
 derive_pll_clocks
 derive_clock_uncertainty

@@ -4,7 +4,10 @@
 module state
 (
 	output [0:23] blit_addr_out,
-	output [0:23] blit_addr_oe,
+	
+	//output [0:23] blit_addr_oe,
+	output blit_addr_oe,	// ElectronAsh.
+		
 	input [0:23] blit_addr_in,
 	output justify_out,
 	output justify_oe,
@@ -652,7 +655,10 @@ outer outer_inst
 mcontrol mcontrol_inst
 (
 	.blit_addr_out /* BUS */ ({blit_addr_out[0],blit_addr_out[1],blit_addr_out[2],blit_addr_out[3],blit_addr_out[4],blit_addr_out[5],blit_addr_out[6],blit_addr_out[7],blit_addr_out[8],blit_addr_out[9],blit_addr_out[10],blit_addr_out[11],blit_addr_out[12],blit_addr_out[13],blit_addr_out[14],blit_addr_out[15],blit_addr_out[16],blit_addr_out[17],blit_addr_out[18],blit_addr_out[19],blit_addr_out[20],blit_addr_out[21],blit_addr_out[22],blit_addr_out[23]}),
-	.blit_addr_oe /* BUS */ ({blit_addr_oe[0],blit_addr_oe[1],blit_addr_oe[2],blit_addr_oe[3],blit_addr_oe[4],blit_addr_oe[5],blit_addr_oe[6],blit_addr_oe[7],blit_addr_oe[8],blit_addr_oe[9],blit_addr_oe[10],blit_addr_oe[11],blit_addr_oe[12],blit_addr_oe[13],blit_addr_oe[14],blit_addr_oe[15],blit_addr_oe[16],blit_addr_oe[17],blit_addr_oe[18],blit_addr_oe[19],blit_addr_oe[20],blit_addr_oe[21],blit_addr_oe[22],blit_addr_oe[23]}),
+	
+	//.blit_addr_oe /* BUS */ ({blit_addr_oe[0],blit_addr_oe[1],blit_addr_oe[2],blit_addr_oe[3],blit_addr_oe[4],blit_addr_oe[5],blit_addr_oe[6],blit_addr_oe[7],blit_addr_oe[8],blit_addr_oe[9],blit_addr_oe[10],blit_addr_oe[11],blit_addr_oe[12],blit_addr_oe[13],blit_addr_oe[14],blit_addr_oe[15],blit_addr_oe[16],blit_addr_oe[17],blit_addr_oe[18],blit_addr_oe[19],blit_addr_oe[20],blit_addr_oe[21],blit_addr_oe[22],blit_addr_oe[23]}),
+	.blit_addr_oe /* BUS */ (blit_addr_oe),	// ElectronAsh.
+	
 	.blit_addr_in /* BUS */ ({blit_addr_in[0],blit_addr_in[1],blit_addr_in[2],blit_addr_in[3],blit_addr_in[4],blit_addr_in[5],blit_addr_in[6],blit_addr_in[7],blit_addr_in[8],blit_addr_in[9],blit_addr_in[10],blit_addr_in[11],blit_addr_in[12],blit_addr_in[13],blit_addr_in[14],blit_addr_in[15],blit_addr_in[16],blit_addr_in[17],blit_addr_in[18],blit_addr_in[19],blit_addr_in[20],blit_addr_in[21],blit_addr_in[22],blit_addr_in[23]}),
 	.justify_out /* BUS */ (justify_out),
 	.justify_oe /* BUS */ (justify_oe),

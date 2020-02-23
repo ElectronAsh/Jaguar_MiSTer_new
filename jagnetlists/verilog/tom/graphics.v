@@ -2817,7 +2817,10 @@ gpu_cpu gpu_cpu_inst
 gateway gateway_inst
 (
 	.address_out /* BUS */ ({ts_local_pe_140_a0_out,ts_local_pe_141_a0_out,ts_local_pe_142_a0_out,ts_local_pe_143_a0_out,ts_local_pe_144_a0_out,ts_local_pe_145_a0_out,ts_local_pe_146_a0_out,ts_local_pe_147_a0_out,ts_local_pe_148_a0_out,ts_local_pe_149_a0_out,ts_local_pe_150_a0_out,ts_local_pe_151_a0_out,ts_local_pe_152_a0_out,ts_local_pe_153_a0_out,ts_local_pe_154_a0_out,ts_local_pe_155_a0_out,ts_local_pe_156_a0_out,ts_local_pe_157_a0_out,ts_local_pe_158_a0_out,ts_local_pe_159_a0_out,ts_local_pe_160_a0_out,ts_local_pe_161_a0_out,ts_local_pe_162_a0_out,ts_local_pe_163_a0_out}),
-	.address_oe /* BUS */ ({ts_local_pe_140_a0_oe,ts_local_pe_141_a0_oe,ts_local_pe_142_a0_oe,ts_local_pe_143_a0_oe,ts_local_pe_144_a0_oe,ts_local_pe_145_a0_oe,ts_local_pe_146_a0_oe,ts_local_pe_147_a0_oe,ts_local_pe_148_a0_oe,ts_local_pe_149_a0_oe,ts_local_pe_150_a0_oe,ts_local_pe_151_a0_oe,ts_local_pe_152_a0_oe,ts_local_pe_153_a0_oe,ts_local_pe_154_a0_oe,ts_local_pe_155_a0_oe,ts_local_pe_156_a0_oe,ts_local_pe_157_a0_oe,ts_local_pe_158_a0_oe,ts_local_pe_159_a0_oe,ts_local_pe_160_a0_oe,ts_local_pe_161_a0_oe,ts_local_pe_162_a0_oe,ts_local_pe_163_a0_oe}),
+	
+	//.address_oe /* BUS */ ({ts_local_pe_140_a0_oe,ts_local_pe_141_a0_oe,ts_local_pe_142_a0_oe,ts_local_pe_143_a0_oe,ts_local_pe_144_a0_oe,ts_local_pe_145_a0_oe,ts_local_pe_146_a0_oe,ts_local_pe_147_a0_oe,ts_local_pe_148_a0_oe,ts_local_pe_149_a0_oe,ts_local_pe_150_a0_oe,ts_local_pe_151_a0_oe,ts_local_pe_152_a0_oe,ts_local_pe_153_a0_oe,ts_local_pe_154_a0_oe,ts_local_pe_155_a0_oe,ts_local_pe_156_a0_oe,ts_local_pe_157_a0_oe,ts_local_pe_158_a0_oe,ts_local_pe_159_a0_oe,ts_local_pe_160_a0_oe,ts_local_pe_161_a0_oe,ts_local_pe_162_a0_oe,ts_local_pe_163_a0_oe}),
+	.address_oe /* BUS */ (gateway_addr_oe),
+	
 	.address_in /* BUS */ ({ts_local_pe_140_a0_in,ts_local_pe_141_a0_in,ts_local_pe_142_a0_in,ts_local_pe_143_a0_in,ts_local_pe_144_a0_in,ts_local_pe_145_a0_in,ts_local_pe_146_a0_in,ts_local_pe_147_a0_in,ts_local_pe_148_a0_in,ts_local_pe_149_a0_in,ts_local_pe_150_a0_in,ts_local_pe_151_a0_in,ts_local_pe_152_a0_in,ts_local_pe_153_a0_in,ts_local_pe_154_a0_in,ts_local_pe_155_a0_in,ts_local_pe_156_a0_in,ts_local_pe_157_a0_in,ts_local_pe_158_a0_in,ts_local_pe_159_a0_in,ts_local_pe_160_a0_in,ts_local_pe_161_a0_in,ts_local_pe_162_a0_in,ts_local_pe_163_a0_in}),
 	.wdata_0_out /* BUS */ (ts_pe_69_a0_out),
 	.wdata_0_oe /* BUS */ (ts_pe_69_a0_oe),
@@ -3133,7 +3136,10 @@ gateway gateway_inst
 blit blit_inst
 (
 	.blit_addr_out /* BUS */ ({ts_local_pe_140_a1_out,ts_local_pe_141_a1_out,ts_local_pe_142_a1_out,ts_local_pe_143_a1_out,ts_local_pe_144_a1_out,ts_local_pe_145_a1_out,ts_local_pe_146_a1_out,ts_local_pe_147_a1_out,ts_local_pe_148_a1_out,ts_local_pe_149_a1_out,ts_local_pe_150_a1_out,ts_local_pe_151_a1_out,ts_local_pe_152_a1_out,ts_local_pe_153_a1_out,ts_local_pe_154_a1_out,ts_local_pe_155_a1_out,ts_local_pe_156_a1_out,ts_local_pe_157_a1_out,ts_local_pe_158_a1_out,ts_local_pe_159_a1_out,ts_local_pe_160_a1_out,ts_local_pe_161_a1_out,ts_local_pe_162_a1_out,ts_local_pe_163_a1_out}),
-	.blit_addr_oe /* BUS */ ({ts_local_pe_140_a1_oe,ts_local_pe_141_a1_oe,ts_local_pe_142_a1_oe,ts_local_pe_143_a1_oe,ts_local_pe_144_a1_oe,ts_local_pe_145_a1_oe,ts_local_pe_146_a1_oe,ts_local_pe_147_a1_oe,ts_local_pe_148_a1_oe,ts_local_pe_149_a1_oe,ts_local_pe_150_a1_oe,ts_local_pe_151_a1_oe,ts_local_pe_152_a1_oe,ts_local_pe_153_a1_oe,ts_local_pe_154_a1_oe,ts_local_pe_155_a1_oe,ts_local_pe_156_a1_oe,ts_local_pe_157_a1_oe,ts_local_pe_158_a1_oe,ts_local_pe_159_a1_oe,ts_local_pe_160_a1_oe,ts_local_pe_161_a1_oe,ts_local_pe_162_a1_oe,ts_local_pe_163_a1_oe}),
+	
+	//.blit_addr_oe /* BUS */ ({ts_local_pe_140_a1_oe,ts_local_pe_141_a1_oe,ts_local_pe_142_a1_oe,ts_local_pe_143_a1_oe,ts_local_pe_144_a1_oe,ts_local_pe_145_a1_oe,ts_local_pe_146_a1_oe,ts_local_pe_147_a1_oe,ts_local_pe_148_a1_oe,ts_local_pe_149_a1_oe,ts_local_pe_150_a1_oe,ts_local_pe_151_a1_oe,ts_local_pe_152_a1_oe,ts_local_pe_153_a1_oe,ts_local_pe_154_a1_oe,ts_local_pe_155_a1_oe,ts_local_pe_156_a1_oe,ts_local_pe_157_a1_oe,ts_local_pe_158_a1_oe,ts_local_pe_159_a1_oe,ts_local_pe_160_a1_oe,ts_local_pe_161_a1_oe,ts_local_pe_162_a1_oe,ts_local_pe_163_a1_oe}),
+	.blit_addr_oe /* BUS */ (blit_addr_oe),	// ElectronAsh.
+	
 	.blit_addr_in /* BUS */ ({ts_local_pe_140_a1_in,ts_local_pe_141_a1_in,ts_local_pe_142_a1_in,ts_local_pe_143_a1_in,ts_local_pe_144_a1_in,ts_local_pe_145_a1_in,ts_local_pe_146_a1_in,ts_local_pe_147_a1_in,ts_local_pe_148_a1_in,ts_local_pe_149_a1_in,ts_local_pe_150_a1_in,ts_local_pe_151_a1_in,ts_local_pe_152_a1_in,ts_local_pe_153_a1_in,ts_local_pe_154_a1_in,ts_local_pe_155_a1_in,ts_local_pe_156_a1_in,ts_local_pe_157_a1_in,ts_local_pe_158_a1_in,ts_local_pe_159_a1_in,ts_local_pe_160_a1_in,ts_local_pe_161_a1_in,ts_local_pe_162_a1_in,ts_local_pe_163_a1_in}),
 	.wdata_0_out /* BUS */ (ts_pe_69_a1_out),
 	.wdata_0_oe /* BUS */ (ts_pe_69_a1_oe),
@@ -3657,577 +3663,578 @@ assign gpu_din[30] = gpu_data_in[30];
 assign gpu_din[31] = gpu_data_in[31];
 
 // --- Compiler-generated PE for BUS wdata[0]
-assign wdata_0_out = (ts_pe_69_a0_oe & ts_pe_69_a0_out ) | (ts_pe_69_a1_oe & ts_pe_69_a1_out ) | 1'b0;
+assign wdata_0_out = (ts_pe_69_a0_oe & ts_pe_69_a0_out ) | (ts_pe_69_a1_oe & ts_pe_69_a1_out );
 assign wdata_0_oe = ts_pe_69_a0_oe | ts_pe_69_a1_oe;
 assign ts_pe_69_a0_in = wdata_0_in;
 assign ts_pe_69_a1_in = wdata_0_in;
 
 // --- Compiler-generated PE for BUS wdata[1]
-assign wdata_1_out = (ts_pe_70_a0_oe & ts_pe_70_a0_out ) | (ts_pe_70_a1_oe & ts_pe_70_a1_out ) | 1'b0;
+assign wdata_1_out = (ts_pe_70_a0_oe & ts_pe_70_a0_out ) | (ts_pe_70_a1_oe & ts_pe_70_a1_out );
 assign wdata_1_oe = ts_pe_70_a0_oe | ts_pe_70_a1_oe;
 assign ts_pe_70_a0_in = wdata_1_in;
 assign ts_pe_70_a1_in = wdata_1_in;
 
 // --- Compiler-generated PE for BUS wdata[2]
-assign wdata_2_out = (ts_pe_71_a0_oe & ts_pe_71_a0_out ) | (ts_pe_71_a1_oe & ts_pe_71_a1_out ) | 1'b0;
+assign wdata_2_out = (ts_pe_71_a0_oe & ts_pe_71_a0_out ) | (ts_pe_71_a1_oe & ts_pe_71_a1_out );
 assign wdata_2_oe = ts_pe_71_a0_oe | ts_pe_71_a1_oe;
 assign ts_pe_71_a0_in = wdata_2_in;
 assign ts_pe_71_a1_in = wdata_2_in;
 
 // --- Compiler-generated PE for BUS wdata[3]
-assign wdata_3_out = (ts_pe_72_a0_oe & ts_pe_72_a0_out ) | (ts_pe_72_a1_oe & ts_pe_72_a1_out ) | 1'b0;
+assign wdata_3_out = (ts_pe_72_a0_oe & ts_pe_72_a0_out ) | (ts_pe_72_a1_oe & ts_pe_72_a1_out );
 assign wdata_3_oe = ts_pe_72_a0_oe | ts_pe_72_a1_oe;
 assign ts_pe_72_a0_in = wdata_3_in;
 assign ts_pe_72_a1_in = wdata_3_in;
 
 // --- Compiler-generated PE for BUS wdata[4]
-assign wdata_4_out = (ts_pe_73_a0_oe & ts_pe_73_a0_out ) | (ts_pe_73_a1_oe & ts_pe_73_a1_out ) | 1'b0;
+assign wdata_4_out = (ts_pe_73_a0_oe & ts_pe_73_a0_out ) | (ts_pe_73_a1_oe & ts_pe_73_a1_out );
 assign wdata_4_oe = ts_pe_73_a0_oe | ts_pe_73_a1_oe;
 assign ts_pe_73_a0_in = wdata_4_in;
 assign ts_pe_73_a1_in = wdata_4_in;
 
 // --- Compiler-generated PE for BUS wdata[5]
-assign wdata_5_out = (ts_pe_74_a0_oe & ts_pe_74_a0_out ) | (ts_pe_74_a1_oe & ts_pe_74_a1_out ) | 1'b0;
+assign wdata_5_out = (ts_pe_74_a0_oe & ts_pe_74_a0_out ) | (ts_pe_74_a1_oe & ts_pe_74_a1_out );
 assign wdata_5_oe = ts_pe_74_a0_oe | ts_pe_74_a1_oe;
 assign ts_pe_74_a0_in = wdata_5_in;
 assign ts_pe_74_a1_in = wdata_5_in;
 
 // --- Compiler-generated PE for BUS wdata[6]
-assign wdata_6_out = (ts_pe_75_a0_oe & ts_pe_75_a0_out ) | (ts_pe_75_a1_oe & ts_pe_75_a1_out ) | 1'b0;
+assign wdata_6_out = (ts_pe_75_a0_oe & ts_pe_75_a0_out ) | (ts_pe_75_a1_oe & ts_pe_75_a1_out );
 assign wdata_6_oe = ts_pe_75_a0_oe | ts_pe_75_a1_oe;
 assign ts_pe_75_a0_in = wdata_6_in;
 assign ts_pe_75_a1_in = wdata_6_in;
 
 // --- Compiler-generated PE for BUS wdata[7]
-assign wdata_7_out = (ts_pe_76_a0_oe & ts_pe_76_a0_out ) | (ts_pe_76_a1_oe & ts_pe_76_a1_out ) | 1'b0;
+assign wdata_7_out = (ts_pe_76_a0_oe & ts_pe_76_a0_out ) | (ts_pe_76_a1_oe & ts_pe_76_a1_out );
 assign wdata_7_oe = ts_pe_76_a0_oe | ts_pe_76_a1_oe;
 assign ts_pe_76_a0_in = wdata_7_in;
 assign ts_pe_76_a1_in = wdata_7_in;
 
 // --- Compiler-generated PE for BUS wdata[8]
-assign wdata_8_out = (ts_pe_77_a0_oe & ts_pe_77_a0_out ) | (ts_pe_77_a1_oe & ts_pe_77_a1_out ) | 1'b0;
+assign wdata_8_out = (ts_pe_77_a0_oe & ts_pe_77_a0_out ) | (ts_pe_77_a1_oe & ts_pe_77_a1_out );
 assign wdata_8_oe = ts_pe_77_a0_oe | ts_pe_77_a1_oe;
 assign ts_pe_77_a0_in = wdata_8_in;
 assign ts_pe_77_a1_in = wdata_8_in;
 
 // --- Compiler-generated PE for BUS wdata[9]
-assign wdata_9_out = (ts_pe_78_a0_oe & ts_pe_78_a0_out ) | (ts_pe_78_a1_oe & ts_pe_78_a1_out ) | 1'b0;
+assign wdata_9_out = (ts_pe_78_a0_oe & ts_pe_78_a0_out ) | (ts_pe_78_a1_oe & ts_pe_78_a1_out );
 assign wdata_9_oe = ts_pe_78_a0_oe | ts_pe_78_a1_oe;
 assign ts_pe_78_a0_in = wdata_9_in;
 assign ts_pe_78_a1_in = wdata_9_in;
 
 // --- Compiler-generated PE for BUS wdata[10]
-assign wdata_10_out = (ts_pe_79_a0_oe & ts_pe_79_a0_out ) | (ts_pe_79_a1_oe & ts_pe_79_a1_out ) | 1'b0;
+assign wdata_10_out = (ts_pe_79_a0_oe & ts_pe_79_a0_out ) | (ts_pe_79_a1_oe & ts_pe_79_a1_out );
 assign wdata_10_oe = ts_pe_79_a0_oe | ts_pe_79_a1_oe;
 assign ts_pe_79_a0_in = wdata_10_in;
 assign ts_pe_79_a1_in = wdata_10_in;
 
 // --- Compiler-generated PE for BUS wdata[11]
-assign wdata_11_out = (ts_pe_80_a0_oe & ts_pe_80_a0_out ) | (ts_pe_80_a1_oe & ts_pe_80_a1_out ) | 1'b0;
+assign wdata_11_out = (ts_pe_80_a0_oe & ts_pe_80_a0_out ) | (ts_pe_80_a1_oe & ts_pe_80_a1_out );
 assign wdata_11_oe = ts_pe_80_a0_oe | ts_pe_80_a1_oe;
 assign ts_pe_80_a0_in = wdata_11_in;
 assign ts_pe_80_a1_in = wdata_11_in;
 
 // --- Compiler-generated PE for BUS wdata[12]
-assign wdata_12_out = (ts_pe_81_a0_oe & ts_pe_81_a0_out ) | (ts_pe_81_a1_oe & ts_pe_81_a1_out ) | 1'b0;
+assign wdata_12_out = (ts_pe_81_a0_oe & ts_pe_81_a0_out ) | (ts_pe_81_a1_oe & ts_pe_81_a1_out );
 assign wdata_12_oe = ts_pe_81_a0_oe | ts_pe_81_a1_oe;
 assign ts_pe_81_a0_in = wdata_12_in;
 assign ts_pe_81_a1_in = wdata_12_in;
 
 // --- Compiler-generated PE for BUS wdata[13]
-assign wdata_13_out = (ts_pe_82_a0_oe & ts_pe_82_a0_out ) | (ts_pe_82_a1_oe & ts_pe_82_a1_out ) | 1'b0;
+assign wdata_13_out = (ts_pe_82_a0_oe & ts_pe_82_a0_out ) | (ts_pe_82_a1_oe & ts_pe_82_a1_out );
 assign wdata_13_oe = ts_pe_82_a0_oe | ts_pe_82_a1_oe;
 assign ts_pe_82_a0_in = wdata_13_in;
 assign ts_pe_82_a1_in = wdata_13_in;
 
 // --- Compiler-generated PE for BUS wdata[14]
-assign wdata_14_out = (ts_pe_83_a0_oe & ts_pe_83_a0_out ) | (ts_pe_83_a1_oe & ts_pe_83_a1_out ) | 1'b0;
+assign wdata_14_out = (ts_pe_83_a0_oe & ts_pe_83_a0_out ) | (ts_pe_83_a1_oe & ts_pe_83_a1_out );
 assign wdata_14_oe = ts_pe_83_a0_oe | ts_pe_83_a1_oe;
 assign ts_pe_83_a0_in = wdata_14_in;
 assign ts_pe_83_a1_in = wdata_14_in;
 
 // --- Compiler-generated PE for BUS wdata[15]
-assign wdata_15_out = (ts_pe_84_a0_oe & ts_pe_84_a0_out ) | (ts_pe_84_a1_oe & ts_pe_84_a1_out ) | 1'b0;
+assign wdata_15_out = (ts_pe_84_a0_oe & ts_pe_84_a0_out ) | (ts_pe_84_a1_oe & ts_pe_84_a1_out );
 assign wdata_15_oe = ts_pe_84_a0_oe | ts_pe_84_a1_oe;
 assign ts_pe_84_a0_in = wdata_15_in;
 assign ts_pe_84_a1_in = wdata_15_in;
 
 // --- Compiler-generated PE for BUS wdata[16]
-assign wdata_16_out = (ts_pe_85_a0_oe & ts_pe_85_a0_out ) | (ts_pe_85_a1_oe & ts_pe_85_a1_out ) | 1'b0;
+assign wdata_16_out = (ts_pe_85_a0_oe & ts_pe_85_a0_out ) | (ts_pe_85_a1_oe & ts_pe_85_a1_out );
 assign wdata_16_oe = ts_pe_85_a0_oe | ts_pe_85_a1_oe;
 assign ts_pe_85_a0_in = wdata_16_in;
 assign ts_pe_85_a1_in = wdata_16_in;
 
 // --- Compiler-generated PE for BUS wdata[17]
-assign wdata_17_out = (ts_pe_86_a0_oe & ts_pe_86_a0_out ) | (ts_pe_86_a1_oe & ts_pe_86_a1_out ) | 1'b0;
+assign wdata_17_out = (ts_pe_86_a0_oe & ts_pe_86_a0_out ) | (ts_pe_86_a1_oe & ts_pe_86_a1_out );
 assign wdata_17_oe = ts_pe_86_a0_oe | ts_pe_86_a1_oe;
 assign ts_pe_86_a0_in = wdata_17_in;
 assign ts_pe_86_a1_in = wdata_17_in;
 
 // --- Compiler-generated PE for BUS wdata[18]
-assign wdata_18_out = (ts_pe_87_a0_oe & ts_pe_87_a0_out ) | (ts_pe_87_a1_oe & ts_pe_87_a1_out ) | 1'b0;
+assign wdata_18_out = (ts_pe_87_a0_oe & ts_pe_87_a0_out ) | (ts_pe_87_a1_oe & ts_pe_87_a1_out );
 assign wdata_18_oe = ts_pe_87_a0_oe | ts_pe_87_a1_oe;
 assign ts_pe_87_a0_in = wdata_18_in;
 assign ts_pe_87_a1_in = wdata_18_in;
 
 // --- Compiler-generated PE for BUS wdata[19]
-assign wdata_19_out = (ts_pe_88_a0_oe & ts_pe_88_a0_out ) | (ts_pe_88_a1_oe & ts_pe_88_a1_out ) | 1'b0;
+assign wdata_19_out = (ts_pe_88_a0_oe & ts_pe_88_a0_out ) | (ts_pe_88_a1_oe & ts_pe_88_a1_out );
 assign wdata_19_oe = ts_pe_88_a0_oe | ts_pe_88_a1_oe;
 assign ts_pe_88_a0_in = wdata_19_in;
 assign ts_pe_88_a1_in = wdata_19_in;
 
 // --- Compiler-generated PE for BUS wdata[20]
-assign wdata_20_out = (ts_pe_89_a0_oe & ts_pe_89_a0_out ) | (ts_pe_89_a1_oe & ts_pe_89_a1_out ) | 1'b0;
+assign wdata_20_out = (ts_pe_89_a0_oe & ts_pe_89_a0_out ) | (ts_pe_89_a1_oe & ts_pe_89_a1_out );
 assign wdata_20_oe = ts_pe_89_a0_oe | ts_pe_89_a1_oe;
 assign ts_pe_89_a0_in = wdata_20_in;
 assign ts_pe_89_a1_in = wdata_20_in;
 
 // --- Compiler-generated PE for BUS wdata[21]
-assign wdata_21_out = (ts_pe_90_a0_oe & ts_pe_90_a0_out ) | (ts_pe_90_a1_oe & ts_pe_90_a1_out ) | 1'b0;
+assign wdata_21_out = (ts_pe_90_a0_oe & ts_pe_90_a0_out ) | (ts_pe_90_a1_oe & ts_pe_90_a1_out );
 assign wdata_21_oe = ts_pe_90_a0_oe | ts_pe_90_a1_oe;
 assign ts_pe_90_a0_in = wdata_21_in;
 assign ts_pe_90_a1_in = wdata_21_in;
 
 // --- Compiler-generated PE for BUS wdata[22]
-assign wdata_22_out = (ts_pe_91_a0_oe & ts_pe_91_a0_out ) | (ts_pe_91_a1_oe & ts_pe_91_a1_out ) | 1'b0;
+assign wdata_22_out = (ts_pe_91_a0_oe & ts_pe_91_a0_out ) | (ts_pe_91_a1_oe & ts_pe_91_a1_out );
 assign wdata_22_oe = ts_pe_91_a0_oe | ts_pe_91_a1_oe;
 assign ts_pe_91_a0_in = wdata_22_in;
 assign ts_pe_91_a1_in = wdata_22_in;
 
 // --- Compiler-generated PE for BUS wdata[23]
-assign wdata_23_out = (ts_pe_92_a0_oe & ts_pe_92_a0_out ) | (ts_pe_92_a1_oe & ts_pe_92_a1_out ) | 1'b0;
+assign wdata_23_out = (ts_pe_92_a0_oe & ts_pe_92_a0_out ) | (ts_pe_92_a1_oe & ts_pe_92_a1_out );
 assign wdata_23_oe = ts_pe_92_a0_oe | ts_pe_92_a1_oe;
 assign ts_pe_92_a0_in = wdata_23_in;
 assign ts_pe_92_a1_in = wdata_23_in;
 
 // --- Compiler-generated PE for BUS wdata[24]
-assign wdata_24_out = (ts_pe_93_a0_oe & ts_pe_93_a0_out ) | (ts_pe_93_a1_oe & ts_pe_93_a1_out ) | 1'b0;
+assign wdata_24_out = (ts_pe_93_a0_oe & ts_pe_93_a0_out ) | (ts_pe_93_a1_oe & ts_pe_93_a1_out );
 assign wdata_24_oe = ts_pe_93_a0_oe | ts_pe_93_a1_oe;
 assign ts_pe_93_a0_in = wdata_24_in;
 assign ts_pe_93_a1_in = wdata_24_in;
 
 // --- Compiler-generated PE for BUS wdata[25]
-assign wdata_25_out = (ts_pe_94_a0_oe & ts_pe_94_a0_out ) | (ts_pe_94_a1_oe & ts_pe_94_a1_out ) | 1'b0;
+assign wdata_25_out = (ts_pe_94_a0_oe & ts_pe_94_a0_out ) | (ts_pe_94_a1_oe & ts_pe_94_a1_out );
 assign wdata_25_oe = ts_pe_94_a0_oe | ts_pe_94_a1_oe;
 assign ts_pe_94_a0_in = wdata_25_in;
 assign ts_pe_94_a1_in = wdata_25_in;
 
 // --- Compiler-generated PE for BUS wdata[26]
-assign wdata_26_out = (ts_pe_95_a0_oe & ts_pe_95_a0_out ) | (ts_pe_95_a1_oe & ts_pe_95_a1_out ) | 1'b0;
+assign wdata_26_out = (ts_pe_95_a0_oe & ts_pe_95_a0_out ) | (ts_pe_95_a1_oe & ts_pe_95_a1_out );
 assign wdata_26_oe = ts_pe_95_a0_oe | ts_pe_95_a1_oe;
 assign ts_pe_95_a0_in = wdata_26_in;
 assign ts_pe_95_a1_in = wdata_26_in;
 
 // --- Compiler-generated PE for BUS wdata[27]
-assign wdata_27_out = (ts_pe_96_a0_oe & ts_pe_96_a0_out ) | (ts_pe_96_a1_oe & ts_pe_96_a1_out ) | 1'b0;
+assign wdata_27_out = (ts_pe_96_a0_oe & ts_pe_96_a0_out ) | (ts_pe_96_a1_oe & ts_pe_96_a1_out );
 assign wdata_27_oe = ts_pe_96_a0_oe | ts_pe_96_a1_oe;
 assign ts_pe_96_a0_in = wdata_27_in;
 assign ts_pe_96_a1_in = wdata_27_in;
 
 // --- Compiler-generated PE for BUS wdata[28]
-assign wdata_28_out = (ts_pe_97_a0_oe & ts_pe_97_a0_out ) | (ts_pe_97_a1_oe & ts_pe_97_a1_out ) | 1'b0;
+assign wdata_28_out = (ts_pe_97_a0_oe & ts_pe_97_a0_out ) | (ts_pe_97_a1_oe & ts_pe_97_a1_out );
 assign wdata_28_oe = ts_pe_97_a0_oe | ts_pe_97_a1_oe;
 assign ts_pe_97_a0_in = wdata_28_in;
 assign ts_pe_97_a1_in = wdata_28_in;
 
 // --- Compiler-generated PE for BUS wdata[29]
-assign wdata_29_out = (ts_pe_98_a0_oe & ts_pe_98_a0_out ) | (ts_pe_98_a1_oe & ts_pe_98_a1_out ) | 1'b0;
+assign wdata_29_out = (ts_pe_98_a0_oe & ts_pe_98_a0_out ) | (ts_pe_98_a1_oe & ts_pe_98_a1_out );
 assign wdata_29_oe = ts_pe_98_a0_oe | ts_pe_98_a1_oe;
 assign ts_pe_98_a0_in = wdata_29_in;
 assign ts_pe_98_a1_in = wdata_29_in;
 
 // --- Compiler-generated PE for BUS wdata[30]
-assign wdata_30_out = (ts_pe_99_a0_oe & ts_pe_99_a0_out ) | (ts_pe_99_a1_oe & ts_pe_99_a1_out ) | 1'b0;
+assign wdata_30_out = (ts_pe_99_a0_oe & ts_pe_99_a0_out ) | (ts_pe_99_a1_oe & ts_pe_99_a1_out );
 assign wdata_30_oe = ts_pe_99_a0_oe | ts_pe_99_a1_oe;
 assign ts_pe_99_a0_in = wdata_30_in;
 assign ts_pe_99_a1_in = wdata_30_in;
 
 // --- Compiler-generated PE for BUS wdata[31]
-assign wdata_31_out = (ts_pe_100_a0_oe & ts_pe_100_a0_out ) | (ts_pe_100_a1_oe & ts_pe_100_a1_out ) | 1'b0;
+assign wdata_31_out = (ts_pe_100_a0_oe & ts_pe_100_a0_out ) | (ts_pe_100_a1_oe & ts_pe_100_a1_out );
 assign wdata_31_oe = ts_pe_100_a0_oe | ts_pe_100_a1_oe;
 assign ts_pe_100_a0_in = wdata_31_in;
 assign ts_pe_100_a1_in = wdata_31_in;
 
 // --- Compiler-generated PE for BUS wdata[32]
-assign wdata_32_out = (ts_pe_101_a0_oe & ts_pe_101_a0_out ) | (ts_pe_101_a1_oe & ts_pe_101_a1_out ) | 1'b0;
+assign wdata_32_out = (ts_pe_101_a0_oe & ts_pe_101_a0_out ) | (ts_pe_101_a1_oe & ts_pe_101_a1_out );
 assign wdata_32_oe = ts_pe_101_a0_oe | ts_pe_101_a1_oe;
 assign ts_pe_101_a0_in = wdata_32_in;
 assign ts_pe_101_a1_in = wdata_32_in;
 
 // --- Compiler-generated PE for BUS wdata[33]
-assign wdata_33_out = (ts_pe_102_a0_oe & ts_pe_102_a0_out ) | (ts_pe_102_a1_oe & ts_pe_102_a1_out ) | 1'b0;
+assign wdata_33_out = (ts_pe_102_a0_oe & ts_pe_102_a0_out ) | (ts_pe_102_a1_oe & ts_pe_102_a1_out );
 assign wdata_33_oe = ts_pe_102_a0_oe | ts_pe_102_a1_oe;
 assign ts_pe_102_a0_in = wdata_33_in;
 assign ts_pe_102_a1_in = wdata_33_in;
 
 // --- Compiler-generated PE for BUS wdata[34]
-assign wdata_34_out = (ts_pe_103_a0_oe & ts_pe_103_a0_out ) | (ts_pe_103_a1_oe & ts_pe_103_a1_out ) | 1'b0;
+assign wdata_34_out = (ts_pe_103_a0_oe & ts_pe_103_a0_out ) | (ts_pe_103_a1_oe & ts_pe_103_a1_out );
 assign wdata_34_oe = ts_pe_103_a0_oe | ts_pe_103_a1_oe;
 assign ts_pe_103_a0_in = wdata_34_in;
 assign ts_pe_103_a1_in = wdata_34_in;
 
 // --- Compiler-generated PE for BUS wdata[35]
-assign wdata_35_out = (ts_pe_104_a0_oe & ts_pe_104_a0_out ) | (ts_pe_104_a1_oe & ts_pe_104_a1_out ) | 1'b0;
+assign wdata_35_out = (ts_pe_104_a0_oe & ts_pe_104_a0_out ) | (ts_pe_104_a1_oe & ts_pe_104_a1_out );
 assign wdata_35_oe = ts_pe_104_a0_oe | ts_pe_104_a1_oe;
 assign ts_pe_104_a0_in = wdata_35_in;
 assign ts_pe_104_a1_in = wdata_35_in;
 
 // --- Compiler-generated PE for BUS wdata[36]
-assign wdata_36_out = (ts_pe_105_a0_oe & ts_pe_105_a0_out ) | (ts_pe_105_a1_oe & ts_pe_105_a1_out ) | 1'b0;
+assign wdata_36_out = (ts_pe_105_a0_oe & ts_pe_105_a0_out ) | (ts_pe_105_a1_oe & ts_pe_105_a1_out );
 assign wdata_36_oe = ts_pe_105_a0_oe | ts_pe_105_a1_oe;
 assign ts_pe_105_a0_in = wdata_36_in;
 assign ts_pe_105_a1_in = wdata_36_in;
 
 // --- Compiler-generated PE for BUS wdata[37]
-assign wdata_37_out = (ts_pe_106_a0_oe & ts_pe_106_a0_out ) | (ts_pe_106_a1_oe & ts_pe_106_a1_out ) | 1'b0;
+assign wdata_37_out = (ts_pe_106_a0_oe & ts_pe_106_a0_out ) | (ts_pe_106_a1_oe & ts_pe_106_a1_out );
 assign wdata_37_oe = ts_pe_106_a0_oe | ts_pe_106_a1_oe;
 assign ts_pe_106_a0_in = wdata_37_in;
 assign ts_pe_106_a1_in = wdata_37_in;
 
 // --- Compiler-generated PE for BUS wdata[38]
-assign wdata_38_out = (ts_pe_107_a0_oe & ts_pe_107_a0_out ) | (ts_pe_107_a1_oe & ts_pe_107_a1_out ) | 1'b0;
+assign wdata_38_out = (ts_pe_107_a0_oe & ts_pe_107_a0_out ) | (ts_pe_107_a1_oe & ts_pe_107_a1_out );
 assign wdata_38_oe = ts_pe_107_a0_oe | ts_pe_107_a1_oe;
 assign ts_pe_107_a0_in = wdata_38_in;
 assign ts_pe_107_a1_in = wdata_38_in;
 
 // --- Compiler-generated PE for BUS wdata[39]
-assign wdata_39_out = (ts_pe_108_a0_oe & ts_pe_108_a0_out ) | (ts_pe_108_a1_oe & ts_pe_108_a1_out ) | 1'b0;
+assign wdata_39_out = (ts_pe_108_a0_oe & ts_pe_108_a0_out ) | (ts_pe_108_a1_oe & ts_pe_108_a1_out );
 assign wdata_39_oe = ts_pe_108_a0_oe | ts_pe_108_a1_oe;
 assign ts_pe_108_a0_in = wdata_39_in;
 assign ts_pe_108_a1_in = wdata_39_in;
 
 // --- Compiler-generated PE for BUS wdata[40]
-assign wdata_40_out = (ts_pe_109_a0_oe & ts_pe_109_a0_out ) | (ts_pe_109_a1_oe & ts_pe_109_a1_out ) | 1'b0;
+assign wdata_40_out = (ts_pe_109_a0_oe & ts_pe_109_a0_out ) | (ts_pe_109_a1_oe & ts_pe_109_a1_out );
 assign wdata_40_oe = ts_pe_109_a0_oe | ts_pe_109_a1_oe;
 assign ts_pe_109_a0_in = wdata_40_in;
 assign ts_pe_109_a1_in = wdata_40_in;
 
 // --- Compiler-generated PE for BUS wdata[41]
-assign wdata_41_out = (ts_pe_110_a0_oe & ts_pe_110_a0_out ) | (ts_pe_110_a1_oe & ts_pe_110_a1_out ) | 1'b0;
+assign wdata_41_out = (ts_pe_110_a0_oe & ts_pe_110_a0_out ) | (ts_pe_110_a1_oe & ts_pe_110_a1_out );
 assign wdata_41_oe = ts_pe_110_a0_oe | ts_pe_110_a1_oe;
 assign ts_pe_110_a0_in = wdata_41_in;
 assign ts_pe_110_a1_in = wdata_41_in;
 
 // --- Compiler-generated PE for BUS wdata[42]
-assign wdata_42_out = (ts_pe_111_a0_oe & ts_pe_111_a0_out ) | (ts_pe_111_a1_oe & ts_pe_111_a1_out ) | 1'b0;
+assign wdata_42_out = (ts_pe_111_a0_oe & ts_pe_111_a0_out ) | (ts_pe_111_a1_oe & ts_pe_111_a1_out );
 assign wdata_42_oe = ts_pe_111_a0_oe | ts_pe_111_a1_oe;
 assign ts_pe_111_a0_in = wdata_42_in;
 assign ts_pe_111_a1_in = wdata_42_in;
 
 // --- Compiler-generated PE for BUS wdata[43]
-assign wdata_43_out = (ts_pe_112_a0_oe & ts_pe_112_a0_out ) | (ts_pe_112_a1_oe & ts_pe_112_a1_out ) | 1'b0;
+assign wdata_43_out = (ts_pe_112_a0_oe & ts_pe_112_a0_out ) | (ts_pe_112_a1_oe & ts_pe_112_a1_out );
 assign wdata_43_oe = ts_pe_112_a0_oe | ts_pe_112_a1_oe;
 assign ts_pe_112_a0_in = wdata_43_in;
 assign ts_pe_112_a1_in = wdata_43_in;
 
 // --- Compiler-generated PE for BUS wdata[44]
-assign wdata_44_out = (ts_pe_113_a0_oe & ts_pe_113_a0_out ) | (ts_pe_113_a1_oe & ts_pe_113_a1_out ) | 1'b0;
+assign wdata_44_out = (ts_pe_113_a0_oe & ts_pe_113_a0_out ) | (ts_pe_113_a1_oe & ts_pe_113_a1_out );
 assign wdata_44_oe = ts_pe_113_a0_oe | ts_pe_113_a1_oe;
 assign ts_pe_113_a0_in = wdata_44_in;
 assign ts_pe_113_a1_in = wdata_44_in;
 
 // --- Compiler-generated PE for BUS wdata[45]
-assign wdata_45_out = (ts_pe_114_a0_oe & ts_pe_114_a0_out ) | (ts_pe_114_a1_oe & ts_pe_114_a1_out ) | 1'b0;
+assign wdata_45_out = (ts_pe_114_a0_oe & ts_pe_114_a0_out ) | (ts_pe_114_a1_oe & ts_pe_114_a1_out );
 assign wdata_45_oe = ts_pe_114_a0_oe | ts_pe_114_a1_oe;
 assign ts_pe_114_a0_in = wdata_45_in;
 assign ts_pe_114_a1_in = wdata_45_in;
 
 // --- Compiler-generated PE for BUS wdata[46]
-assign wdata_46_out = (ts_pe_115_a0_oe & ts_pe_115_a0_out ) | (ts_pe_115_a1_oe & ts_pe_115_a1_out ) | 1'b0;
+assign wdata_46_out = (ts_pe_115_a0_oe & ts_pe_115_a0_out ) | (ts_pe_115_a1_oe & ts_pe_115_a1_out );
 assign wdata_46_oe = ts_pe_115_a0_oe | ts_pe_115_a1_oe;
 assign ts_pe_115_a0_in = wdata_46_in;
 assign ts_pe_115_a1_in = wdata_46_in;
 
 // --- Compiler-generated PE for BUS wdata[47]
-assign wdata_47_out = (ts_pe_116_a0_oe & ts_pe_116_a0_out ) | (ts_pe_116_a1_oe & ts_pe_116_a1_out ) | 1'b0;
+assign wdata_47_out = (ts_pe_116_a0_oe & ts_pe_116_a0_out ) | (ts_pe_116_a1_oe & ts_pe_116_a1_out );
 assign wdata_47_oe = ts_pe_116_a0_oe | ts_pe_116_a1_oe;
 assign ts_pe_116_a0_in = wdata_47_in;
 assign ts_pe_116_a1_in = wdata_47_in;
 
 // --- Compiler-generated PE for BUS wdata[48]
-assign wdata_48_out = (ts_pe_117_a0_oe & ts_pe_117_a0_out ) | (ts_pe_117_a1_oe & ts_pe_117_a1_out ) | 1'b0;
+assign wdata_48_out = (ts_pe_117_a0_oe & ts_pe_117_a0_out ) | (ts_pe_117_a1_oe & ts_pe_117_a1_out );
 assign wdata_48_oe = ts_pe_117_a0_oe | ts_pe_117_a1_oe;
 assign ts_pe_117_a0_in = wdata_48_in;
 assign ts_pe_117_a1_in = wdata_48_in;
 
 // --- Compiler-generated PE for BUS wdata[49]
-assign wdata_49_out = (ts_pe_118_a0_oe & ts_pe_118_a0_out ) | (ts_pe_118_a1_oe & ts_pe_118_a1_out ) | 1'b0;
+assign wdata_49_out = (ts_pe_118_a0_oe & ts_pe_118_a0_out ) | (ts_pe_118_a1_oe & ts_pe_118_a1_out );
 assign wdata_49_oe = ts_pe_118_a0_oe | ts_pe_118_a1_oe;
 assign ts_pe_118_a0_in = wdata_49_in;
 assign ts_pe_118_a1_in = wdata_49_in;
 
 // --- Compiler-generated PE for BUS wdata[50]
-assign wdata_50_out = (ts_pe_119_a0_oe & ts_pe_119_a0_out ) | (ts_pe_119_a1_oe & ts_pe_119_a1_out ) | 1'b0;
+assign wdata_50_out = (ts_pe_119_a0_oe & ts_pe_119_a0_out ) | (ts_pe_119_a1_oe & ts_pe_119_a1_out );
 assign wdata_50_oe = ts_pe_119_a0_oe | ts_pe_119_a1_oe;
 assign ts_pe_119_a0_in = wdata_50_in;
 assign ts_pe_119_a1_in = wdata_50_in;
 
 // --- Compiler-generated PE for BUS wdata[51]
-assign wdata_51_out = (ts_pe_120_a0_oe & ts_pe_120_a0_out ) | (ts_pe_120_a1_oe & ts_pe_120_a1_out ) | 1'b0;
+assign wdata_51_out = (ts_pe_120_a0_oe & ts_pe_120_a0_out ) | (ts_pe_120_a1_oe & ts_pe_120_a1_out );
 assign wdata_51_oe = ts_pe_120_a0_oe | ts_pe_120_a1_oe;
 assign ts_pe_120_a0_in = wdata_51_in;
 assign ts_pe_120_a1_in = wdata_51_in;
 
 // --- Compiler-generated PE for BUS wdata[52]
-assign wdata_52_out = (ts_pe_121_a0_oe & ts_pe_121_a0_out ) | (ts_pe_121_a1_oe & ts_pe_121_a1_out ) | 1'b0;
+assign wdata_52_out = (ts_pe_121_a0_oe & ts_pe_121_a0_out ) | (ts_pe_121_a1_oe & ts_pe_121_a1_out );
 assign wdata_52_oe = ts_pe_121_a0_oe | ts_pe_121_a1_oe;
 assign ts_pe_121_a0_in = wdata_52_in;
 assign ts_pe_121_a1_in = wdata_52_in;
 
 // --- Compiler-generated PE for BUS wdata[53]
-assign wdata_53_out = (ts_pe_122_a0_oe & ts_pe_122_a0_out ) | (ts_pe_122_a1_oe & ts_pe_122_a1_out ) | 1'b0;
+assign wdata_53_out = (ts_pe_122_a0_oe & ts_pe_122_a0_out ) | (ts_pe_122_a1_oe & ts_pe_122_a1_out );
 assign wdata_53_oe = ts_pe_122_a0_oe | ts_pe_122_a1_oe;
 assign ts_pe_122_a0_in = wdata_53_in;
 assign ts_pe_122_a1_in = wdata_53_in;
 
 // --- Compiler-generated PE for BUS wdata[54]
-assign wdata_54_out = (ts_pe_123_a0_oe & ts_pe_123_a0_out ) | (ts_pe_123_a1_oe & ts_pe_123_a1_out ) | 1'b0;
+assign wdata_54_out = (ts_pe_123_a0_oe & ts_pe_123_a0_out ) | (ts_pe_123_a1_oe & ts_pe_123_a1_out );
 assign wdata_54_oe = ts_pe_123_a0_oe | ts_pe_123_a1_oe;
 assign ts_pe_123_a0_in = wdata_54_in;
 assign ts_pe_123_a1_in = wdata_54_in;
 
 // --- Compiler-generated PE for BUS wdata[55]
-assign wdata_55_out = (ts_pe_124_a0_oe & ts_pe_124_a0_out ) | (ts_pe_124_a1_oe & ts_pe_124_a1_out ) | 1'b0;
+assign wdata_55_out = (ts_pe_124_a0_oe & ts_pe_124_a0_out ) | (ts_pe_124_a1_oe & ts_pe_124_a1_out );
 assign wdata_55_oe = ts_pe_124_a0_oe | ts_pe_124_a1_oe;
 assign ts_pe_124_a0_in = wdata_55_in;
 assign ts_pe_124_a1_in = wdata_55_in;
 
 // --- Compiler-generated PE for BUS wdata[56]
-assign wdata_56_out = (ts_pe_125_a0_oe & ts_pe_125_a0_out ) | (ts_pe_125_a1_oe & ts_pe_125_a1_out ) | 1'b0;
+assign wdata_56_out = (ts_pe_125_a0_oe & ts_pe_125_a0_out ) | (ts_pe_125_a1_oe & ts_pe_125_a1_out );
 assign wdata_56_oe = ts_pe_125_a0_oe | ts_pe_125_a1_oe;
 assign ts_pe_125_a0_in = wdata_56_in;
 assign ts_pe_125_a1_in = wdata_56_in;
 
 // --- Compiler-generated PE for BUS wdata[57]
-assign wdata_57_out = (ts_pe_126_a0_oe & ts_pe_126_a0_out ) | (ts_pe_126_a1_oe & ts_pe_126_a1_out ) | 1'b0;
+assign wdata_57_out = (ts_pe_126_a0_oe & ts_pe_126_a0_out ) | (ts_pe_126_a1_oe & ts_pe_126_a1_out );
 assign wdata_57_oe = ts_pe_126_a0_oe | ts_pe_126_a1_oe;
 assign ts_pe_126_a0_in = wdata_57_in;
 assign ts_pe_126_a1_in = wdata_57_in;
 
 // --- Compiler-generated PE for BUS wdata[58]
-assign wdata_58_out = (ts_pe_127_a0_oe & ts_pe_127_a0_out ) | (ts_pe_127_a1_oe & ts_pe_127_a1_out ) | 1'b0;
+assign wdata_58_out = (ts_pe_127_a0_oe & ts_pe_127_a0_out ) | (ts_pe_127_a1_oe & ts_pe_127_a1_out );
 assign wdata_58_oe = ts_pe_127_a0_oe | ts_pe_127_a1_oe;
 assign ts_pe_127_a0_in = wdata_58_in;
 assign ts_pe_127_a1_in = wdata_58_in;
 
 // --- Compiler-generated PE for BUS wdata[59]
-assign wdata_59_out = (ts_pe_128_a0_oe & ts_pe_128_a0_out ) | (ts_pe_128_a1_oe & ts_pe_128_a1_out ) | 1'b0;
+assign wdata_59_out = (ts_pe_128_a0_oe & ts_pe_128_a0_out ) | (ts_pe_128_a1_oe & ts_pe_128_a1_out );
 assign wdata_59_oe = ts_pe_128_a0_oe | ts_pe_128_a1_oe;
 assign ts_pe_128_a0_in = wdata_59_in;
 assign ts_pe_128_a1_in = wdata_59_in;
 
 // --- Compiler-generated PE for BUS wdata[60]
-assign wdata_60_out = (ts_pe_129_a0_oe & ts_pe_129_a0_out ) | (ts_pe_129_a1_oe & ts_pe_129_a1_out ) | 1'b0;
+assign wdata_60_out = (ts_pe_129_a0_oe & ts_pe_129_a0_out ) | (ts_pe_129_a1_oe & ts_pe_129_a1_out );
 assign wdata_60_oe = ts_pe_129_a0_oe | ts_pe_129_a1_oe;
 assign ts_pe_129_a0_in = wdata_60_in;
 assign ts_pe_129_a1_in = wdata_60_in;
 
 // --- Compiler-generated PE for BUS wdata[61]
-assign wdata_61_out = (ts_pe_130_a0_oe & ts_pe_130_a0_out ) | (ts_pe_130_a1_oe & ts_pe_130_a1_out ) | 1'b0;
+assign wdata_61_out = (ts_pe_130_a0_oe & ts_pe_130_a0_out ) | (ts_pe_130_a1_oe & ts_pe_130_a1_out );
 assign wdata_61_oe = ts_pe_130_a0_oe | ts_pe_130_a1_oe;
 assign ts_pe_130_a0_in = wdata_61_in;
 assign ts_pe_130_a1_in = wdata_61_in;
 
 // --- Compiler-generated PE for BUS wdata[62]
-assign wdata_62_out = (ts_pe_131_a0_oe & ts_pe_131_a0_out ) | (ts_pe_131_a1_oe & ts_pe_131_a1_out ) | 1'b0;
+assign wdata_62_out = (ts_pe_131_a0_oe & ts_pe_131_a0_out ) | (ts_pe_131_a1_oe & ts_pe_131_a1_out );
 assign wdata_62_oe = ts_pe_131_a0_oe | ts_pe_131_a1_oe;
 assign ts_pe_131_a0_in = wdata_62_in;
 assign ts_pe_131_a1_in = wdata_62_in;
 
 // --- Compiler-generated PE for BUS wdata[63]
-assign wdata_63_out = (ts_pe_132_a0_oe & ts_pe_132_a0_out ) | (ts_pe_132_a1_oe & ts_pe_132_a1_out ) | 1'b0;
+assign wdata_63_out = (ts_pe_132_a0_oe & ts_pe_132_a0_out ) | (ts_pe_132_a1_oe & ts_pe_132_a1_out );
 assign wdata_63_oe = ts_pe_132_a0_oe | ts_pe_132_a1_oe;
 assign ts_pe_132_a0_in = wdata_63_in;
 assign ts_pe_132_a1_in = wdata_63_in;
 
 // --- Compiler-generated PE for BUS width[0]
-assign width_0_out = (ts_pe_133_a0_oe & ts_pe_133_a0_out ) | (ts_pe_133_a1_oe & ts_pe_133_a1_out ) | 1'b0;
+assign width_0_out = (ts_pe_133_a0_oe & ts_pe_133_a0_out ) | (ts_pe_133_a1_oe & ts_pe_133_a1_out );
 assign width_0_oe = ts_pe_133_a0_oe | ts_pe_133_a1_oe;
 assign ts_pe_133_a0_in = width_0_in;
 assign ts_pe_133_a1_in = width_0_in;
 
 // --- Compiler-generated PE for BUS width[1]
-assign width_1_out = (ts_pe_134_a0_oe & ts_pe_134_a0_out ) | (ts_pe_134_a1_oe & ts_pe_134_a1_out ) | 1'b0;
+assign width_1_out = (ts_pe_134_a0_oe & ts_pe_134_a0_out ) | (ts_pe_134_a1_oe & ts_pe_134_a1_out );
 assign width_1_oe = ts_pe_134_a0_oe | ts_pe_134_a1_oe;
 assign ts_pe_134_a0_in = width_1_in;
 assign ts_pe_134_a1_in = width_1_in;
 
 // --- Compiler-generated PE for BUS width[2]
-assign width_2_out = (ts_pe_135_a0_oe & ts_pe_135_a0_out ) | (ts_pe_135_a1_oe & ts_pe_135_a1_out ) | 1'b0;
+assign width_2_out = (ts_pe_135_a0_oe & ts_pe_135_a0_out ) | (ts_pe_135_a1_oe & ts_pe_135_a1_out );
 assign width_2_oe = ts_pe_135_a0_oe | ts_pe_135_a1_oe;
 assign ts_pe_135_a0_in = width_2_in;
 assign ts_pe_135_a1_in = width_2_in;
 
 // --- Compiler-generated PE for BUS width[3]
-assign width_3_out = (ts_pe_136_a0_oe & ts_pe_136_a0_out ) | (ts_pe_136_a1_oe & ts_pe_136_a1_out ) | 1'b0;
+assign width_3_out = (ts_pe_136_a0_oe & ts_pe_136_a0_out ) | (ts_pe_136_a1_oe & ts_pe_136_a1_out );
 assign width_3_oe = ts_pe_136_a0_oe | ts_pe_136_a1_oe;
 assign ts_pe_136_a0_in = width_3_in;
 assign ts_pe_136_a1_in = width_3_in;
 
 // --- Compiler-generated PE for BUS read
-assign read_out = (ts_pe_137_a0_oe & ts_pe_137_a0_out ) | (ts_pe_137_a1_oe & ts_pe_137_a1_out ) | 1'b0;
+assign read_out = (ts_pe_137_a0_oe & ts_pe_137_a0_out ) | (ts_pe_137_a1_oe & ts_pe_137_a1_out );
 assign read_oe = ts_pe_137_a0_oe | ts_pe_137_a1_oe;
 assign ts_pe_137_a0_in = read_in;
 assign ts_pe_137_a1_in = read_in;
 
 // --- Compiler-generated PE for BUS mreq
-assign mreq_out = (ts_pe_138_a0_oe & ts_pe_138_a0_out ) | (ts_pe_138_a1_oe & ts_pe_138_a1_out ) | 1'b0;
+assign mreq_out = (ts_pe_138_a0_oe & ts_pe_138_a0_out ) | (ts_pe_138_a1_oe & ts_pe_138_a1_out );
 assign mreq_oe = ts_pe_138_a0_oe | ts_pe_138_a1_oe;
 assign ts_pe_138_a0_in = mreq_in;
 assign ts_pe_138_a1_in = mreq_in;
 
 // --- Compiler-generated PE for BUS justify
-assign justify_out = (ts_pe_139_a0_oe & ts_pe_139_a0_out ) | (ts_pe_139_a1_oe & ts_pe_139_a1_out ) | 1'b0;
+assign justify_out = (ts_pe_139_a0_oe & ts_pe_139_a0_out ) | (ts_pe_139_a1_oe & ts_pe_139_a1_out );
 assign justify_oe = ts_pe_139_a0_oe | ts_pe_139_a1_oe;
 assign ts_pe_139_a0_in = justify_in;
 assign ts_pe_139_a1_in = justify_in;
 
+
 // --- Compiler-generated local PE for BUS address<0>
-assign address_out[0] = (ts_local_pe_140_a0_oe & ts_local_pe_140_a0_out ) | (ts_local_pe_140_a1_oe & ts_local_pe_140_a1_out ) | 1'b0;
-assign address_oe[0] = ts_local_pe_140_a0_oe | ts_local_pe_140_a1_oe;
+assign address_out[0] = (gateway_addr_oe) ? ts_local_pe_140_a0_out : ts_local_pe_140_a1_out;
+assign address_oe[0] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_140_a0_in = address_in[0];
 assign ts_local_pe_140_a1_in = address_in[0];
 
 // --- Compiler-generated local PE for BUS address<1>
-assign address_out[1] = (ts_local_pe_141_a0_oe & ts_local_pe_141_a0_out ) | (ts_local_pe_141_a1_oe & ts_local_pe_141_a1_out ) | 1'b0;
-assign address_oe[1] = ts_local_pe_141_a0_oe | ts_local_pe_141_a1_oe;
+assign address_out[1] = (gateway_addr_oe) ? ts_local_pe_141_a0_out : ts_local_pe_141_a1_out;
+assign address_oe[1] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_141_a0_in = address_in[1];
 assign ts_local_pe_141_a1_in = address_in[1];
 
 // --- Compiler-generated local PE for BUS address<2>
-assign address_out[2] = (ts_local_pe_142_a0_oe & ts_local_pe_142_a0_out ) | (ts_local_pe_142_a1_oe & ts_local_pe_142_a1_out ) | 1'b0;
-assign address_oe[2] = ts_local_pe_142_a0_oe | ts_local_pe_142_a1_oe;
+assign address_out[2] = (gateway_addr_oe) ? ts_local_pe_142_a0_out : ts_local_pe_142_a1_out;
+assign address_oe[2] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_142_a0_in = address_in[2];
 assign ts_local_pe_142_a1_in = address_in[2];
 
 // --- Compiler-generated local PE for BUS address<3>
-assign address_out[3] = (ts_local_pe_143_a0_oe & ts_local_pe_143_a0_out ) | (ts_local_pe_143_a1_oe & ts_local_pe_143_a1_out ) | 1'b0;
-assign address_oe[3] = ts_local_pe_143_a0_oe | ts_local_pe_143_a1_oe;
+assign address_out[3] = (gateway_addr_oe) ? ts_local_pe_143_a0_out : ts_local_pe_143_a1_out;
+assign address_oe[3] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_143_a0_in = address_in[3];
 assign ts_local_pe_143_a1_in = address_in[3];
 
 // --- Compiler-generated local PE for BUS address<4>
-assign address_out[4] = (ts_local_pe_144_a0_oe & ts_local_pe_144_a0_out ) | (ts_local_pe_144_a1_oe & ts_local_pe_144_a1_out ) | 1'b0;
-assign address_oe[4] = ts_local_pe_144_a0_oe | ts_local_pe_144_a1_oe;
+assign address_out[4] = (gateway_addr_oe) ? ts_local_pe_144_a0_out : ts_local_pe_144_a1_out;
+assign address_oe[4] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_144_a0_in = address_in[4];
 assign ts_local_pe_144_a1_in = address_in[4];
 
 // --- Compiler-generated local PE for BUS address<5>
-assign address_out[5] = (ts_local_pe_145_a0_oe & ts_local_pe_145_a0_out ) | (ts_local_pe_145_a1_oe & ts_local_pe_145_a1_out ) | 1'b0;
-assign address_oe[5] = ts_local_pe_145_a0_oe | ts_local_pe_145_a1_oe;
+assign address_out[5] = (gateway_addr_oe) ? ts_local_pe_145_a0_out : ts_local_pe_145_a1_out;
+assign address_oe[5] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_145_a0_in = address_in[5];
 assign ts_local_pe_145_a1_in = address_in[5];
 
 // --- Compiler-generated local PE for BUS address<6>
-assign address_out[6] = (ts_local_pe_146_a0_oe & ts_local_pe_146_a0_out ) | (ts_local_pe_146_a1_oe & ts_local_pe_146_a1_out ) | 1'b0;
-assign address_oe[6] = ts_local_pe_146_a0_oe | ts_local_pe_146_a1_oe;
+assign address_out[6] = (gateway_addr_oe) ? ts_local_pe_146_a0_out : ts_local_pe_146_a1_out;
+assign address_oe[6] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_146_a0_in = address_in[6];
 assign ts_local_pe_146_a1_in = address_in[6];
 
 // --- Compiler-generated local PE for BUS address<7>
-assign address_out[7] = (ts_local_pe_147_a0_oe & ts_local_pe_147_a0_out ) | (ts_local_pe_147_a1_oe & ts_local_pe_147_a1_out ) | 1'b0;
-assign address_oe[7] = ts_local_pe_147_a0_oe | ts_local_pe_147_a1_oe;
+assign address_out[7] = (gateway_addr_oe) ? ts_local_pe_147_a0_out : ts_local_pe_147_a1_out;
+assign address_oe[7] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_147_a0_in = address_in[7];
 assign ts_local_pe_147_a1_in = address_in[7];
 
 // --- Compiler-generated local PE for BUS address<8>
-assign address_out[8] = (ts_local_pe_148_a0_oe & ts_local_pe_148_a0_out ) | (ts_local_pe_148_a1_oe & ts_local_pe_148_a1_out ) | 1'b0;
-assign address_oe[8] = ts_local_pe_148_a0_oe | ts_local_pe_148_a1_oe;
+assign address_out[8] = (gateway_addr_oe) ? ts_local_pe_148_a0_out : ts_local_pe_148_a1_out;
+assign address_oe[8] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_148_a0_in = address_in[8];
 assign ts_local_pe_148_a1_in = address_in[8];
 
 // --- Compiler-generated local PE for BUS address<9>
-assign address_out[9] = (ts_local_pe_149_a0_oe & ts_local_pe_149_a0_out ) | (ts_local_pe_149_a1_oe & ts_local_pe_149_a1_out ) | 1'b0;
-assign address_oe[9] = ts_local_pe_149_a0_oe | ts_local_pe_149_a1_oe;
+assign address_out[9] = (gateway_addr_oe) ? ts_local_pe_149_a0_out : ts_local_pe_149_a1_out;
+assign address_oe[9] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_149_a0_in = address_in[9];
 assign ts_local_pe_149_a1_in = address_in[9];
 
 // --- Compiler-generated local PE for BUS address<10>
-assign address_out[10] = (ts_local_pe_150_a0_oe & ts_local_pe_150_a0_out ) | (ts_local_pe_150_a1_oe & ts_local_pe_150_a1_out ) | 1'b0;
-assign address_oe[10] = ts_local_pe_150_a0_oe | ts_local_pe_150_a1_oe;
+assign address_out[10] = (gateway_addr_oe) ? ts_local_pe_150_a0_out : ts_local_pe_150_a1_out;
+assign address_oe[10] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_150_a0_in = address_in[10];
 assign ts_local_pe_150_a1_in = address_in[10];
 
 // --- Compiler-generated local PE for BUS address<11>
-assign address_out[11] = (ts_local_pe_151_a0_oe & ts_local_pe_151_a0_out ) | (ts_local_pe_151_a1_oe & ts_local_pe_151_a1_out ) | 1'b0;
-assign address_oe[11] = ts_local_pe_151_a0_oe | ts_local_pe_151_a1_oe;
+assign address_out[11] = (gateway_addr_oe) ? ts_local_pe_151_a0_out : ts_local_pe_151_a1_out;
+assign address_oe[11] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_151_a0_in = address_in[11];
 assign ts_local_pe_151_a1_in = address_in[11];
 
 // --- Compiler-generated local PE for BUS address<12>
-assign address_out[12] = (ts_local_pe_152_a0_oe & ts_local_pe_152_a0_out ) | (ts_local_pe_152_a1_oe & ts_local_pe_152_a1_out ) | 1'b0;
-assign address_oe[12] = ts_local_pe_152_a0_oe | ts_local_pe_152_a1_oe;
+assign address_out[12] = (gateway_addr_oe) ? ts_local_pe_152_a0_out : ts_local_pe_152_a1_out;
+assign address_oe[12] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_152_a0_in = address_in[12];
 assign ts_local_pe_152_a1_in = address_in[12];
 
 // --- Compiler-generated local PE for BUS address<13>
-assign address_out[13] = (ts_local_pe_153_a0_oe & ts_local_pe_153_a0_out ) | (ts_local_pe_153_a1_oe & ts_local_pe_153_a1_out ) | 1'b0;
-assign address_oe[13] = ts_local_pe_153_a0_oe | ts_local_pe_153_a1_oe;
+assign address_out[13] = (gateway_addr_oe) ? ts_local_pe_153_a0_out : ts_local_pe_153_a1_out;
+assign address_oe[13] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_153_a0_in = address_in[13];
 assign ts_local_pe_153_a1_in = address_in[13];
 
 // --- Compiler-generated local PE for BUS address<14>
-assign address_out[14] = (ts_local_pe_154_a0_oe & ts_local_pe_154_a0_out ) | (ts_local_pe_154_a1_oe & ts_local_pe_154_a1_out ) | 1'b0;
-assign address_oe[14] = ts_local_pe_154_a0_oe | ts_local_pe_154_a1_oe;
+assign address_out[14] = (gateway_addr_oe) ? ts_local_pe_154_a0_out : ts_local_pe_154_a1_out;
+assign address_oe[14] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_154_a0_in = address_in[14];
 assign ts_local_pe_154_a1_in = address_in[14];
 
 // --- Compiler-generated local PE for BUS address<15>
-assign address_out[15] = (ts_local_pe_155_a0_oe & ts_local_pe_155_a0_out ) | (ts_local_pe_155_a1_oe & ts_local_pe_155_a1_out ) | 1'b0;
-assign address_oe[15] = ts_local_pe_155_a0_oe | ts_local_pe_155_a1_oe;
+assign address_out[15] = (gateway_addr_oe) ? ts_local_pe_155_a0_out : ts_local_pe_155_a1_out;
+assign address_oe[15] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_155_a0_in = address_in[15];
 assign ts_local_pe_155_a1_in = address_in[15];
 
 // --- Compiler-generated local PE for BUS address<16>
-assign address_out[16] = (ts_local_pe_156_a0_oe & ts_local_pe_156_a0_out ) | (ts_local_pe_156_a1_oe & ts_local_pe_156_a1_out ) | 1'b0;
-assign address_oe[16] = ts_local_pe_156_a0_oe | ts_local_pe_156_a1_oe;
+assign address_out[16] = (gateway_addr_oe) ? ts_local_pe_156_a0_out : ts_local_pe_156_a1_out;
+assign address_oe[16] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_156_a0_in = address_in[16];
 assign ts_local_pe_156_a1_in = address_in[16];
 
 // --- Compiler-generated local PE for BUS address<17>
-assign address_out[17] = (ts_local_pe_157_a0_oe & ts_local_pe_157_a0_out ) | (ts_local_pe_157_a1_oe & ts_local_pe_157_a1_out ) | 1'b0;
-assign address_oe[17] = ts_local_pe_157_a0_oe | ts_local_pe_157_a1_oe;
+assign address_out[17] = (gateway_addr_oe) ? ts_local_pe_157_a0_out : ts_local_pe_157_a1_out;
+assign address_oe[17] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_157_a0_in = address_in[17];
 assign ts_local_pe_157_a1_in = address_in[17];
 
 // --- Compiler-generated local PE for BUS address<18>
-assign address_out[18] = (ts_local_pe_158_a0_oe & ts_local_pe_158_a0_out ) | (ts_local_pe_158_a1_oe & ts_local_pe_158_a1_out ) | 1'b0;
-assign address_oe[18] = ts_local_pe_158_a0_oe | ts_local_pe_158_a1_oe;
+assign address_out[18] = (gateway_addr_oe) ? ts_local_pe_158_a0_out : ts_local_pe_158_a1_out;
+assign address_oe[18] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_158_a0_in = address_in[18];
 assign ts_local_pe_158_a1_in = address_in[18];
 
 // --- Compiler-generated local PE for BUS address<19>
-assign address_out[19] = (ts_local_pe_159_a0_oe & ts_local_pe_159_a0_out ) | (ts_local_pe_159_a1_oe & ts_local_pe_159_a1_out ) | 1'b0;
-assign address_oe[19] = ts_local_pe_159_a0_oe | ts_local_pe_159_a1_oe;
+assign address_out[19] = (gateway_addr_oe) ? ts_local_pe_159_a0_out : ts_local_pe_159_a1_out;
+assign address_oe[19] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_159_a0_in = address_in[19];
 assign ts_local_pe_159_a1_in = address_in[19];
 
 // --- Compiler-generated local PE for BUS address<20>
-assign address_out[20] = (ts_local_pe_160_a0_oe & ts_local_pe_160_a0_out ) | (ts_local_pe_160_a1_oe & ts_local_pe_160_a1_out ) | 1'b0;
-assign address_oe[20] = ts_local_pe_160_a0_oe | ts_local_pe_160_a1_oe;
+assign address_out[20] = (gateway_addr_oe) ? ts_local_pe_160_a0_out : ts_local_pe_160_a1_out;
+assign address_oe[20] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_160_a0_in = address_in[20];
 assign ts_local_pe_160_a1_in = address_in[20];
 
 // --- Compiler-generated local PE for BUS address<21>
-assign address_out[21] = (ts_local_pe_161_a0_oe & ts_local_pe_161_a0_out ) | (ts_local_pe_161_a1_oe & ts_local_pe_161_a1_out ) | 1'b0;
-assign address_oe[21] = ts_local_pe_161_a0_oe | ts_local_pe_161_a1_oe;
+assign address_out[21] = (gateway_addr_oe) ? ts_local_pe_161_a0_out : ts_local_pe_161_a1_out;
+assign address_oe[21] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_161_a0_in = address_in[21];
 assign ts_local_pe_161_a1_in = address_in[21];
 
 // --- Compiler-generated local PE for BUS address<22>
-assign address_out[22] = (ts_local_pe_162_a0_oe & ts_local_pe_162_a0_out ) | (ts_local_pe_162_a1_oe & ts_local_pe_162_a1_out ) | 1'b0;
-assign address_oe[22] = ts_local_pe_162_a0_oe | ts_local_pe_162_a1_oe;
+assign address_out[22] = (gateway_addr_oe) ? ts_local_pe_162_a0_out : ts_local_pe_162_a1_out;
+assign address_oe[22] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_162_a0_in = address_in[22];
 assign ts_local_pe_162_a1_in = address_in[22];
 
 // --- Compiler-generated local PE for BUS address<23>
-assign address_out[23] = (ts_local_pe_163_a0_oe & ts_local_pe_163_a0_out ) | (ts_local_pe_163_a1_oe & ts_local_pe_163_a1_out ) | 1'b0;
-assign address_oe[23] = ts_local_pe_163_a0_oe | ts_local_pe_163_a1_oe;
+assign address_out[23] = (gateway_addr_oe) ? ts_local_pe_163_a0_out : ts_local_pe_163_a1_out;
+assign address_oe[23] = gateway_addr_oe | blit_addr_oe;
 assign ts_local_pe_163_a0_in = address_in[23];
 assign ts_local_pe_163_a1_in = address_in[23];
 
 // --- Compiler-generated local PE for BUS gpu_data<0>
-assign gpu_data_out[0] = (ts_local_pe_164_a0_oe & ts_local_pe_164_a0_out ) | (ts_local_pe_164_a1_oe & ts_local_pe_164_a1_out ) | (ts_local_pe_164_a2_oe & ts_local_pe_164_a2_out ) | (ts_local_pe_164_a3_oe & ts_local_pe_164_a3_out ) | (ts_local_pe_164_a4_oe & ts_local_pe_164_a4_out ) | (ts_local_pe_164_a5_oe & ts_local_pe_164_a5_out ) | 1'b0;
+assign gpu_data_out[0] = (ts_local_pe_164_a0_oe & ts_local_pe_164_a0_out ) | (ts_local_pe_164_a1_oe & ts_local_pe_164_a1_out ) | (ts_local_pe_164_a2_oe & ts_local_pe_164_a2_out ) | (ts_local_pe_164_a3_oe & ts_local_pe_164_a3_out ) | (ts_local_pe_164_a4_oe & ts_local_pe_164_a4_out ) | (ts_local_pe_164_a5_oe & ts_local_pe_164_a5_out );
 assign gpu_data_oe[0] = ts_local_pe_164_a0_oe | ts_local_pe_164_a1_oe | ts_local_pe_164_a2_oe | ts_local_pe_164_a3_oe | ts_local_pe_164_a4_oe | ts_local_pe_164_a5_oe;
 assign ts_local_pe_164_a0_in = gpu_data_in[0];
 assign ts_local_pe_164_a1_in = gpu_data_in[0];
@@ -4237,7 +4244,7 @@ assign ts_local_pe_164_a4_in = gpu_data_in[0];
 assign ts_local_pe_164_a5_in = gpu_data_in[0];
 
 // --- Compiler-generated local PE for BUS gpu_data<1>
-assign gpu_data_out[1] = (ts_local_pe_165_a0_oe & ts_local_pe_165_a0_out ) | (ts_local_pe_165_a1_oe & ts_local_pe_165_a1_out ) | (ts_local_pe_165_a2_oe & ts_local_pe_165_a2_out ) | (ts_local_pe_165_a3_oe & ts_local_pe_165_a3_out ) | (ts_local_pe_165_a4_oe & ts_local_pe_165_a4_out ) | (ts_local_pe_165_a5_oe & ts_local_pe_165_a5_out ) | 1'b0;
+assign gpu_data_out[1] = (ts_local_pe_165_a0_oe & ts_local_pe_165_a0_out ) | (ts_local_pe_165_a1_oe & ts_local_pe_165_a1_out ) | (ts_local_pe_165_a2_oe & ts_local_pe_165_a2_out ) | (ts_local_pe_165_a3_oe & ts_local_pe_165_a3_out ) | (ts_local_pe_165_a4_oe & ts_local_pe_165_a4_out ) | (ts_local_pe_165_a5_oe & ts_local_pe_165_a5_out );
 assign gpu_data_oe[1] = ts_local_pe_165_a0_oe | ts_local_pe_165_a1_oe | ts_local_pe_165_a2_oe | ts_local_pe_165_a3_oe | ts_local_pe_165_a4_oe | ts_local_pe_165_a5_oe;
 assign ts_local_pe_165_a0_in = gpu_data_in[1];
 assign ts_local_pe_165_a1_in = gpu_data_in[1];
@@ -4247,7 +4254,7 @@ assign ts_local_pe_165_a4_in = gpu_data_in[1];
 assign ts_local_pe_165_a5_in = gpu_data_in[1];
 
 // --- Compiler-generated local PE for BUS gpu_data<2>
-assign gpu_data_out[2] = (ts_local_pe_166_a0_oe & ts_local_pe_166_a0_out ) | (ts_local_pe_166_a1_oe & ts_local_pe_166_a1_out ) | (ts_local_pe_166_a2_oe & ts_local_pe_166_a2_out ) | (ts_local_pe_166_a3_oe & ts_local_pe_166_a3_out ) | (ts_local_pe_166_a4_oe & ts_local_pe_166_a4_out ) | (ts_local_pe_166_a5_oe & ts_local_pe_166_a5_out ) | 1'b0;
+assign gpu_data_out[2] = (ts_local_pe_166_a0_oe & ts_local_pe_166_a0_out ) | (ts_local_pe_166_a1_oe & ts_local_pe_166_a1_out ) | (ts_local_pe_166_a2_oe & ts_local_pe_166_a2_out ) | (ts_local_pe_166_a3_oe & ts_local_pe_166_a3_out ) | (ts_local_pe_166_a4_oe & ts_local_pe_166_a4_out ) | (ts_local_pe_166_a5_oe & ts_local_pe_166_a5_out );
 assign gpu_data_oe[2] = ts_local_pe_166_a0_oe | ts_local_pe_166_a1_oe | ts_local_pe_166_a2_oe | ts_local_pe_166_a3_oe | ts_local_pe_166_a4_oe | ts_local_pe_166_a5_oe;
 assign ts_local_pe_166_a0_in = gpu_data_in[2];
 assign ts_local_pe_166_a1_in = gpu_data_in[2];
@@ -4257,7 +4264,7 @@ assign ts_local_pe_166_a4_in = gpu_data_in[2];
 assign ts_local_pe_166_a5_in = gpu_data_in[2];
 
 // --- Compiler-generated local PE for BUS gpu_data<3>
-assign gpu_data_out[3] = (ts_local_pe_167_a0_oe & ts_local_pe_167_a0_out ) | (ts_local_pe_167_a1_oe & ts_local_pe_167_a1_out ) | (ts_local_pe_167_a2_oe & ts_local_pe_167_a2_out ) | (ts_local_pe_167_a3_oe & ts_local_pe_167_a3_out ) | (ts_local_pe_167_a4_oe & ts_local_pe_167_a4_out ) | (ts_local_pe_167_a5_oe & ts_local_pe_167_a5_out ) | 1'b0;
+assign gpu_data_out[3] = (ts_local_pe_167_a0_oe & ts_local_pe_167_a0_out ) | (ts_local_pe_167_a1_oe & ts_local_pe_167_a1_out ) | (ts_local_pe_167_a2_oe & ts_local_pe_167_a2_out ) | (ts_local_pe_167_a3_oe & ts_local_pe_167_a3_out ) | (ts_local_pe_167_a4_oe & ts_local_pe_167_a4_out ) | (ts_local_pe_167_a5_oe & ts_local_pe_167_a5_out );
 assign gpu_data_oe[3] = ts_local_pe_167_a0_oe | ts_local_pe_167_a1_oe | ts_local_pe_167_a2_oe | ts_local_pe_167_a3_oe | ts_local_pe_167_a4_oe | ts_local_pe_167_a5_oe;
 assign ts_local_pe_167_a0_in = gpu_data_in[3];
 assign ts_local_pe_167_a1_in = gpu_data_in[3];
@@ -4267,7 +4274,7 @@ assign ts_local_pe_167_a4_in = gpu_data_in[3];
 assign ts_local_pe_167_a5_in = gpu_data_in[3];
 
 // --- Compiler-generated local PE for BUS gpu_data<4>
-assign gpu_data_out[4] = (ts_local_pe_168_a0_oe & ts_local_pe_168_a0_out ) | (ts_local_pe_168_a1_oe & ts_local_pe_168_a1_out ) | (ts_local_pe_168_a2_oe & ts_local_pe_168_a2_out ) | (ts_local_pe_168_a3_oe & ts_local_pe_168_a3_out ) | (ts_local_pe_168_a4_oe & ts_local_pe_168_a4_out ) | (ts_local_pe_168_a5_oe & ts_local_pe_168_a5_out ) | 1'b0;
+assign gpu_data_out[4] = (ts_local_pe_168_a0_oe & ts_local_pe_168_a0_out ) | (ts_local_pe_168_a1_oe & ts_local_pe_168_a1_out ) | (ts_local_pe_168_a2_oe & ts_local_pe_168_a2_out ) | (ts_local_pe_168_a3_oe & ts_local_pe_168_a3_out ) | (ts_local_pe_168_a4_oe & ts_local_pe_168_a4_out ) | (ts_local_pe_168_a5_oe & ts_local_pe_168_a5_out );
 assign gpu_data_oe[4] = ts_local_pe_168_a0_oe | ts_local_pe_168_a1_oe | ts_local_pe_168_a2_oe | ts_local_pe_168_a3_oe | ts_local_pe_168_a4_oe | ts_local_pe_168_a5_oe;
 assign ts_local_pe_168_a0_in = gpu_data_in[4];
 assign ts_local_pe_168_a1_in = gpu_data_in[4];
@@ -4277,7 +4284,7 @@ assign ts_local_pe_168_a4_in = gpu_data_in[4];
 assign ts_local_pe_168_a5_in = gpu_data_in[4];
 
 // --- Compiler-generated local PE for BUS gpu_data<5>
-assign gpu_data_out[5] = (ts_local_pe_169_a0_oe & ts_local_pe_169_a0_out ) | (ts_local_pe_169_a1_oe & ts_local_pe_169_a1_out ) | (ts_local_pe_169_a2_oe & ts_local_pe_169_a2_out ) | (ts_local_pe_169_a3_oe & ts_local_pe_169_a3_out ) | (ts_local_pe_169_a4_oe & ts_local_pe_169_a4_out ) | (ts_local_pe_169_a5_oe & ts_local_pe_169_a5_out ) | 1'b0;
+assign gpu_data_out[5] = (ts_local_pe_169_a0_oe & ts_local_pe_169_a0_out ) | (ts_local_pe_169_a1_oe & ts_local_pe_169_a1_out ) | (ts_local_pe_169_a2_oe & ts_local_pe_169_a2_out ) | (ts_local_pe_169_a3_oe & ts_local_pe_169_a3_out ) | (ts_local_pe_169_a4_oe & ts_local_pe_169_a4_out ) | (ts_local_pe_169_a5_oe & ts_local_pe_169_a5_out );
 assign gpu_data_oe[5] = ts_local_pe_169_a0_oe | ts_local_pe_169_a1_oe | ts_local_pe_169_a2_oe | ts_local_pe_169_a3_oe | ts_local_pe_169_a4_oe | ts_local_pe_169_a5_oe;
 assign ts_local_pe_169_a0_in = gpu_data_in[5];
 assign ts_local_pe_169_a1_in = gpu_data_in[5];
@@ -4287,7 +4294,7 @@ assign ts_local_pe_169_a4_in = gpu_data_in[5];
 assign ts_local_pe_169_a5_in = gpu_data_in[5];
 
 // --- Compiler-generated local PE for BUS gpu_data<6>
-assign gpu_data_out[6] = (ts_local_pe_170_a0_oe & ts_local_pe_170_a0_out ) | (ts_local_pe_170_a1_oe & ts_local_pe_170_a1_out ) | (ts_local_pe_170_a2_oe & ts_local_pe_170_a2_out ) | (ts_local_pe_170_a3_oe & ts_local_pe_170_a3_out ) | (ts_local_pe_170_a4_oe & ts_local_pe_170_a4_out ) | (ts_local_pe_170_a5_oe & ts_local_pe_170_a5_out ) | 1'b0;
+assign gpu_data_out[6] = (ts_local_pe_170_a0_oe & ts_local_pe_170_a0_out ) | (ts_local_pe_170_a1_oe & ts_local_pe_170_a1_out ) | (ts_local_pe_170_a2_oe & ts_local_pe_170_a2_out ) | (ts_local_pe_170_a3_oe & ts_local_pe_170_a3_out ) | (ts_local_pe_170_a4_oe & ts_local_pe_170_a4_out ) | (ts_local_pe_170_a5_oe & ts_local_pe_170_a5_out );
 assign gpu_data_oe[6] = ts_local_pe_170_a0_oe | ts_local_pe_170_a1_oe | ts_local_pe_170_a2_oe | ts_local_pe_170_a3_oe | ts_local_pe_170_a4_oe | ts_local_pe_170_a5_oe;
 assign ts_local_pe_170_a0_in = gpu_data_in[6];
 assign ts_local_pe_170_a1_in = gpu_data_in[6];
@@ -4297,7 +4304,7 @@ assign ts_local_pe_170_a4_in = gpu_data_in[6];
 assign ts_local_pe_170_a5_in = gpu_data_in[6];
 
 // --- Compiler-generated local PE for BUS gpu_data<7>
-assign gpu_data_out[7] = (ts_local_pe_171_a0_oe & ts_local_pe_171_a0_out ) | (ts_local_pe_171_a1_oe & ts_local_pe_171_a1_out ) | (ts_local_pe_171_a2_oe & ts_local_pe_171_a2_out ) | (ts_local_pe_171_a3_oe & ts_local_pe_171_a3_out ) | (ts_local_pe_171_a4_oe & ts_local_pe_171_a4_out ) | (ts_local_pe_171_a5_oe & ts_local_pe_171_a5_out ) | 1'b0;
+assign gpu_data_out[7] = (ts_local_pe_171_a0_oe & ts_local_pe_171_a0_out ) | (ts_local_pe_171_a1_oe & ts_local_pe_171_a1_out ) | (ts_local_pe_171_a2_oe & ts_local_pe_171_a2_out ) | (ts_local_pe_171_a3_oe & ts_local_pe_171_a3_out ) | (ts_local_pe_171_a4_oe & ts_local_pe_171_a4_out ) | (ts_local_pe_171_a5_oe & ts_local_pe_171_a5_out );
 assign gpu_data_oe[7] = ts_local_pe_171_a0_oe | ts_local_pe_171_a1_oe | ts_local_pe_171_a2_oe | ts_local_pe_171_a3_oe | ts_local_pe_171_a4_oe | ts_local_pe_171_a5_oe;
 assign ts_local_pe_171_a0_in = gpu_data_in[7];
 assign ts_local_pe_171_a1_in = gpu_data_in[7];
@@ -4307,7 +4314,7 @@ assign ts_local_pe_171_a4_in = gpu_data_in[7];
 assign ts_local_pe_171_a5_in = gpu_data_in[7];
 
 // --- Compiler-generated local PE for BUS gpu_data<8>
-assign gpu_data_out[8] = (ts_local_pe_172_a0_oe & ts_local_pe_172_a0_out ) | (ts_local_pe_172_a1_oe & ts_local_pe_172_a1_out ) | (ts_local_pe_172_a2_oe & ts_local_pe_172_a2_out ) | (ts_local_pe_172_a3_oe & ts_local_pe_172_a3_out ) | (ts_local_pe_172_a4_oe & ts_local_pe_172_a4_out ) | (ts_local_pe_172_a5_oe & ts_local_pe_172_a5_out ) | 1'b0;
+assign gpu_data_out[8] = (ts_local_pe_172_a0_oe & ts_local_pe_172_a0_out ) | (ts_local_pe_172_a1_oe & ts_local_pe_172_a1_out ) | (ts_local_pe_172_a2_oe & ts_local_pe_172_a2_out ) | (ts_local_pe_172_a3_oe & ts_local_pe_172_a3_out ) | (ts_local_pe_172_a4_oe & ts_local_pe_172_a4_out ) | (ts_local_pe_172_a5_oe & ts_local_pe_172_a5_out );
 assign gpu_data_oe[8] = ts_local_pe_172_a0_oe | ts_local_pe_172_a1_oe | ts_local_pe_172_a2_oe | ts_local_pe_172_a3_oe | ts_local_pe_172_a4_oe | ts_local_pe_172_a5_oe;
 assign ts_local_pe_172_a0_in = gpu_data_in[8];
 assign ts_local_pe_172_a1_in = gpu_data_in[8];
@@ -4317,7 +4324,7 @@ assign ts_local_pe_172_a4_in = gpu_data_in[8];
 assign ts_local_pe_172_a5_in = gpu_data_in[8];
 
 // --- Compiler-generated local PE for BUS gpu_data<9>
-assign gpu_data_out[9] = (ts_local_pe_173_a0_oe & ts_local_pe_173_a0_out ) | (ts_local_pe_173_a1_oe & ts_local_pe_173_a1_out ) | (ts_local_pe_173_a2_oe & ts_local_pe_173_a2_out ) | (ts_local_pe_173_a3_oe & ts_local_pe_173_a3_out ) | (ts_local_pe_173_a4_oe & ts_local_pe_173_a4_out ) | (ts_local_pe_173_a5_oe & ts_local_pe_173_a5_out ) | 1'b0;
+assign gpu_data_out[9] = (ts_local_pe_173_a0_oe & ts_local_pe_173_a0_out ) | (ts_local_pe_173_a1_oe & ts_local_pe_173_a1_out ) | (ts_local_pe_173_a2_oe & ts_local_pe_173_a2_out ) | (ts_local_pe_173_a3_oe & ts_local_pe_173_a3_out ) | (ts_local_pe_173_a4_oe & ts_local_pe_173_a4_out ) | (ts_local_pe_173_a5_oe & ts_local_pe_173_a5_out );
 assign gpu_data_oe[9] = ts_local_pe_173_a0_oe | ts_local_pe_173_a1_oe | ts_local_pe_173_a2_oe | ts_local_pe_173_a3_oe | ts_local_pe_173_a4_oe | ts_local_pe_173_a5_oe;
 assign ts_local_pe_173_a0_in = gpu_data_in[9];
 assign ts_local_pe_173_a1_in = gpu_data_in[9];
@@ -4327,7 +4334,7 @@ assign ts_local_pe_173_a4_in = gpu_data_in[9];
 assign ts_local_pe_173_a5_in = gpu_data_in[9];
 
 // --- Compiler-generated local PE for BUS gpu_data<10>
-assign gpu_data_out[10] = (ts_local_pe_174_a0_oe & ts_local_pe_174_a0_out ) | (ts_local_pe_174_a1_oe & ts_local_pe_174_a1_out ) | (ts_local_pe_174_a2_oe & ts_local_pe_174_a2_out ) | (ts_local_pe_174_a3_oe & ts_local_pe_174_a3_out ) | (ts_local_pe_174_a4_oe & ts_local_pe_174_a4_out ) | (ts_local_pe_174_a5_oe & ts_local_pe_174_a5_out ) | 1'b0;
+assign gpu_data_out[10] = (ts_local_pe_174_a0_oe & ts_local_pe_174_a0_out ) | (ts_local_pe_174_a1_oe & ts_local_pe_174_a1_out ) | (ts_local_pe_174_a2_oe & ts_local_pe_174_a2_out ) | (ts_local_pe_174_a3_oe & ts_local_pe_174_a3_out ) | (ts_local_pe_174_a4_oe & ts_local_pe_174_a4_out ) | (ts_local_pe_174_a5_oe & ts_local_pe_174_a5_out );
 assign gpu_data_oe[10] = ts_local_pe_174_a0_oe | ts_local_pe_174_a1_oe | ts_local_pe_174_a2_oe | ts_local_pe_174_a3_oe | ts_local_pe_174_a4_oe | ts_local_pe_174_a5_oe;
 assign ts_local_pe_174_a0_in = gpu_data_in[10];
 assign ts_local_pe_174_a1_in = gpu_data_in[10];
@@ -4337,7 +4344,7 @@ assign ts_local_pe_174_a4_in = gpu_data_in[10];
 assign ts_local_pe_174_a5_in = gpu_data_in[10];
 
 // --- Compiler-generated local PE for BUS gpu_data<11>
-assign gpu_data_out[11] = (ts_local_pe_175_a0_oe & ts_local_pe_175_a0_out ) | (ts_local_pe_175_a1_oe & ts_local_pe_175_a1_out ) | (ts_local_pe_175_a2_oe & ts_local_pe_175_a2_out ) | (ts_local_pe_175_a3_oe & ts_local_pe_175_a3_out ) | (ts_local_pe_175_a4_oe & ts_local_pe_175_a4_out ) | (ts_local_pe_175_a5_oe & ts_local_pe_175_a5_out ) | 1'b0;
+assign gpu_data_out[11] = (ts_local_pe_175_a0_oe & ts_local_pe_175_a0_out ) | (ts_local_pe_175_a1_oe & ts_local_pe_175_a1_out ) | (ts_local_pe_175_a2_oe & ts_local_pe_175_a2_out ) | (ts_local_pe_175_a3_oe & ts_local_pe_175_a3_out ) | (ts_local_pe_175_a4_oe & ts_local_pe_175_a4_out ) | (ts_local_pe_175_a5_oe & ts_local_pe_175_a5_out );
 assign gpu_data_oe[11] = ts_local_pe_175_a0_oe | ts_local_pe_175_a1_oe | ts_local_pe_175_a2_oe | ts_local_pe_175_a3_oe | ts_local_pe_175_a4_oe | ts_local_pe_175_a5_oe;
 assign ts_local_pe_175_a0_in = gpu_data_in[11];
 assign ts_local_pe_175_a1_in = gpu_data_in[11];
@@ -4347,7 +4354,7 @@ assign ts_local_pe_175_a4_in = gpu_data_in[11];
 assign ts_local_pe_175_a5_in = gpu_data_in[11];
 
 // --- Compiler-generated local PE for BUS gpu_data<12>
-assign gpu_data_out[12] = (ts_local_pe_176_a0_oe & ts_local_pe_176_a0_out ) | (ts_local_pe_176_a1_oe & ts_local_pe_176_a1_out ) | (ts_local_pe_176_a2_oe & ts_local_pe_176_a2_out ) | (ts_local_pe_176_a3_oe & ts_local_pe_176_a3_out ) | (ts_local_pe_176_a4_oe & ts_local_pe_176_a4_out ) | (ts_local_pe_176_a5_oe & ts_local_pe_176_a5_out ) | 1'b0;
+assign gpu_data_out[12] = (ts_local_pe_176_a0_oe & ts_local_pe_176_a0_out ) | (ts_local_pe_176_a1_oe & ts_local_pe_176_a1_out ) | (ts_local_pe_176_a2_oe & ts_local_pe_176_a2_out ) | (ts_local_pe_176_a3_oe & ts_local_pe_176_a3_out ) | (ts_local_pe_176_a4_oe & ts_local_pe_176_a4_out ) | (ts_local_pe_176_a5_oe & ts_local_pe_176_a5_out );
 assign gpu_data_oe[12] = ts_local_pe_176_a0_oe | ts_local_pe_176_a1_oe | ts_local_pe_176_a2_oe | ts_local_pe_176_a3_oe | ts_local_pe_176_a4_oe | ts_local_pe_176_a5_oe;
 assign ts_local_pe_176_a0_in = gpu_data_in[12];
 assign ts_local_pe_176_a1_in = gpu_data_in[12];
@@ -4357,7 +4364,7 @@ assign ts_local_pe_176_a4_in = gpu_data_in[12];
 assign ts_local_pe_176_a5_in = gpu_data_in[12];
 
 // --- Compiler-generated local PE for BUS gpu_data<13>
-assign gpu_data_out[13] = (ts_local_pe_177_a0_oe & ts_local_pe_177_a0_out ) | (ts_local_pe_177_a1_oe & ts_local_pe_177_a1_out ) | (ts_local_pe_177_a2_oe & ts_local_pe_177_a2_out ) | (ts_local_pe_177_a3_oe & ts_local_pe_177_a3_out ) | (ts_local_pe_177_a4_oe & ts_local_pe_177_a4_out ) | (ts_local_pe_177_a5_oe & ts_local_pe_177_a5_out ) | 1'b0;
+assign gpu_data_out[13] = (ts_local_pe_177_a0_oe & ts_local_pe_177_a0_out ) | (ts_local_pe_177_a1_oe & ts_local_pe_177_a1_out ) | (ts_local_pe_177_a2_oe & ts_local_pe_177_a2_out ) | (ts_local_pe_177_a3_oe & ts_local_pe_177_a3_out ) | (ts_local_pe_177_a4_oe & ts_local_pe_177_a4_out ) | (ts_local_pe_177_a5_oe & ts_local_pe_177_a5_out );
 assign gpu_data_oe[13] = ts_local_pe_177_a0_oe | ts_local_pe_177_a1_oe | ts_local_pe_177_a2_oe | ts_local_pe_177_a3_oe | ts_local_pe_177_a4_oe | ts_local_pe_177_a5_oe;
 assign ts_local_pe_177_a0_in = gpu_data_in[13];
 assign ts_local_pe_177_a1_in = gpu_data_in[13];
@@ -4367,7 +4374,7 @@ assign ts_local_pe_177_a4_in = gpu_data_in[13];
 assign ts_local_pe_177_a5_in = gpu_data_in[13];
 
 // --- Compiler-generated local PE for BUS gpu_data<14>
-assign gpu_data_out[14] = (ts_local_pe_178_a0_oe & ts_local_pe_178_a0_out ) | (ts_local_pe_178_a1_oe & ts_local_pe_178_a1_out ) | (ts_local_pe_178_a2_oe & ts_local_pe_178_a2_out ) | (ts_local_pe_178_a3_oe & ts_local_pe_178_a3_out ) | (ts_local_pe_178_a4_oe & ts_local_pe_178_a4_out ) | (ts_local_pe_178_a5_oe & ts_local_pe_178_a5_out ) | 1'b0;
+assign gpu_data_out[14] = (ts_local_pe_178_a0_oe & ts_local_pe_178_a0_out ) | (ts_local_pe_178_a1_oe & ts_local_pe_178_a1_out ) | (ts_local_pe_178_a2_oe & ts_local_pe_178_a2_out ) | (ts_local_pe_178_a3_oe & ts_local_pe_178_a3_out ) | (ts_local_pe_178_a4_oe & ts_local_pe_178_a4_out ) | (ts_local_pe_178_a5_oe & ts_local_pe_178_a5_out );
 assign gpu_data_oe[14] = ts_local_pe_178_a0_oe | ts_local_pe_178_a1_oe | ts_local_pe_178_a2_oe | ts_local_pe_178_a3_oe | ts_local_pe_178_a4_oe | ts_local_pe_178_a5_oe;
 assign ts_local_pe_178_a0_in = gpu_data_in[14];
 assign ts_local_pe_178_a1_in = gpu_data_in[14];
@@ -4377,7 +4384,7 @@ assign ts_local_pe_178_a4_in = gpu_data_in[14];
 assign ts_local_pe_178_a5_in = gpu_data_in[14];
 
 // --- Compiler-generated local PE for BUS gpu_data<15>
-assign gpu_data_out[15] = (ts_local_pe_179_a0_oe & ts_local_pe_179_a0_out ) | (ts_local_pe_179_a1_oe & ts_local_pe_179_a1_out ) | (ts_local_pe_179_a2_oe & ts_local_pe_179_a2_out ) | (ts_local_pe_179_a3_oe & ts_local_pe_179_a3_out ) | (ts_local_pe_179_a4_oe & ts_local_pe_179_a4_out ) | (ts_local_pe_179_a5_oe & ts_local_pe_179_a5_out ) | 1'b0;
+assign gpu_data_out[15] = (ts_local_pe_179_a0_oe & ts_local_pe_179_a0_out ) | (ts_local_pe_179_a1_oe & ts_local_pe_179_a1_out ) | (ts_local_pe_179_a2_oe & ts_local_pe_179_a2_out ) | (ts_local_pe_179_a3_oe & ts_local_pe_179_a3_out ) | (ts_local_pe_179_a4_oe & ts_local_pe_179_a4_out ) | (ts_local_pe_179_a5_oe & ts_local_pe_179_a5_out );
 assign gpu_data_oe[15] = ts_local_pe_179_a0_oe | ts_local_pe_179_a1_oe | ts_local_pe_179_a2_oe | ts_local_pe_179_a3_oe | ts_local_pe_179_a4_oe | ts_local_pe_179_a5_oe;
 assign ts_local_pe_179_a0_in = gpu_data_in[15];
 assign ts_local_pe_179_a1_in = gpu_data_in[15];
@@ -4387,7 +4394,7 @@ assign ts_local_pe_179_a4_in = gpu_data_in[15];
 assign ts_local_pe_179_a5_in = gpu_data_in[15];
 
 // --- Compiler-generated local PE for BUS gpu_data<16>
-assign gpu_data_out[16] = (ts_local_pe_180_a0_oe & ts_local_pe_180_a0_out ) | (ts_local_pe_180_a1_oe & ts_local_pe_180_a1_out ) | (ts_local_pe_180_a2_oe & ts_local_pe_180_a2_out ) | (ts_local_pe_180_a3_oe & ts_local_pe_180_a3_out ) | (ts_local_pe_180_a4_oe & ts_local_pe_180_a4_out ) | (ts_local_pe_180_a5_oe & ts_local_pe_180_a5_out ) | 1'b0;
+assign gpu_data_out[16] = (ts_local_pe_180_a0_oe & ts_local_pe_180_a0_out ) | (ts_local_pe_180_a1_oe & ts_local_pe_180_a1_out ) | (ts_local_pe_180_a2_oe & ts_local_pe_180_a2_out ) | (ts_local_pe_180_a3_oe & ts_local_pe_180_a3_out ) | (ts_local_pe_180_a4_oe & ts_local_pe_180_a4_out ) | (ts_local_pe_180_a5_oe & ts_local_pe_180_a5_out );
 assign gpu_data_oe[16] = ts_local_pe_180_a0_oe | ts_local_pe_180_a1_oe | ts_local_pe_180_a2_oe | ts_local_pe_180_a3_oe | ts_local_pe_180_a4_oe | ts_local_pe_180_a5_oe;
 assign ts_local_pe_180_a0_in = gpu_data_in[16];
 assign ts_local_pe_180_a1_in = gpu_data_in[16];
@@ -4397,7 +4404,7 @@ assign ts_local_pe_180_a4_in = gpu_data_in[16];
 assign ts_local_pe_180_a5_in = gpu_data_in[16];
 
 // --- Compiler-generated local PE for BUS gpu_data<17>
-assign gpu_data_out[17] = (ts_local_pe_181_a0_oe & ts_local_pe_181_a0_out ) | (ts_local_pe_181_a1_oe & ts_local_pe_181_a1_out ) | (ts_local_pe_181_a2_oe & ts_local_pe_181_a2_out ) | (ts_local_pe_181_a3_oe & ts_local_pe_181_a3_out ) | (ts_local_pe_181_a4_oe & ts_local_pe_181_a4_out ) | (ts_local_pe_181_a5_oe & ts_local_pe_181_a5_out ) | 1'b0;
+assign gpu_data_out[17] = (ts_local_pe_181_a0_oe & ts_local_pe_181_a0_out ) | (ts_local_pe_181_a1_oe & ts_local_pe_181_a1_out ) | (ts_local_pe_181_a2_oe & ts_local_pe_181_a2_out ) | (ts_local_pe_181_a3_oe & ts_local_pe_181_a3_out ) | (ts_local_pe_181_a4_oe & ts_local_pe_181_a4_out ) | (ts_local_pe_181_a5_oe & ts_local_pe_181_a5_out );
 assign gpu_data_oe[17] = ts_local_pe_181_a0_oe | ts_local_pe_181_a1_oe | ts_local_pe_181_a2_oe | ts_local_pe_181_a3_oe | ts_local_pe_181_a4_oe | ts_local_pe_181_a5_oe;
 assign ts_local_pe_181_a0_in = gpu_data_in[17];
 assign ts_local_pe_181_a1_in = gpu_data_in[17];
@@ -4407,7 +4414,7 @@ assign ts_local_pe_181_a4_in = gpu_data_in[17];
 assign ts_local_pe_181_a5_in = gpu_data_in[17];
 
 // --- Compiler-generated local PE for BUS gpu_data<18>
-assign gpu_data_out[18] = (ts_local_pe_182_a0_oe & ts_local_pe_182_a0_out ) | (ts_local_pe_182_a1_oe & ts_local_pe_182_a1_out ) | (ts_local_pe_182_a2_oe & ts_local_pe_182_a2_out ) | (ts_local_pe_182_a3_oe & ts_local_pe_182_a3_out ) | (ts_local_pe_182_a4_oe & ts_local_pe_182_a4_out ) | (ts_local_pe_182_a5_oe & ts_local_pe_182_a5_out ) | 1'b0;
+assign gpu_data_out[18] = (ts_local_pe_182_a0_oe & ts_local_pe_182_a0_out ) | (ts_local_pe_182_a1_oe & ts_local_pe_182_a1_out ) | (ts_local_pe_182_a2_oe & ts_local_pe_182_a2_out ) | (ts_local_pe_182_a3_oe & ts_local_pe_182_a3_out ) | (ts_local_pe_182_a4_oe & ts_local_pe_182_a4_out ) | (ts_local_pe_182_a5_oe & ts_local_pe_182_a5_out );
 assign gpu_data_oe[18] = ts_local_pe_182_a0_oe | ts_local_pe_182_a1_oe | ts_local_pe_182_a2_oe | ts_local_pe_182_a3_oe | ts_local_pe_182_a4_oe | ts_local_pe_182_a5_oe;
 assign ts_local_pe_182_a0_in = gpu_data_in[18];
 assign ts_local_pe_182_a1_in = gpu_data_in[18];
@@ -4417,7 +4424,7 @@ assign ts_local_pe_182_a4_in = gpu_data_in[18];
 assign ts_local_pe_182_a5_in = gpu_data_in[18];
 
 // --- Compiler-generated local PE for BUS gpu_data<19>
-assign gpu_data_out[19] = (ts_local_pe_183_a0_oe & ts_local_pe_183_a0_out ) | (ts_local_pe_183_a1_oe & ts_local_pe_183_a1_out ) | (ts_local_pe_183_a2_oe & ts_local_pe_183_a2_out ) | (ts_local_pe_183_a3_oe & ts_local_pe_183_a3_out ) | (ts_local_pe_183_a4_oe & ts_local_pe_183_a4_out ) | (ts_local_pe_183_a5_oe & ts_local_pe_183_a5_out ) | 1'b0;
+assign gpu_data_out[19] = (ts_local_pe_183_a0_oe & ts_local_pe_183_a0_out ) | (ts_local_pe_183_a1_oe & ts_local_pe_183_a1_out ) | (ts_local_pe_183_a2_oe & ts_local_pe_183_a2_out ) | (ts_local_pe_183_a3_oe & ts_local_pe_183_a3_out ) | (ts_local_pe_183_a4_oe & ts_local_pe_183_a4_out ) | (ts_local_pe_183_a5_oe & ts_local_pe_183_a5_out );
 assign gpu_data_oe[19] = ts_local_pe_183_a0_oe | ts_local_pe_183_a1_oe | ts_local_pe_183_a2_oe | ts_local_pe_183_a3_oe | ts_local_pe_183_a4_oe | ts_local_pe_183_a5_oe;
 assign ts_local_pe_183_a0_in = gpu_data_in[19];
 assign ts_local_pe_183_a1_in = gpu_data_in[19];
@@ -4427,7 +4434,7 @@ assign ts_local_pe_183_a4_in = gpu_data_in[19];
 assign ts_local_pe_183_a5_in = gpu_data_in[19];
 
 // --- Compiler-generated local PE for BUS gpu_data<20>
-assign gpu_data_out[20] = (ts_local_pe_184_a0_oe & ts_local_pe_184_a0_out ) | (ts_local_pe_184_a1_oe & ts_local_pe_184_a1_out ) | (ts_local_pe_184_a2_oe & ts_local_pe_184_a2_out ) | (ts_local_pe_184_a3_oe & ts_local_pe_184_a3_out ) | (ts_local_pe_184_a4_oe & ts_local_pe_184_a4_out ) | (ts_local_pe_184_a5_oe & ts_local_pe_184_a5_out ) | 1'b0;
+assign gpu_data_out[20] = (ts_local_pe_184_a0_oe & ts_local_pe_184_a0_out ) | (ts_local_pe_184_a1_oe & ts_local_pe_184_a1_out ) | (ts_local_pe_184_a2_oe & ts_local_pe_184_a2_out ) | (ts_local_pe_184_a3_oe & ts_local_pe_184_a3_out ) | (ts_local_pe_184_a4_oe & ts_local_pe_184_a4_out ) | (ts_local_pe_184_a5_oe & ts_local_pe_184_a5_out );
 assign gpu_data_oe[20] = ts_local_pe_184_a0_oe | ts_local_pe_184_a1_oe | ts_local_pe_184_a2_oe | ts_local_pe_184_a3_oe | ts_local_pe_184_a4_oe | ts_local_pe_184_a5_oe;
 assign ts_local_pe_184_a0_in = gpu_data_in[20];
 assign ts_local_pe_184_a1_in = gpu_data_in[20];
@@ -4437,7 +4444,7 @@ assign ts_local_pe_184_a4_in = gpu_data_in[20];
 assign ts_local_pe_184_a5_in = gpu_data_in[20];
 
 // --- Compiler-generated local PE for BUS gpu_data<21>
-assign gpu_data_out[21] = (ts_local_pe_185_a0_oe & ts_local_pe_185_a0_out ) | (ts_local_pe_185_a1_oe & ts_local_pe_185_a1_out ) | (ts_local_pe_185_a2_oe & ts_local_pe_185_a2_out ) | (ts_local_pe_185_a3_oe & ts_local_pe_185_a3_out ) | (ts_local_pe_185_a4_oe & ts_local_pe_185_a4_out ) | (ts_local_pe_185_a5_oe & ts_local_pe_185_a5_out ) | 1'b0;
+assign gpu_data_out[21] = (ts_local_pe_185_a0_oe & ts_local_pe_185_a0_out ) | (ts_local_pe_185_a1_oe & ts_local_pe_185_a1_out ) | (ts_local_pe_185_a2_oe & ts_local_pe_185_a2_out ) | (ts_local_pe_185_a3_oe & ts_local_pe_185_a3_out ) | (ts_local_pe_185_a4_oe & ts_local_pe_185_a4_out ) | (ts_local_pe_185_a5_oe & ts_local_pe_185_a5_out );
 assign gpu_data_oe[21] = ts_local_pe_185_a0_oe | ts_local_pe_185_a1_oe | ts_local_pe_185_a2_oe | ts_local_pe_185_a3_oe | ts_local_pe_185_a4_oe | ts_local_pe_185_a5_oe;
 assign ts_local_pe_185_a0_in = gpu_data_in[21];
 assign ts_local_pe_185_a1_in = gpu_data_in[21];
@@ -4447,7 +4454,7 @@ assign ts_local_pe_185_a4_in = gpu_data_in[21];
 assign ts_local_pe_185_a5_in = gpu_data_in[21];
 
 // --- Compiler-generated local PE for BUS gpu_data<22>
-assign gpu_data_out[22] = (ts_local_pe_186_a0_oe & ts_local_pe_186_a0_out ) | (ts_local_pe_186_a1_oe & ts_local_pe_186_a1_out ) | (ts_local_pe_186_a2_oe & ts_local_pe_186_a2_out ) | (ts_local_pe_186_a3_oe & ts_local_pe_186_a3_out ) | (ts_local_pe_186_a4_oe & ts_local_pe_186_a4_out ) | (ts_local_pe_186_a5_oe & ts_local_pe_186_a5_out ) | 1'b0;
+assign gpu_data_out[22] = (ts_local_pe_186_a0_oe & ts_local_pe_186_a0_out ) | (ts_local_pe_186_a1_oe & ts_local_pe_186_a1_out ) | (ts_local_pe_186_a2_oe & ts_local_pe_186_a2_out ) | (ts_local_pe_186_a3_oe & ts_local_pe_186_a3_out ) | (ts_local_pe_186_a4_oe & ts_local_pe_186_a4_out ) | (ts_local_pe_186_a5_oe & ts_local_pe_186_a5_out );
 assign gpu_data_oe[22] = ts_local_pe_186_a0_oe | ts_local_pe_186_a1_oe | ts_local_pe_186_a2_oe | ts_local_pe_186_a3_oe | ts_local_pe_186_a4_oe | ts_local_pe_186_a5_oe;
 assign ts_local_pe_186_a0_in = gpu_data_in[22];
 assign ts_local_pe_186_a1_in = gpu_data_in[22];
@@ -4457,7 +4464,7 @@ assign ts_local_pe_186_a4_in = gpu_data_in[22];
 assign ts_local_pe_186_a5_in = gpu_data_in[22];
 
 // --- Compiler-generated local PE for BUS gpu_data<23>
-assign gpu_data_out[23] = (ts_local_pe_187_a0_oe & ts_local_pe_187_a0_out ) | (ts_local_pe_187_a1_oe & ts_local_pe_187_a1_out ) | (ts_local_pe_187_a2_oe & ts_local_pe_187_a2_out ) | (ts_local_pe_187_a3_oe & ts_local_pe_187_a3_out ) | (ts_local_pe_187_a4_oe & ts_local_pe_187_a4_out ) | (ts_local_pe_187_a5_oe & ts_local_pe_187_a5_out ) | 1'b0;
+assign gpu_data_out[23] = (ts_local_pe_187_a0_oe & ts_local_pe_187_a0_out ) | (ts_local_pe_187_a1_oe & ts_local_pe_187_a1_out ) | (ts_local_pe_187_a2_oe & ts_local_pe_187_a2_out ) | (ts_local_pe_187_a3_oe & ts_local_pe_187_a3_out ) | (ts_local_pe_187_a4_oe & ts_local_pe_187_a4_out ) | (ts_local_pe_187_a5_oe & ts_local_pe_187_a5_out );
 assign gpu_data_oe[23] = ts_local_pe_187_a0_oe | ts_local_pe_187_a1_oe | ts_local_pe_187_a2_oe | ts_local_pe_187_a3_oe | ts_local_pe_187_a4_oe | ts_local_pe_187_a5_oe;
 assign ts_local_pe_187_a0_in = gpu_data_in[23];
 assign ts_local_pe_187_a1_in = gpu_data_in[23];
@@ -4467,7 +4474,7 @@ assign ts_local_pe_187_a4_in = gpu_data_in[23];
 assign ts_local_pe_187_a5_in = gpu_data_in[23];
 
 // --- Compiler-generated local PE for BUS gpu_data<24>
-assign gpu_data_out[24] = (ts_local_pe_188_a0_oe & ts_local_pe_188_a0_out ) | (ts_local_pe_188_a1_oe & ts_local_pe_188_a1_out ) | (ts_local_pe_188_a2_oe & ts_local_pe_188_a2_out ) | (ts_local_pe_188_a3_oe & ts_local_pe_188_a3_out ) | (ts_local_pe_188_a4_oe & ts_local_pe_188_a4_out ) | (ts_local_pe_188_a5_oe & ts_local_pe_188_a5_out ) | 1'b0;
+assign gpu_data_out[24] = (ts_local_pe_188_a0_oe & ts_local_pe_188_a0_out ) | (ts_local_pe_188_a1_oe & ts_local_pe_188_a1_out ) | (ts_local_pe_188_a2_oe & ts_local_pe_188_a2_out ) | (ts_local_pe_188_a3_oe & ts_local_pe_188_a3_out ) | (ts_local_pe_188_a4_oe & ts_local_pe_188_a4_out ) | (ts_local_pe_188_a5_oe & ts_local_pe_188_a5_out );
 assign gpu_data_oe[24] = ts_local_pe_188_a0_oe | ts_local_pe_188_a1_oe | ts_local_pe_188_a2_oe | ts_local_pe_188_a3_oe | ts_local_pe_188_a4_oe | ts_local_pe_188_a5_oe;
 assign ts_local_pe_188_a0_in = gpu_data_in[24];
 assign ts_local_pe_188_a1_in = gpu_data_in[24];
@@ -4477,7 +4484,7 @@ assign ts_local_pe_188_a4_in = gpu_data_in[24];
 assign ts_local_pe_188_a5_in = gpu_data_in[24];
 
 // --- Compiler-generated local PE for BUS gpu_data<25>
-assign gpu_data_out[25] = (ts_local_pe_189_a0_oe & ts_local_pe_189_a0_out ) | (ts_local_pe_189_a1_oe & ts_local_pe_189_a1_out ) | (ts_local_pe_189_a2_oe & ts_local_pe_189_a2_out ) | (ts_local_pe_189_a3_oe & ts_local_pe_189_a3_out ) | (ts_local_pe_189_a4_oe & ts_local_pe_189_a4_out ) | (ts_local_pe_189_a5_oe & ts_local_pe_189_a5_out ) | 1'b0;
+assign gpu_data_out[25] = (ts_local_pe_189_a0_oe & ts_local_pe_189_a0_out ) | (ts_local_pe_189_a1_oe & ts_local_pe_189_a1_out ) | (ts_local_pe_189_a2_oe & ts_local_pe_189_a2_out ) | (ts_local_pe_189_a3_oe & ts_local_pe_189_a3_out ) | (ts_local_pe_189_a4_oe & ts_local_pe_189_a4_out ) | (ts_local_pe_189_a5_oe & ts_local_pe_189_a5_out );
 assign gpu_data_oe[25] = ts_local_pe_189_a0_oe | ts_local_pe_189_a1_oe | ts_local_pe_189_a2_oe | ts_local_pe_189_a3_oe | ts_local_pe_189_a4_oe | ts_local_pe_189_a5_oe;
 assign ts_local_pe_189_a0_in = gpu_data_in[25];
 assign ts_local_pe_189_a1_in = gpu_data_in[25];
@@ -4487,7 +4494,7 @@ assign ts_local_pe_189_a4_in = gpu_data_in[25];
 assign ts_local_pe_189_a5_in = gpu_data_in[25];
 
 // --- Compiler-generated local PE for BUS gpu_data<26>
-assign gpu_data_out[26] = (ts_local_pe_190_a0_oe & ts_local_pe_190_a0_out ) | (ts_local_pe_190_a1_oe & ts_local_pe_190_a1_out ) | (ts_local_pe_190_a2_oe & ts_local_pe_190_a2_out ) | (ts_local_pe_190_a3_oe & ts_local_pe_190_a3_out ) | (ts_local_pe_190_a4_oe & ts_local_pe_190_a4_out ) | (ts_local_pe_190_a5_oe & ts_local_pe_190_a5_out ) | 1'b0;
+assign gpu_data_out[26] = (ts_local_pe_190_a0_oe & ts_local_pe_190_a0_out ) | (ts_local_pe_190_a1_oe & ts_local_pe_190_a1_out ) | (ts_local_pe_190_a2_oe & ts_local_pe_190_a2_out ) | (ts_local_pe_190_a3_oe & ts_local_pe_190_a3_out ) | (ts_local_pe_190_a4_oe & ts_local_pe_190_a4_out ) | (ts_local_pe_190_a5_oe & ts_local_pe_190_a5_out );
 assign gpu_data_oe[26] = ts_local_pe_190_a0_oe | ts_local_pe_190_a1_oe | ts_local_pe_190_a2_oe | ts_local_pe_190_a3_oe | ts_local_pe_190_a4_oe | ts_local_pe_190_a5_oe;
 assign ts_local_pe_190_a0_in = gpu_data_in[26];
 assign ts_local_pe_190_a1_in = gpu_data_in[26];
@@ -4497,7 +4504,7 @@ assign ts_local_pe_190_a4_in = gpu_data_in[26];
 assign ts_local_pe_190_a5_in = gpu_data_in[26];
 
 // --- Compiler-generated local PE for BUS gpu_data<27>
-assign gpu_data_out[27] = (ts_local_pe_191_a0_oe & ts_local_pe_191_a0_out ) | (ts_local_pe_191_a1_oe & ts_local_pe_191_a1_out ) | (ts_local_pe_191_a2_oe & ts_local_pe_191_a2_out ) | (ts_local_pe_191_a3_oe & ts_local_pe_191_a3_out ) | (ts_local_pe_191_a4_oe & ts_local_pe_191_a4_out ) | (ts_local_pe_191_a5_oe & ts_local_pe_191_a5_out ) | 1'b0;
+assign gpu_data_out[27] = (ts_local_pe_191_a0_oe & ts_local_pe_191_a0_out ) | (ts_local_pe_191_a1_oe & ts_local_pe_191_a1_out ) | (ts_local_pe_191_a2_oe & ts_local_pe_191_a2_out ) | (ts_local_pe_191_a3_oe & ts_local_pe_191_a3_out ) | (ts_local_pe_191_a4_oe & ts_local_pe_191_a4_out ) | (ts_local_pe_191_a5_oe & ts_local_pe_191_a5_out );
 assign gpu_data_oe[27] = ts_local_pe_191_a0_oe | ts_local_pe_191_a1_oe | ts_local_pe_191_a2_oe | ts_local_pe_191_a3_oe | ts_local_pe_191_a4_oe | ts_local_pe_191_a5_oe;
 assign ts_local_pe_191_a0_in = gpu_data_in[27];
 assign ts_local_pe_191_a1_in = gpu_data_in[27];
@@ -4507,7 +4514,7 @@ assign ts_local_pe_191_a4_in = gpu_data_in[27];
 assign ts_local_pe_191_a5_in = gpu_data_in[27];
 
 // --- Compiler-generated local PE for BUS gpu_data<28>
-assign gpu_data_out[28] = (ts_local_pe_192_a0_oe & ts_local_pe_192_a0_out ) | (ts_local_pe_192_a1_oe & ts_local_pe_192_a1_out ) | (ts_local_pe_192_a2_oe & ts_local_pe_192_a2_out ) | (ts_local_pe_192_a3_oe & ts_local_pe_192_a3_out ) | (ts_local_pe_192_a4_oe & ts_local_pe_192_a4_out ) | (ts_local_pe_192_a5_oe & ts_local_pe_192_a5_out ) | 1'b0;
+assign gpu_data_out[28] = (ts_local_pe_192_a0_oe & ts_local_pe_192_a0_out ) | (ts_local_pe_192_a1_oe & ts_local_pe_192_a1_out ) | (ts_local_pe_192_a2_oe & ts_local_pe_192_a2_out ) | (ts_local_pe_192_a3_oe & ts_local_pe_192_a3_out ) | (ts_local_pe_192_a4_oe & ts_local_pe_192_a4_out ) | (ts_local_pe_192_a5_oe & ts_local_pe_192_a5_out );
 assign gpu_data_oe[28] = ts_local_pe_192_a0_oe | ts_local_pe_192_a1_oe | ts_local_pe_192_a2_oe | ts_local_pe_192_a3_oe | ts_local_pe_192_a4_oe | ts_local_pe_192_a5_oe;
 assign ts_local_pe_192_a0_in = gpu_data_in[28];
 assign ts_local_pe_192_a1_in = gpu_data_in[28];
@@ -4517,7 +4524,7 @@ assign ts_local_pe_192_a4_in = gpu_data_in[28];
 assign ts_local_pe_192_a5_in = gpu_data_in[28];
 
 // --- Compiler-generated local PE for BUS gpu_data<29>
-assign gpu_data_out[29] = (ts_local_pe_193_a0_oe & ts_local_pe_193_a0_out ) | (ts_local_pe_193_a1_oe & ts_local_pe_193_a1_out ) | (ts_local_pe_193_a2_oe & ts_local_pe_193_a2_out ) | (ts_local_pe_193_a3_oe & ts_local_pe_193_a3_out ) | (ts_local_pe_193_a4_oe & ts_local_pe_193_a4_out ) | (ts_local_pe_193_a5_oe & ts_local_pe_193_a5_out ) | 1'b0;
+assign gpu_data_out[29] = (ts_local_pe_193_a0_oe & ts_local_pe_193_a0_out ) | (ts_local_pe_193_a1_oe & ts_local_pe_193_a1_out ) | (ts_local_pe_193_a2_oe & ts_local_pe_193_a2_out ) | (ts_local_pe_193_a3_oe & ts_local_pe_193_a3_out ) | (ts_local_pe_193_a4_oe & ts_local_pe_193_a4_out ) | (ts_local_pe_193_a5_oe & ts_local_pe_193_a5_out );
 assign gpu_data_oe[29] = ts_local_pe_193_a0_oe | ts_local_pe_193_a1_oe | ts_local_pe_193_a2_oe | ts_local_pe_193_a3_oe | ts_local_pe_193_a4_oe | ts_local_pe_193_a5_oe;
 assign ts_local_pe_193_a0_in = gpu_data_in[29];
 assign ts_local_pe_193_a1_in = gpu_data_in[29];
@@ -4527,7 +4534,7 @@ assign ts_local_pe_193_a4_in = gpu_data_in[29];
 assign ts_local_pe_193_a5_in = gpu_data_in[29];
 
 // --- Compiler-generated local PE for BUS gpu_data<30>
-assign gpu_data_out[30] = (ts_local_pe_194_a0_oe & ts_local_pe_194_a0_out ) | (ts_local_pe_194_a1_oe & ts_local_pe_194_a1_out ) | (ts_local_pe_194_a2_oe & ts_local_pe_194_a2_out ) | (ts_local_pe_194_a3_oe & ts_local_pe_194_a3_out ) | (ts_local_pe_194_a4_oe & ts_local_pe_194_a4_out ) | (ts_local_pe_194_a5_oe & ts_local_pe_194_a5_out ) | 1'b0;
+assign gpu_data_out[30] = (ts_local_pe_194_a0_oe & ts_local_pe_194_a0_out ) | (ts_local_pe_194_a1_oe & ts_local_pe_194_a1_out ) | (ts_local_pe_194_a2_oe & ts_local_pe_194_a2_out ) | (ts_local_pe_194_a3_oe & ts_local_pe_194_a3_out ) | (ts_local_pe_194_a4_oe & ts_local_pe_194_a4_out ) | (ts_local_pe_194_a5_oe & ts_local_pe_194_a5_out );
 assign gpu_data_oe[30] = ts_local_pe_194_a0_oe | ts_local_pe_194_a1_oe | ts_local_pe_194_a2_oe | ts_local_pe_194_a3_oe | ts_local_pe_194_a4_oe | ts_local_pe_194_a5_oe;
 assign ts_local_pe_194_a0_in = gpu_data_in[30];
 assign ts_local_pe_194_a1_in = gpu_data_in[30];
@@ -4537,7 +4544,7 @@ assign ts_local_pe_194_a4_in = gpu_data_in[30];
 assign ts_local_pe_194_a5_in = gpu_data_in[30];
 
 // --- Compiler-generated local PE for BUS gpu_data<31>
-assign gpu_data_out[31] = (ts_local_pe_195_a0_oe & ts_local_pe_195_a0_out ) | (ts_local_pe_195_a1_oe & ts_local_pe_195_a1_out ) | (ts_local_pe_195_a2_oe & ts_local_pe_195_a2_out ) | (ts_local_pe_195_a3_oe & ts_local_pe_195_a3_out ) | (ts_local_pe_195_a4_oe & ts_local_pe_195_a4_out ) | (ts_local_pe_195_a5_oe & ts_local_pe_195_a5_out ) | 1'b0;
+assign gpu_data_out[31] = (ts_local_pe_195_a0_oe & ts_local_pe_195_a0_out ) | (ts_local_pe_195_a1_oe & ts_local_pe_195_a1_out ) | (ts_local_pe_195_a2_oe & ts_local_pe_195_a2_out ) | (ts_local_pe_195_a3_oe & ts_local_pe_195_a3_out ) | (ts_local_pe_195_a4_oe & ts_local_pe_195_a4_out ) | (ts_local_pe_195_a5_oe & ts_local_pe_195_a5_out );
 assign gpu_data_oe[31] = ts_local_pe_195_a0_oe | ts_local_pe_195_a1_oe | ts_local_pe_195_a2_oe | ts_local_pe_195_a3_oe | ts_local_pe_195_a4_oe | ts_local_pe_195_a5_oe;
 assign ts_local_pe_195_a0_in = gpu_data_in[31];
 assign ts_local_pe_195_a1_in = gpu_data_in[31];
@@ -4547,204 +4554,204 @@ assign ts_local_pe_195_a4_in = gpu_data_in[31];
 assign ts_local_pe_195_a5_in = gpu_data_in[31];
 
 // --- Compiler-generated local PE for BUS gpu_dout[0]
-assign gpu_dout_0_out = (ts_local_pe_196_a0_oe & ts_local_pe_196_a0_out ) | (ts_local_pe_196_a1_oe & ts_local_pe_196_a1_out ) | (ts_local_pe_196_a2_oe & ts_local_pe_196_a2_out ) | 1'b0;
+assign gpu_dout_0_out = (ts_local_pe_196_a0_oe & ts_local_pe_196_a0_out ) | (ts_local_pe_196_a1_oe & ts_local_pe_196_a1_out ) | (ts_local_pe_196_a2_oe & ts_local_pe_196_a2_out );
 assign gpu_dout_0_oe = ts_local_pe_196_a0_oe | ts_local_pe_196_a1_oe | ts_local_pe_196_a2_oe;
 assign ts_local_pe_196_a0_in = gpu_dout_0_in;
 assign ts_local_pe_196_a1_in = gpu_dout_0_in;
 assign ts_local_pe_196_a2_in = gpu_dout_0_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[1]
-assign gpu_dout_1_out = (ts_local_pe_197_a0_oe & ts_local_pe_197_a0_out ) | (ts_local_pe_197_a1_oe & ts_local_pe_197_a1_out ) | (ts_local_pe_197_a2_oe & ts_local_pe_197_a2_out ) | 1'b0;
+assign gpu_dout_1_out = (ts_local_pe_197_a0_oe & ts_local_pe_197_a0_out ) | (ts_local_pe_197_a1_oe & ts_local_pe_197_a1_out ) | (ts_local_pe_197_a2_oe & ts_local_pe_197_a2_out );
 assign gpu_dout_1_oe = ts_local_pe_197_a0_oe | ts_local_pe_197_a1_oe | ts_local_pe_197_a2_oe;
 assign ts_local_pe_197_a0_in = gpu_dout_1_in;
 assign ts_local_pe_197_a1_in = gpu_dout_1_in;
 assign ts_local_pe_197_a2_in = gpu_dout_1_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[2]
-assign gpu_dout_2_out = (ts_local_pe_198_a0_oe & ts_local_pe_198_a0_out ) | (ts_local_pe_198_a1_oe & ts_local_pe_198_a1_out ) | (ts_local_pe_198_a2_oe & ts_local_pe_198_a2_out ) | 1'b0;
+assign gpu_dout_2_out = (ts_local_pe_198_a0_oe & ts_local_pe_198_a0_out ) | (ts_local_pe_198_a1_oe & ts_local_pe_198_a1_out ) | (ts_local_pe_198_a2_oe & ts_local_pe_198_a2_out );
 assign gpu_dout_2_oe = ts_local_pe_198_a0_oe | ts_local_pe_198_a1_oe | ts_local_pe_198_a2_oe;
 assign ts_local_pe_198_a0_in = gpu_dout_2_in;
 assign ts_local_pe_198_a1_in = gpu_dout_2_in;
 assign ts_local_pe_198_a2_in = gpu_dout_2_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[3]
-assign gpu_dout_3_out = (ts_local_pe_199_a0_oe & ts_local_pe_199_a0_out ) | (ts_local_pe_199_a1_oe & ts_local_pe_199_a1_out ) | (ts_local_pe_199_a2_oe & ts_local_pe_199_a2_out ) | 1'b0;
+assign gpu_dout_3_out = (ts_local_pe_199_a0_oe & ts_local_pe_199_a0_out ) | (ts_local_pe_199_a1_oe & ts_local_pe_199_a1_out ) | (ts_local_pe_199_a2_oe & ts_local_pe_199_a2_out );
 assign gpu_dout_3_oe = ts_local_pe_199_a0_oe | ts_local_pe_199_a1_oe | ts_local_pe_199_a2_oe;
 assign ts_local_pe_199_a0_in = gpu_dout_3_in;
 assign ts_local_pe_199_a1_in = gpu_dout_3_in;
 assign ts_local_pe_199_a2_in = gpu_dout_3_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[4]
-assign gpu_dout_4_out = (ts_local_pe_200_a0_oe & ts_local_pe_200_a0_out ) | (ts_local_pe_200_a1_oe & ts_local_pe_200_a1_out ) | (ts_local_pe_200_a2_oe & ts_local_pe_200_a2_out ) | 1'b0;
+assign gpu_dout_4_out = (ts_local_pe_200_a0_oe & ts_local_pe_200_a0_out ) | (ts_local_pe_200_a1_oe & ts_local_pe_200_a1_out ) | (ts_local_pe_200_a2_oe & ts_local_pe_200_a2_out );
 assign gpu_dout_4_oe = ts_local_pe_200_a0_oe | ts_local_pe_200_a1_oe | ts_local_pe_200_a2_oe;
 assign ts_local_pe_200_a0_in = gpu_dout_4_in;
 assign ts_local_pe_200_a1_in = gpu_dout_4_in;
 assign ts_local_pe_200_a2_in = gpu_dout_4_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[5]
-assign gpu_dout_5_out = (ts_local_pe_201_a0_oe & ts_local_pe_201_a0_out ) | (ts_local_pe_201_a1_oe & ts_local_pe_201_a1_out ) | (ts_local_pe_201_a2_oe & ts_local_pe_201_a2_out ) | 1'b0;
+assign gpu_dout_5_out = (ts_local_pe_201_a0_oe & ts_local_pe_201_a0_out ) | (ts_local_pe_201_a1_oe & ts_local_pe_201_a1_out ) | (ts_local_pe_201_a2_oe & ts_local_pe_201_a2_out );
 assign gpu_dout_5_oe = ts_local_pe_201_a0_oe | ts_local_pe_201_a1_oe | ts_local_pe_201_a2_oe;
 assign ts_local_pe_201_a0_in = gpu_dout_5_in;
 assign ts_local_pe_201_a1_in = gpu_dout_5_in;
 assign ts_local_pe_201_a2_in = gpu_dout_5_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[6]
-assign gpu_dout_6_out = (ts_local_pe_202_a0_oe & ts_local_pe_202_a0_out ) | (ts_local_pe_202_a1_oe & ts_local_pe_202_a1_out ) | 1'b0;
+assign gpu_dout_6_out = (ts_local_pe_202_a0_oe & ts_local_pe_202_a0_out ) | (ts_local_pe_202_a1_oe & ts_local_pe_202_a1_out );
 assign gpu_dout_6_oe = ts_local_pe_202_a0_oe | ts_local_pe_202_a1_oe;
 assign ts_local_pe_202_a0_in = gpu_dout_6_in;
 assign ts_local_pe_202_a1_in = gpu_dout_6_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[7]
-assign gpu_dout_7_out = (ts_local_pe_203_a0_oe & ts_local_pe_203_a0_out ) | (ts_local_pe_203_a1_oe & ts_local_pe_203_a1_out ) | 1'b0;
+assign gpu_dout_7_out = (ts_local_pe_203_a0_oe & ts_local_pe_203_a0_out ) | (ts_local_pe_203_a1_oe & ts_local_pe_203_a1_out );
 assign gpu_dout_7_oe = ts_local_pe_203_a0_oe | ts_local_pe_203_a1_oe;
 assign ts_local_pe_203_a0_in = gpu_dout_7_in;
 assign ts_local_pe_203_a1_in = gpu_dout_7_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[8]
-assign gpu_dout_8_out = (ts_local_pe_204_a0_oe & ts_local_pe_204_a0_out ) | (ts_local_pe_204_a1_oe & ts_local_pe_204_a1_out ) | 1'b0;
+assign gpu_dout_8_out = (ts_local_pe_204_a0_oe & ts_local_pe_204_a0_out ) | (ts_local_pe_204_a1_oe & ts_local_pe_204_a1_out );
 assign gpu_dout_8_oe = ts_local_pe_204_a0_oe | ts_local_pe_204_a1_oe;
 assign ts_local_pe_204_a0_in = gpu_dout_8_in;
 assign ts_local_pe_204_a1_in = gpu_dout_8_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[9]
-assign gpu_dout_9_out = (ts_local_pe_205_a0_oe & ts_local_pe_205_a0_out ) | (ts_local_pe_205_a1_oe & ts_local_pe_205_a1_out ) | 1'b0;
+assign gpu_dout_9_out = (ts_local_pe_205_a0_oe & ts_local_pe_205_a0_out ) | (ts_local_pe_205_a1_oe & ts_local_pe_205_a1_out );
 assign gpu_dout_9_oe = ts_local_pe_205_a0_oe | ts_local_pe_205_a1_oe;
 assign ts_local_pe_205_a0_in = gpu_dout_9_in;
 assign ts_local_pe_205_a1_in = gpu_dout_9_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[10]
-assign gpu_dout_10_out = (ts_local_pe_206_a0_oe & ts_local_pe_206_a0_out ) | (ts_local_pe_206_a1_oe & ts_local_pe_206_a1_out ) | 1'b0;
+assign gpu_dout_10_out = (ts_local_pe_206_a0_oe & ts_local_pe_206_a0_out ) | (ts_local_pe_206_a1_oe & ts_local_pe_206_a1_out );
 assign gpu_dout_10_oe = ts_local_pe_206_a0_oe | ts_local_pe_206_a1_oe;
 assign ts_local_pe_206_a0_in = gpu_dout_10_in;
 assign ts_local_pe_206_a1_in = gpu_dout_10_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[11]
-assign gpu_dout_11_out = (ts_local_pe_207_a0_oe & ts_local_pe_207_a0_out ) | (ts_local_pe_207_a1_oe & ts_local_pe_207_a1_out ) | (ts_local_pe_207_a2_oe & ts_local_pe_207_a2_out ) | 1'b0;
+assign gpu_dout_11_out = (ts_local_pe_207_a0_oe & ts_local_pe_207_a0_out ) | (ts_local_pe_207_a1_oe & ts_local_pe_207_a1_out ) | (ts_local_pe_207_a2_oe & ts_local_pe_207_a2_out );
 assign gpu_dout_11_oe = ts_local_pe_207_a0_oe | ts_local_pe_207_a1_oe | ts_local_pe_207_a2_oe;
 assign ts_local_pe_207_a0_in = gpu_dout_11_in;
 assign ts_local_pe_207_a1_in = gpu_dout_11_in;
 assign ts_local_pe_207_a2_in = gpu_dout_11_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[12]
-assign gpu_dout_12_out = (ts_local_pe_208_a0_oe & ts_local_pe_208_a0_out ) | (ts_local_pe_208_a1_oe & ts_local_pe_208_a1_out ) | (ts_local_pe_208_a2_oe & ts_local_pe_208_a2_out ) | 1'b0;
+assign gpu_dout_12_out = (ts_local_pe_208_a0_oe & ts_local_pe_208_a0_out ) | (ts_local_pe_208_a1_oe & ts_local_pe_208_a1_out ) | (ts_local_pe_208_a2_oe & ts_local_pe_208_a2_out );
 assign gpu_dout_12_oe = ts_local_pe_208_a0_oe | ts_local_pe_208_a1_oe | ts_local_pe_208_a2_oe;
 assign ts_local_pe_208_a0_in = gpu_dout_12_in;
 assign ts_local_pe_208_a1_in = gpu_dout_12_in;
 assign ts_local_pe_208_a2_in = gpu_dout_12_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[13]
-assign gpu_dout_13_out = (ts_local_pe_209_a0_oe & ts_local_pe_209_a0_out ) | (ts_local_pe_209_a1_oe & ts_local_pe_209_a1_out ) | (ts_local_pe_209_a2_oe & ts_local_pe_209_a2_out ) | 1'b0;
+assign gpu_dout_13_out = (ts_local_pe_209_a0_oe & ts_local_pe_209_a0_out ) | (ts_local_pe_209_a1_oe & ts_local_pe_209_a1_out ) | (ts_local_pe_209_a2_oe & ts_local_pe_209_a2_out );
 assign gpu_dout_13_oe = ts_local_pe_209_a0_oe | ts_local_pe_209_a1_oe | ts_local_pe_209_a2_oe;
 assign ts_local_pe_209_a0_in = gpu_dout_13_in;
 assign ts_local_pe_209_a1_in = gpu_dout_13_in;
 assign ts_local_pe_209_a2_in = gpu_dout_13_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[14]
-assign gpu_dout_14_out = (ts_local_pe_210_a0_oe & ts_local_pe_210_a0_out ) | (ts_local_pe_210_a1_oe & ts_local_pe_210_a1_out ) | (ts_local_pe_210_a2_oe & ts_local_pe_210_a2_out ) | 1'b0;
+assign gpu_dout_14_out = (ts_local_pe_210_a0_oe & ts_local_pe_210_a0_out ) | (ts_local_pe_210_a1_oe & ts_local_pe_210_a1_out ) | (ts_local_pe_210_a2_oe & ts_local_pe_210_a2_out );
 assign gpu_dout_14_oe = ts_local_pe_210_a0_oe | ts_local_pe_210_a1_oe | ts_local_pe_210_a2_oe;
 assign ts_local_pe_210_a0_in = gpu_dout_14_in;
 assign ts_local_pe_210_a1_in = gpu_dout_14_in;
 assign ts_local_pe_210_a2_in = gpu_dout_14_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[15]
-assign gpu_dout_15_out = (ts_local_pe_211_a0_oe & ts_local_pe_211_a0_out ) | (ts_local_pe_211_a1_oe & ts_local_pe_211_a1_out ) | (ts_local_pe_211_a2_oe & ts_local_pe_211_a2_out ) | 1'b0;
+assign gpu_dout_15_out = (ts_local_pe_211_a0_oe & ts_local_pe_211_a0_out ) | (ts_local_pe_211_a1_oe & ts_local_pe_211_a1_out ) | (ts_local_pe_211_a2_oe & ts_local_pe_211_a2_out );
 assign gpu_dout_15_oe = ts_local_pe_211_a0_oe | ts_local_pe_211_a1_oe | ts_local_pe_211_a2_oe;
 assign ts_local_pe_211_a0_in = gpu_dout_15_in;
 assign ts_local_pe_211_a1_in = gpu_dout_15_in;
 assign ts_local_pe_211_a2_in = gpu_dout_15_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[16]
-assign gpu_dout_16_out = (ts_local_pe_212_a0_oe & ts_local_pe_212_a0_out ) | (ts_local_pe_212_a1_oe & ts_local_pe_212_a1_out ) | 1'b0;
+assign gpu_dout_16_out = (ts_local_pe_212_a0_oe & ts_local_pe_212_a0_out ) | (ts_local_pe_212_a1_oe & ts_local_pe_212_a1_out );
 assign gpu_dout_16_oe = ts_local_pe_212_a0_oe | ts_local_pe_212_a1_oe;
 assign ts_local_pe_212_a0_in = gpu_dout_16_in;
 assign ts_local_pe_212_a1_in = gpu_dout_16_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[17]
-assign gpu_dout_17_out = (ts_local_pe_213_a0_oe & ts_local_pe_213_a0_out ) | (ts_local_pe_213_a1_oe & ts_local_pe_213_a1_out ) | 1'b0;
+assign gpu_dout_17_out = (ts_local_pe_213_a0_oe & ts_local_pe_213_a0_out ) | (ts_local_pe_213_a1_oe & ts_local_pe_213_a1_out );
 assign gpu_dout_17_oe = ts_local_pe_213_a0_oe | ts_local_pe_213_a1_oe;
 assign ts_local_pe_213_a0_in = gpu_dout_17_in;
 assign ts_local_pe_213_a1_in = gpu_dout_17_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[18]
-assign gpu_dout_18_out = (ts_local_pe_214_a0_oe & ts_local_pe_214_a0_out ) | (ts_local_pe_214_a1_oe & ts_local_pe_214_a1_out ) | 1'b0;
+assign gpu_dout_18_out = (ts_local_pe_214_a0_oe & ts_local_pe_214_a0_out ) | (ts_local_pe_214_a1_oe & ts_local_pe_214_a1_out );
 assign gpu_dout_18_oe = ts_local_pe_214_a0_oe | ts_local_pe_214_a1_oe;
 assign ts_local_pe_214_a0_in = gpu_dout_18_in;
 assign ts_local_pe_214_a1_in = gpu_dout_18_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[19]
-assign gpu_dout_19_out = (ts_local_pe_215_a0_oe & ts_local_pe_215_a0_out ) | (ts_local_pe_215_a1_oe & ts_local_pe_215_a1_out ) | 1'b0;
+assign gpu_dout_19_out = (ts_local_pe_215_a0_oe & ts_local_pe_215_a0_out ) | (ts_local_pe_215_a1_oe & ts_local_pe_215_a1_out );
 assign gpu_dout_19_oe = ts_local_pe_215_a0_oe | ts_local_pe_215_a1_oe;
 assign ts_local_pe_215_a0_in = gpu_dout_19_in;
 assign ts_local_pe_215_a1_in = gpu_dout_19_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[20]
-assign gpu_dout_20_out = (ts_local_pe_216_a0_oe & ts_local_pe_216_a0_out ) | (ts_local_pe_216_a1_oe & ts_local_pe_216_a1_out ) | 1'b0;
+assign gpu_dout_20_out = (ts_local_pe_216_a0_oe & ts_local_pe_216_a0_out ) | (ts_local_pe_216_a1_oe & ts_local_pe_216_a1_out );
 assign gpu_dout_20_oe = ts_local_pe_216_a0_oe | ts_local_pe_216_a1_oe;
 assign ts_local_pe_216_a0_in = gpu_dout_20_in;
 assign ts_local_pe_216_a1_in = gpu_dout_20_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[21]
-assign gpu_dout_21_out = (ts_local_pe_217_a0_oe & ts_local_pe_217_a0_out ) | (ts_local_pe_217_a1_oe & ts_local_pe_217_a1_out ) | 1'b0;
+assign gpu_dout_21_out = (ts_local_pe_217_a0_oe & ts_local_pe_217_a0_out ) | (ts_local_pe_217_a1_oe & ts_local_pe_217_a1_out );
 assign gpu_dout_21_oe = ts_local_pe_217_a0_oe | ts_local_pe_217_a1_oe;
 assign ts_local_pe_217_a0_in = gpu_dout_21_in;
 assign ts_local_pe_217_a1_in = gpu_dout_21_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[22]
-assign gpu_dout_22_out = (ts_local_pe_218_a0_oe & ts_local_pe_218_a0_out ) | (ts_local_pe_218_a1_oe & ts_local_pe_218_a1_out ) | 1'b0;
+assign gpu_dout_22_out = (ts_local_pe_218_a0_oe & ts_local_pe_218_a0_out ) | (ts_local_pe_218_a1_oe & ts_local_pe_218_a1_out );
 assign gpu_dout_22_oe = ts_local_pe_218_a0_oe | ts_local_pe_218_a1_oe;
 assign ts_local_pe_218_a0_in = gpu_dout_22_in;
 assign ts_local_pe_218_a1_in = gpu_dout_22_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[23]
-assign gpu_dout_23_out = (ts_local_pe_219_a0_oe & ts_local_pe_219_a0_out ) | (ts_local_pe_219_a1_oe & ts_local_pe_219_a1_out ) | 1'b0;
+assign gpu_dout_23_out = (ts_local_pe_219_a0_oe & ts_local_pe_219_a0_out ) | (ts_local_pe_219_a1_oe & ts_local_pe_219_a1_out );
 assign gpu_dout_23_oe = ts_local_pe_219_a0_oe | ts_local_pe_219_a1_oe;
 assign ts_local_pe_219_a0_in = gpu_dout_23_in;
 assign ts_local_pe_219_a1_in = gpu_dout_23_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[24]
-assign gpu_dout_24_out = (ts_local_pe_220_a0_oe & ts_local_pe_220_a0_out ) | (ts_local_pe_220_a1_oe & ts_local_pe_220_a1_out ) | 1'b0;
+assign gpu_dout_24_out = (ts_local_pe_220_a0_oe & ts_local_pe_220_a0_out ) | (ts_local_pe_220_a1_oe & ts_local_pe_220_a1_out );
 assign gpu_dout_24_oe = ts_local_pe_220_a0_oe | ts_local_pe_220_a1_oe;
 assign ts_local_pe_220_a0_in = gpu_dout_24_in;
 assign ts_local_pe_220_a1_in = gpu_dout_24_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[25]
-assign gpu_dout_25_out = (ts_local_pe_221_a0_oe & ts_local_pe_221_a0_out ) | (ts_local_pe_221_a1_oe & ts_local_pe_221_a1_out ) | 1'b0;
+assign gpu_dout_25_out = (ts_local_pe_221_a0_oe & ts_local_pe_221_a0_out ) | (ts_local_pe_221_a1_oe & ts_local_pe_221_a1_out );
 assign gpu_dout_25_oe = ts_local_pe_221_a0_oe | ts_local_pe_221_a1_oe;
 assign ts_local_pe_221_a0_in = gpu_dout_25_in;
 assign ts_local_pe_221_a1_in = gpu_dout_25_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[26]
-assign gpu_dout_26_out = (ts_local_pe_222_a0_oe & ts_local_pe_222_a0_out ) | (ts_local_pe_222_a1_oe & ts_local_pe_222_a1_out ) | 1'b0;
+assign gpu_dout_26_out = (ts_local_pe_222_a0_oe & ts_local_pe_222_a0_out ) | (ts_local_pe_222_a1_oe & ts_local_pe_222_a1_out );
 assign gpu_dout_26_oe = ts_local_pe_222_a0_oe | ts_local_pe_222_a1_oe;
 assign ts_local_pe_222_a0_in = gpu_dout_26_in;
 assign ts_local_pe_222_a1_in = gpu_dout_26_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[27]
-assign gpu_dout_27_out = (ts_local_pe_223_a0_oe & ts_local_pe_223_a0_out ) | (ts_local_pe_223_a1_oe & ts_local_pe_223_a1_out ) | 1'b0;
+assign gpu_dout_27_out = (ts_local_pe_223_a0_oe & ts_local_pe_223_a0_out ) | (ts_local_pe_223_a1_oe & ts_local_pe_223_a1_out );
 assign gpu_dout_27_oe = ts_local_pe_223_a0_oe | ts_local_pe_223_a1_oe;
 assign ts_local_pe_223_a0_in = gpu_dout_27_in;
 assign ts_local_pe_223_a1_in = gpu_dout_27_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[28]
-assign gpu_dout_28_out = (ts_local_pe_224_a0_oe & ts_local_pe_224_a0_out ) | (ts_local_pe_224_a1_oe & ts_local_pe_224_a1_out ) | 1'b0;
+assign gpu_dout_28_out = (ts_local_pe_224_a0_oe & ts_local_pe_224_a0_out ) | (ts_local_pe_224_a1_oe & ts_local_pe_224_a1_out );
 assign gpu_dout_28_oe = ts_local_pe_224_a0_oe | ts_local_pe_224_a1_oe;
 assign ts_local_pe_224_a0_in = gpu_dout_28_in;
 assign ts_local_pe_224_a1_in = gpu_dout_28_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[29]
-assign gpu_dout_29_out = (ts_local_pe_225_a0_oe & ts_local_pe_225_a0_out ) | (ts_local_pe_225_a1_oe & ts_local_pe_225_a1_out ) | 1'b0;
+assign gpu_dout_29_out = (ts_local_pe_225_a0_oe & ts_local_pe_225_a0_out ) | (ts_local_pe_225_a1_oe & ts_local_pe_225_a1_out );
 assign gpu_dout_29_oe = ts_local_pe_225_a0_oe | ts_local_pe_225_a1_oe;
 assign ts_local_pe_225_a0_in = gpu_dout_29_in;
 assign ts_local_pe_225_a1_in = gpu_dout_29_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[30]
-assign gpu_dout_30_out = (ts_local_pe_226_a0_oe & ts_local_pe_226_a0_out ) | (ts_local_pe_226_a1_oe & ts_local_pe_226_a1_out ) | 1'b0;
+assign gpu_dout_30_out = (ts_local_pe_226_a0_oe & ts_local_pe_226_a0_out ) | (ts_local_pe_226_a1_oe & ts_local_pe_226_a1_out );
 assign gpu_dout_30_oe = ts_local_pe_226_a0_oe | ts_local_pe_226_a1_oe;
 assign ts_local_pe_226_a0_in = gpu_dout_30_in;
 assign ts_local_pe_226_a1_in = gpu_dout_30_in;
 
 // --- Compiler-generated local PE for BUS gpu_dout[31]
-assign gpu_dout_31_out = (ts_local_pe_227_a0_oe & ts_local_pe_227_a0_out ) | (ts_local_pe_227_a1_oe & ts_local_pe_227_a1_out ) | 1'b0;
+assign gpu_dout_31_out = (ts_local_pe_227_a0_oe & ts_local_pe_227_a0_out ) | (ts_local_pe_227_a1_oe & ts_local_pe_227_a1_out );
 assign gpu_dout_31_oe = ts_local_pe_227_a0_oe | ts_local_pe_227_a1_oe;
 assign ts_local_pe_227_a0_in = gpu_dout_31_in;
 assign ts_local_pe_227_a1_in = gpu_dout_31_in;
