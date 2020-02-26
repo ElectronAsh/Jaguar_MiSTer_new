@@ -225,16 +225,15 @@ localparam CONF_STR = {
 	"O4,Region Setting,PAL,NTSC;",
 	"O2,Cart Checksum Patch,Off,On;",
 	"O1,Aspect ratio,4:3,16:9;",
-	"-;",
+	"O56,Mouse,Disabled,JoyPort1,JoyPort2;",
 	"O3,CPU Speed,Normal,Turbo;",
 	"-;",
 	"R0,Reset;",
 	"J1,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
 	"J2,A,B,C,Option,Pause,1,2,3,4,5,6,7,8,9,0,Star,Hash;",
-	"O56,Mouse,Disabled,JoyPort1,JoyPort2;",
+	"-;",
 	"V,v1.51.",`BUILD_DATE
 };
-
 
 wire [63:0] status;
 wire  [1:0] buttons;
@@ -291,7 +290,6 @@ reg [31:0] loader_addr;
 
 reg        loader_wr;
 reg        loader_en;
-reg        loader_reset = 0;
 
 wire [7:0] loader_be = (loader_en && loader_addr[2:0]==0) ? 8'b11000000 :
 							  (loader_en && loader_addr[2:0]==2) ? 8'b00110000 :
@@ -455,6 +453,8 @@ wire [15:0] fx68k_din_dbg;
 wire [15:0] fx68k_dout_dbg;
 
 wire pix_clk;
+wire hblank;
+wire vblank;
 
 wire [23:0] abus_out;
 
@@ -502,6 +502,7 @@ assign os_rom_q = (abus_out[16:0]==17'h0136E && status[2]) ? 8'h60 :	// Patch th
 
 
 reg os_lsb = 1;
+reg os_wren;
 always @(posedge clk_sys) begin
 	os_wren <= 1'b0;
 
@@ -538,7 +539,7 @@ assign VGA_B = vga_b;
 
 
 assign CLK_VIDEO = clk_sys;
-assign CE_PIX = vid_ce;
+wire CE_PIX = vid_ce;
 
 
 //assign VGA_SL = {~interlace,~interlace} & sl[1:0];
